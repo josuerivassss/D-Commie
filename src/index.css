@@ -1,0 +1,293 @@
+:root {
+  --navy: #1a2b4c;
+  --slate: #3d5a80;
+  --teal: #0f766e;
+  --teal-light: #14a89c;
+  --amber: #b45309;
+  --bg: #0f1420;
+  --bg-elevated: #161d2e;
+  --bg-card: #1b2436;
+  --border: #2a3550;
+  --text: #e7ecf5;
+  --text-muted: #8a97b3;
+  --danger: #9b2226;
+  --radius: 12px;
+  --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font-family: var(--font); }
+
+/* -- header ---------------------------------------------------------- */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: var(--bg-elevated);
+  border-bottom: 1px solid var(--border);
+}
+
+.header .brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+
+.header .brand img { height: 32px; width: 32px; border-radius: 8px; }
+
+.header nav {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}
+
+.header nav a:hover { color: var(--text); }
+
+/* -- buttons ----------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.6rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 0.98rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform 0.12s ease, filter 0.12s ease;
+}
+
+.btn:hover { filter: brightness(1.08); }
+.btn:active { transform: scale(0.98); }
+
+.btn-primary { background: var(--teal); color: white; }
+.btn-secondary { background: var(--slate); color: white; }
+.btn-outline { background: transparent; border-color: var(--border); color: var(--text); }
+.btn-outline:hover { border-color: var(--teal); }
+.btn-wide { width: 100%; }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* -- landing page ------------------------------------------------------- */
+
+.landing-hero {
+  min-height: calc(100vh - 68px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  gap: 0.75rem;
+}
+
+.landing-hero .logo {
+  height: 84px;
+  width: 84px;
+  border-radius: 20px;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 8px 30px rgba(15, 118, 110, 0.35);
+}
+
+.landing-hero h1 {
+  font-size: 2.4rem;
+  margin: 0;
+  background: linear-gradient(90deg, var(--teal-light), var(--slate));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.landing-hero p.tagline {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  max-width: 480px;
+  margin: 0 0 1.5rem;
+}
+
+.landing-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  width: 100%;
+  max-width: 480px;
+}
+
+.landing-actions .row { display: flex; gap: 0.9rem; width: 100%; }
+.landing-actions .row .btn { flex: 1; }
+
+/* -- guild picker -------------------------------------------------------- */
+
+.picker-wrap { max-width: 760px; margin: 0 auto; padding: 2.5rem 1.5rem; }
+.picker-wrap h1 { font-size: 1.6rem; margin-bottom: 0.25rem; }
+.picker-wrap p.sub { color: var(--text-muted); margin-top: 0; margin-bottom: 2rem; }
+
+.guild-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.9rem;
+}
+
+.guild-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: border-color 0.12s ease, transform 0.12s ease;
+}
+
+.guild-card:hover { transform: translateY(-2px); }
+.guild-card.active { border-color: var(--teal); }
+.guild-card.active:hover { border-color: var(--teal-light); }
+.guild-card.inactive { filter: grayscale(1); opacity: 0.55; }
+.guild-card.inactive:hover { border-color: var(--text-muted); opacity: 0.8; }
+
+.guild-card img.icon {
+  height: 40px; width: 40px; border-radius: 50%; flex-shrink: 0; background: var(--slate);
+}
+
+.guild-card .name {
+  font-weight: 600; font-size: 0.92rem;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+.guild-card .status { font-size: 0.75rem; color: var(--text-muted); }
+.guild-card.active .status { color: var(--teal-light); }
+
+/* -- dashboard shell (sidebar layout) ------------------------------------- */
+
+.dash-shell { display: flex; min-height: calc(100vh - 68px); }
+
+.sidebar {
+  width: 230px;
+  flex-shrink: 0;
+  background: var(--bg-elevated);
+  border-right: 1px solid var(--border);
+  padding: 1.5rem 0;
+}
+
+.sidebar .guild-name {
+  padding: 0 1.25rem 1rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0.75rem;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+.sidebar a.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.65rem 1.25rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  border-left: 3px solid transparent;
+}
+
+.sidebar a.nav-item:hover { color: var(--text); background: rgba(255, 255, 255, 0.03); }
+
+.sidebar a.nav-item.active {
+  color: var(--text);
+  border-left-color: var(--teal);
+  background: rgba(15, 118, 110, 0.12);
+}
+
+.sidebar .switch-server {
+  margin-top: 0.75rem;
+  border-top: 1px solid var(--border);
+  padding-top: 0.85rem;
+}
+
+.dash-content { flex: 1; padding: 2.25rem 2.75rem; max-width: 760px; }
+.dash-content h1 { font-size: 1.5rem; margin: 0 0 0.3rem; }
+.dash-content p.section-sub { color: var(--text-muted); margin-top: 0; margin-bottom: 1.75rem; }
+
+/* -- forms --------------------------------------------------------------- */
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.field { margin-bottom: 1.1rem; }
+
+.field label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: var(--text-muted);
+}
+
+.field input[type="text"],
+.field input[type="number"],
+.field select,
+.field textarea {
+  width: 100%;
+  padding: 0.65rem 0.8rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 0.92rem;
+}
+
+.field textarea { min-height: 90px; resize: vertical; }
+
+.field input:focus, .field select:focus, .field textarea:focus {
+  outline: none;
+  border-color: var(--teal);
+}
+
+.field .hint { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.35rem; }
+
+.toggle-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+
+.flash {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  margin-bottom: 1.25rem;
+}
+
+.flash.success { background: rgba(15, 118, 110, 0.15); border: 1px solid var(--teal); color: var(--teal-light); }
+.flash.error { background: rgba(155, 34, 38, 0.15); border: 1px solid var(--danger); color: #ff9a9a; }
+
+.user-chip { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--text-muted); }
+.user-chip img { height: 26px; width: 26px; border-radius: 50%; }
+.user-chip button {
+  background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.85rem; padding: 0;
+}
+.user-chip button:hover { color: var(--text); }
+
+.center-loading {
+  display: flex; align-items: center; justify-content: center;
+  min-height: calc(100vh - 68px); color: var(--text-muted);
+}

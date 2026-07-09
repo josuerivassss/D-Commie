@@ -1,0 +1,31 @@
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import Landing from "./pages/Landing";
+import AuthCallback from "./pages/AuthCallback";
+import GuildPicker from "./pages/GuildPicker";
+import DashboardLayout from "./pages/DashboardLayout";
+import GeneralSettings from "./pages/GeneralSettings";
+import WelcomeSettings from "./pages/WelcomeSettings";
+import LeaveSettings from "./pages/LeaveSettings";
+import StarboardSettings from "./pages/StarboardSettings";
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/auth/callback" element={<AuthCallback />} />
+        <Route path="/dash" element={<GuildPicker />} />
+
+        <Route path="/dash/:guildId" element={<DashboardLayout />}>
+          <Route index element={<Navigate to="general" replace />} />
+          <Route path="general" element={<GeneralSettings />} />
+          <Route path="welcome" element={<WelcomeSettings />} />
+          <Route path="leave" element={<LeaveSettings />} />
+          <Route path="starboard" element={<StarboardSettings />} />
+        </Route>
+
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
