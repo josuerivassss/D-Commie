@@ -11,7 +11,7 @@ export default function Header({ user }) {
   return (
     <header className="header">
       <Link className="brand" to="/">
-        <img src="/logo.svg" alt="B-Commie logo" />
+        <img src="/logo-mascot.png" alt="B-Commie logo" />
         B-Commie
       </Link>
       <nav>

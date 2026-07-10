@@ -4,13 +4,15 @@ import { botInviteUrlForGuild } from "../config";
 export default function GuildCard({ guild }) {
   const iconUrl = guild.icon
     ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png`
-    : "/logo.svg";
+    : "/logo-mascot.png";
 
   const content = (
     <>
       <img className="icon" src={iconUrl} alt="" />
-      <div>
-        <div className="name">{guild.name}</div>
+      <div className="info">
+        <span className="name" title={guild.name}>
+          {guild.name}
+        </span>
         <div className="status">{guild.has_bot ? "Configure" : "Add bot"}</div>
       </div>
     </>

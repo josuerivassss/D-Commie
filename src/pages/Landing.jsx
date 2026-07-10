@@ -6,7 +6,7 @@ export default function Landing() {
     <>
       <Header user={null} />
       <div className="landing-hero">
-        <img className="logo" src="/logo.svg" alt="B-Commie logo" />
+        <img className="logo" src="/logo-square.png" alt="B-Commie logo" />
         <h1>B-Commie</h1>
         <p className="tagline">
           A friendly, all-in-one Discord bot for moderation, welcomes, starboard, reminders and more.

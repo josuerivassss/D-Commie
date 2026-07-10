@@ -40,6 +40,8 @@ async function request(path, { method = "GET", body } = {}) {
 }
 
 export const api = {
+  exchangeCode: (sessionCode) =>
+    request("/json/auth/exchange", { method: "POST", body: { session_code: sessionCode } }),
   me: () => request("/json/auth/me"),
   getGuildConfig: (guildId) => request(`/json/guilds/${guildId}`),
   updateGuildConfig: (guildId, body) => request(`/json/guilds/${guildId}`, { method: "PATCH", body }),

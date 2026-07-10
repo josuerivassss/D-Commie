@@ -1,16 +1,20 @@
 :root {
-  --navy: #1a2b4c;
-  --slate: #3d5a80;
-  --teal: #0f766e;
-  --teal-light: #14a89c;
-  --amber: #b45309;
-  --bg: #0f1420;
-  --bg-elevated: #161d2e;
-  --bg-card: #1b2436;
-  --border: #2a3550;
-  --text: #e7ecf5;
-  --text-muted: #8a97b3;
-  --danger: #9b2226;
+  /* Brand: wine-red accent (from the logo) + classic Discord dark grays */
+  --wine: #370d16;
+  --wine-light: #5c1a26;
+  --accent: #f1574b;
+  --accent-hover: #ff6e5e;
+  --danger: #da373c;
+  --success: #23a55a;
+
+  /* Discord's classic dark theme grays */
+  --bg: #1e1f22;
+  --bg-elevated: #2b2d31;
+  --bg-card: #313338;
+  --border: #3f4147;
+  --text: #f2f3f5;
+  --text-muted: #949ba4;
+
   --radius: 12px;
   --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
@@ -47,7 +51,7 @@ button { font-family: var(--font); }
   font-size: 1.15rem;
 }
 
-.header .brand img { height: 32px; width: 32px; border-radius: 8px; }
+.header .brand img { height: 32px; width: 32px; }
 
 .header nav {
   display: flex;
@@ -57,7 +61,7 @@ button { font-family: var(--font); }
   color: var(--text-muted);
 }
 
-.header nav a:hover { color: var(--text); }
+.header nav a:hover { color: var(--accent-hover); }
 
 /* -- buttons ----------------------------------------------------------- */
 
@@ -78,10 +82,10 @@ button { font-family: var(--font); }
 .btn:hover { filter: brightness(1.08); }
 .btn:active { transform: scale(0.98); }
 
-.btn-primary { background: var(--teal); color: white; }
-.btn-secondary { background: var(--slate); color: white; }
+.btn-primary { background: var(--accent); color: white; }
+.btn-secondary { background: var(--wine-light); color: white; }
 .btn-outline { background: transparent; border-color: var(--border); color: var(--text); }
-.btn-outline:hover { border-color: var(--teal); }
+.btn-outline:hover { border-color: var(--accent); }
 .btn-wide { width: 100%; }
 .btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
@@ -96,20 +100,21 @@ button { font-family: var(--font); }
   text-align: center;
   padding: 2rem;
   gap: 0.75rem;
+  background: radial-gradient(ellipse at top, var(--wine) 0%, var(--bg) 65%);
 }
 
 .landing-hero .logo {
-  height: 84px;
-  width: 84px;
-  border-radius: 20px;
+  height: 120px;
+  width: 120px;
+  border-radius: 26px;
   margin-bottom: 1.25rem;
-  box-shadow: 0 8px 30px rgba(15, 118, 110, 0.35);
+  box-shadow: 0 8px 40px rgba(241, 87, 75, 0.35);
 }
 
 .landing-hero h1 {
   font-size: 2.4rem;
   margin: 0;
-  background: linear-gradient(90deg, var(--teal-light), var(--slate));
+  background: linear-gradient(90deg, var(--accent), var(--wine-light));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -136,45 +141,54 @@ button { font-family: var(--font); }
 
 /* -- guild picker -------------------------------------------------------- */
 
-.picker-wrap { max-width: 760px; margin: 0 auto; padding: 2.5rem 1.5rem; }
+.picker-wrap { max-width: 820px; margin: 0 auto; padding: 2.5rem 1.5rem; }
 .picker-wrap h1 { font-size: 1.6rem; margin-bottom: 0.25rem; }
 .picker-wrap p.sub { color: var(--text-muted); margin-top: 0; margin-bottom: 2rem; }
 
 .guild-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 0.9rem;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
 }
 
 .guild-card {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.9rem 1rem;
+  gap: 0.9rem;
+  padding: 1.1rem 1.2rem;
   border-radius: var(--radius);
   background: var(--bg-card);
   border: 1px solid var(--border);
   cursor: pointer;
   transition: border-color 0.12s ease, transform 0.12s ease;
+  /* required for text-overflow ellipsis to work on flex children */
+  min-width: 0;
 }
 
 .guild-card:hover { transform: translateY(-2px); }
-.guild-card.active { border-color: var(--teal); }
-.guild-card.active:hover { border-color: var(--teal-light); }
+.guild-card.active { border-color: var(--accent); }
+.guild-card.active:hover { border-color: var(--accent-hover); }
 .guild-card.inactive { filter: grayscale(1); opacity: 0.55; }
 .guild-card.inactive:hover { border-color: var(--text-muted); opacity: 0.8; }
 
 .guild-card img.icon {
-  height: 40px; width: 40px; border-radius: 50%; flex-shrink: 0; background: var(--slate);
+  height: 46px; width: 46px; border-radius: 50%; flex-shrink: 0; background: var(--wine-light);
+  object-fit: cover;
 }
+
+.guild-card .info { min-width: 0; flex: 1; }
 
 .guild-card .name {
-  font-weight: 600; font-size: 0.92rem;
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-weight: 600;
+  font-size: 0.95rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
 }
 
-.guild-card .status { font-size: 0.75rem; color: var(--text-muted); }
-.guild-card.active .status { color: var(--teal-light); }
+.guild-card .status { font-size: 0.78rem; color: var(--text-muted); }
+.guild-card.active .status { color: var(--accent); }
 
 /* -- dashboard shell (sidebar layout) ------------------------------------- */
 
@@ -211,8 +225,8 @@ button { font-family: var(--font); }
 
 .sidebar a.nav-item.active {
   color: var(--text);
-  border-left-color: var(--teal);
-  background: rgba(15, 118, 110, 0.12);
+  border-left-color: var(--accent);
+  background: rgba(241, 87, 75, 0.12);
 }
 
 .sidebar .switch-server {
@@ -245,6 +259,17 @@ button { font-family: var(--font); }
   color: var(--text-muted);
 }
 
+.field-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.4rem;
+}
+.field-label-row label { margin-bottom: 0; }
+
+.char-count { font-size: 0.75rem; color: var(--text-muted); }
+.char-count.warn { color: var(--accent); }
+
 .field input[type="text"],
 .field input[type="number"],
 .field select,
@@ -263,12 +288,58 @@ button { font-family: var(--font); }
 
 .field input:focus, .field select:focus, .field textarea:focus {
   outline: none;
-  border-color: var(--teal);
+  border-color: var(--accent);
 }
 
+.field input.invalid, .field textarea.invalid { border-color: var(--danger); }
+
 .field .hint { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.35rem; }
+.field .error-text { font-size: 0.78rem; color: var(--danger); margin-top: 0.35rem; }
 
 .toggle-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+
+/* -- toggle switch --------------------------------------------------------- */
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 26px;
+  flex-shrink: 0;
+}
+
+.switch input { opacity: 0; width: 0; height: 0; }
+
+.switch .track {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: var(--border);
+  border-radius: 999px;
+  transition: background-color 0.15s ease;
+}
+
+.switch .track::before {
+  content: "";
+  position: absolute;
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.15s ease;
+}
+
+.switch input:checked + .track { background-color: var(--success); }
+.switch input:checked + .track::before { transform: translateX(18px); }
+.switch input:focus-visible + .track { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* -- language select with flags -------------------------------------------- */
+
+.lang-option { display: flex; align-items: center; gap: 0.5rem; }
+
+/* -- flash / status ---------------------------------------------------------- */
 
 .flash {
   padding: 0.75rem 1rem;
@@ -277,8 +348,8 @@ button { font-family: var(--font); }
   margin-bottom: 1.25rem;
 }
 
-.flash.success { background: rgba(15, 118, 110, 0.15); border: 1px solid var(--teal); color: var(--teal-light); }
-.flash.error { background: rgba(155, 34, 38, 0.15); border: 1px solid var(--danger); color: #ff9a9a; }
+.flash.success { background: rgba(35, 165, 90, 0.15); border: 1px solid var(--success); color: #6cd694; }
+.flash.error { background: rgba(218, 55, 60, 0.15); border: 1px solid var(--danger); color: #ff9a9a; }
 
 .user-chip { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--text-muted); }
 .user-chip img { height: 26px; width: 26px; border-radius: 50%; }

@@ -4,7 +4,7 @@
 // and public URLs are meant to be visible in the browser).
 
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
-export const DISCORD_CLIENT_ID = import.meta.env.VITE_DISCORD_CLIENT_ID || ""; // default to my bot's client ID, but you should set your own in .env
+export const DISCORD_CLIENT_ID = import.meta.env.VITE_DISCORD_CLIENT_ID || "";
 export const SUPPORT_SERVER_URL = import.meta.env.VITE_SUPPORT_SERVER_URL || "https://discord.gg/change-me";
 export const BOT_INVITE_PERMISSIONS = import.meta.env.VITE_BOT_INVITE_PERMISSIONS || "8";
 
