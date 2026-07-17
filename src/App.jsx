@@ -4,7 +4,7 @@ import AuthCallback from "./pages/AuthCallback";
 import GuildPicker from "./pages/GuildPicker";
 import DashboardLayout from "./pages/DashboardLayout";
 import GeneralSettings from "./pages/GeneralSettings";
-import WelcomeSettings from "./pages/WelcomeSettings";
+import WelcomeAutorolesSettings from "./pages/WelcomeAutorolesSettings";
 import LeaveSettings from "./pages/LeaveSettings";
 import StarboardSettings from "./pages/StarboardSettings";
 
@@ -19,7 +19,7 @@ export default function App() {
         <Route path="/dash/:guildId" element={<DashboardLayout />}>
           <Route index element={<Navigate to="general" replace />} />
           <Route path="general" element={<GeneralSettings />} />
-          <Route path="welcome" element={<WelcomeSettings />} />
+          <Route path="welcome" element={<WelcomeAutorolesSettings />} />
           <Route path="leave" element={<LeaveSettings />} />
           <Route path="starboard" element={<StarboardSettings />} />
         </Route>

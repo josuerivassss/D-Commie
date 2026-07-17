@@ -362,3 +362,75 @@ button { font-family: var(--font); }
   display: flex; align-items: center; justify-content: center;
   min-height: calc(100vh - 68px); color: var(--text-muted);
 }
+
+
+/* -- about section -------------------------------------------------------- */
+
+.about-section {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 2rem 3rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.98rem;
+  line-height: 1.7;
+}
+
+/* -- feature comparison table ---------------------------------------------- */
+
+.feature-table-wrap { max-width: 900px; margin: 0 auto 4rem; padding: 0 2rem; overflow-x: auto; }
+.feature-table-wrap h2 { text-align: center; margin-bottom: 0.4rem; }
+.feature-table-note { text-align: center; color: var(--text-muted); font-size: 0.8rem; margin-bottom: 1.5rem; }
+
+.feature-table { width: 100%; border-collapse: collapse; min-width: 640px; }
+.feature-table th, .feature-table td { padding: 0.75rem 1rem; text-align: center; border-bottom: 1px solid var(--border); font-size: 0.88rem; }
+.feature-table th { color: var(--text-muted); font-weight: 600; }
+.feature-table th:first-child, .feature-table td:first-child { text-align: left; color: var(--text); font-weight: 600; }
+
+.feature-badge { display: inline-block; padding: 0.2rem 0.65rem; border-radius: 999px; font-size: 0.78rem; font-weight: 600; }
+.feature-badge.yes { background: rgba(35, 165, 90, 0.15); color: #6cd694; }
+.feature-badge.no { background: rgba(218, 55, 60, 0.15); color: #ff9a9a; }
+.feature-badge.note { background: rgba(241, 196, 15, 0.15); color: #f1c40f; }
+
+/* -- carousel --------------------------------------------------------------- */
+
+.carousel-section { max-width: 900px; margin: 0 auto 4rem; padding: 0 2rem; }
+.carousel-section h2 { text-align: center; margin-bottom: 1.5rem; }
+.carousel { display: flex; align-items: center; gap: 1rem; }
+.carousel-slide { flex: 1; position: relative; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
+.carousel-slide img { width: 100%; height: 420px; object-fit: cover; display: block; }
+.carousel-caption {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.75), transparent);
+  font-weight: 600;
+}
+.carousel-nav {
+  background: var(--bg-card); border: 1px solid var(--border); color: var(--text);
+  width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.1rem; flex-shrink: 0;
+}
+.carousel-nav:hover { border-color: var(--accent); }
+.carousel-dots { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1rem; }
+.carousel-dot { width: 9px; height: 9px; border-radius: 50%; border: none; background: var(--border); cursor: pointer; padding: 0; }
+.carousel-dot.active { background: var(--accent); }
+
+/* -- autoroles chips ---------------------------------------------------------- */
+
+.autoroles-group { margin-bottom: 1.5rem; }
+.autoroles-group-title { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.6rem; }
+.role-chip-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.role-chip { padding: 0.4rem 0.85rem; border-radius: 999px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 0.85rem; cursor: pointer; transition: border-color 0.12s ease, background 0.12s ease; }
+.role-chip:hover:not(:disabled) { border-color: var(--accent); }
+.role-chip.active { background: var(--accent); border-color: var(--accent); color: white; }
+.role-chip:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* -- access denied ------------------------------------------------------------ */
+
+.access-denied {
+  max-width: 480px; margin: 4rem auto; text-align: center;
+  padding: 2.5rem 2rem; background: var(--bg-card); border: 1px solid var(--danger); border-radius: var(--radius);
+}
+.access-denied-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+.access-denied h2 { margin: 0 0 0.5rem; font-size: 1.25rem; }
+.access-denied p { color: var(--text-muted); margin-bottom: 1.5rem; }
+.access-denied .btn { display: inline-flex; align-items: center; gap: 0.5rem; }

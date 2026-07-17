@@ -9,12 +9,12 @@ export default function AuthCallback() {
   const ranOnce = useRef(false);
 
   useEffect(() => {
-    if (ranOnce.current) return; // avoid double-exchange under React StrictMode's double-invoke in dev
+    if (ranOnce.current) return;
     ranOnce.current = true;
 
     const sessionCode = searchParams.get("session_code");
     if (!sessionCode) {
-      navigate("/?login_failed=1", { replace: true });
+      navigate("/dash?login_failed=missing_code", { replace: true });
       return;
     }
 
@@ -24,8 +24,9 @@ export default function AuthCallback() {
         setToken(token);
         navigate("/dash", { replace: true });
       })
-      .catch(() => {
-        navigate("/?login_failed=1", { replace: true });
+      .catch((err) => {
+        const reason = err?.status === 0 ? "network" : "exchange";
+        navigate(`/dash?login_failed=${reason}`, { replace: true });
       });
   }, [searchParams, navigate]);
 

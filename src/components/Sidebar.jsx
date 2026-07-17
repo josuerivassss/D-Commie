@@ -10,7 +10,7 @@ export default function Sidebar({ guild }) {
         General
       </NavLink>
       <NavLink className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`} to={`${base}/welcome`}>
-        Welcome
+      Welcome & Autoroles
       </NavLink>
       <NavLink className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`} to={`${base}/leave`}>
         Leave

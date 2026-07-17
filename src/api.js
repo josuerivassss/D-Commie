@@ -8,23 +8,21 @@ export class ApiError extends Error {
   }
 }
 
-/**
- * Calls the A-Commie API and unwraps its {status, data, error, success}
- * envelope. On a 401 (expired/invalid session), clears the stored token
- * and sends the user back to the landing page -- every page that depends
- * on being logged in will naturally redirect there instead of showing a
- * broken, half-loaded screen.
- */
 async function request(path, { method = "GET", body } = {}) {
   const token = getToken();
   const headers = { "Content-Type": "application/json" };
   if (token) headers.Authorization = `Bearer ${token}`;
 
-  const res = await fetch(`${API_BASE_URL}${path}`, {
-    method,
-    headers,
-    body: body !== undefined ? JSON.stringify(body) : undefined,
-  });
+  let res;
+  try {
+    res = await fetch(`${API_BASE_URL}${path}`, {
+      method,
+      headers,
+      body: body !== undefined ? JSON.stringify(body) : undefined,
+    });
+  } catch {
+    throw new ApiError("network_error", 0);
+  }
 
   if (res.status === 401) {
     clearToken();
@@ -46,6 +44,9 @@ export const api = {
   getGuildConfig: (guildId) => request(`/json/guilds/${guildId}`),
   updateGuildConfig: (guildId, body) => request(`/json/guilds/${guildId}`, { method: "PATCH", body }),
   getGuildChannels: (guildId) => request(`/json/guilds/${guildId}/channels`),
+  getGuildRoles: (guildId) => request(`/json/guilds/${guildId}/roles`),
+  getAutoroles: (guildId) => request(`/json/guilds/${guildId}/autoroles`),
+  updateAutoroles: (guildId, body) => request(`/json/guilds/${guildId}/autoroles`, { method: "PATCH", body }),
   getStarboard: (guildId) => request(`/json/guilds/${guildId}/starboard`),
   updateStarboard: (guildId, body) => request(`/json/guilds/${guildId}/starboard`, { method: "PATCH", body }),
 };
