@@ -11,8 +11,8 @@ export default function Header({ user }) {
   return (
     <header className="header">
       <Link className="brand" to="/">
-        <img src="/logo-mascot.png" alt="B-Commie logo" />
-        B-Commie
+        <img src="/logo-mascot.png" alt="Commie logo" />
+        Commie
       </Link>
       <nav>
         <a href={botInviteUrl()}>Add to Server</a>
