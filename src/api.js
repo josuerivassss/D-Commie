@@ -8,6 +8,13 @@ export class ApiError extends Error {
   }
 }
 
+export function friendlyErrorMessage(err) {
+  if (err instanceof ApiError && err.status === 0) {
+    return "No se pudo conectar con el servidor. Si usas Brave, prueba desactivar Shields para este sitio (icono del león en la barra de direcciones) e intenta de nuevo.";
+  }
+  return err.message;
+}
+
 async function request(path, { method = "GET", body } = {}) {
   const token = getToken();
   const headers = { "Content-Type": "application/json" };
