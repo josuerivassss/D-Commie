@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import { api } from "../api";
+import { api, friendlyErrorMessage } from "../api";
 import Toggle from "../components/Toggle";
 import { LIMITS } from "../validation";
 
@@ -24,14 +24,14 @@ export default function LeaveSettings() {
         const leave = doc.leave || {};
         setConfig({
           enabled: Boolean(leave.enabled),
-          channel: leave.channel ? String(leave.channel) : "",
+          channel: leave.channel || "",
           message: leave.message || "",
         });
         setChannels(ch);
       })
       .catch((err) => {
         if (cancelled) return;
-        setLoadError(err.message);
+        setLoadError(friendlyErrorMessage(err));
       })
       .finally(() => {
         if (!cancelled) setLoading(false);
@@ -49,12 +49,12 @@ export default function LeaveSettings() {
     try {
       await api.updateGuildConfig(guild.id, {
         leave_enabled: config.enabled,
-        leave_channel_id: config.channel ? Number(config.channel) : null,
+        leave_channel_id: config.channel || null,
         leave_message: config.message.slice(0, LIMITS.MESSAGE_MAX),
       });
       setFlash({ type: "success", message: "Saved!" });
     } catch (err) {
-      setFlash({ type: "error", message: err.message });
+      setFlash({ type: "error", message: friendlyErrorMessage(err) });
     } finally {
       setSaving(false);
     }

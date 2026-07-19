@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import { api } from "../api";
+import { api, friendlyErrorMessage } from "../api";
 import Toggle from "../components/Toggle";
 import { LIMITS } from "../validation";
 
@@ -67,19 +67,19 @@ export default function WelcomeAutorolesSettings() {
         const welcome = doc.welcome || {};
         setConfig({
           enabled: Boolean(welcome.enabled),
-          channel: welcome.channel ? String(welcome.channel) : "",
+          channel: welcome.channel || "",
           message: welcome.message || "",
         });
         setChannels(ch);
         setRoles(gr);
         setAutoroles({
-          humans: (ar.humans || []).map(String),
-          bots: (ar.bots || []).map(String),
+          humans: ar.humans || [],
+          bots: ar.bots || [],
         });
       })
       .catch((err) => {
         if (cancelled) return;
-        setLoadError(err.message);
+        setLoadError(friendlyErrorMessage(err));
       })
       .finally(() => {
         if (!cancelled) setLoading(false);
@@ -97,12 +97,12 @@ export default function WelcomeAutorolesSettings() {
     try {
       await api.updateGuildConfig(guild.id, {
         welcome_enabled: config.enabled,
-        welcome_channel_id: config.channel ? Number(config.channel) : null,
+        welcome_channel_id: config.channel || null,
         welcome_message: config.message.slice(0, LIMITS.MESSAGE_MAX),
       });
       setWelcomeFlash({ type: "success", message: "Saved!" });
     } catch (err) {
-      setWelcomeFlash({ type: "error", message: err.message });
+      setWelcomeFlash({ type: "error", message: friendlyErrorMessage(err) });
     } finally {
       setSavingWelcome(false);
     }
@@ -123,12 +123,12 @@ export default function WelcomeAutorolesSettings() {
     setAutorolesFlash(null);
     try {
       await api.updateAutoroles(guild.id, {
-        humans: autoroles.humans.map(Number),
-        bots: autoroles.bots.map(Number),
+        humans: autoroles.humans,
+        bots: autoroles.bots,
       });
       setAutorolesFlash({ type: "success", message: "Saved!" });
     } catch (err) {
-      setAutorolesFlash({ type: "error", message: err.message });
+      setAutorolesFlash({ type: "error", message: friendlyErrorMessage(err) });
     } finally {
       setSavingAutoroles(false);
     }

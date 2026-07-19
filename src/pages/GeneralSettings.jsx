@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import { api } from "../api";
+import { api, friendlyErrorMessage } from "../api";
 import { LIMITS, LANGUAGES } from "../validation";
 
 export default function GeneralSettings() {
@@ -24,7 +24,7 @@ export default function GeneralSettings() {
       })
       .catch((err) => {
         if (cancelled) return;
-        setLoadError(err.message);
+        setLoadError(friendlyErrorMessage(err));
       })
       .finally(() => {
         if (!cancelled) setLoading(false);
@@ -48,7 +48,7 @@ export default function GeneralSettings() {
       });
       setFlash({ type: "success", message: "Saved!" });
     } catch (err) {
-      setFlash({ type: "error", message: err.message });
+      setFlash({ type: "error", message: friendlyErrorMessage(err) });
     } finally {
       setSaving(false);
     }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import { api } from "../api";
+import { api, friendlyErrorMessage } from "../api";
 import Toggle from "../components/Toggle";
 import { LIMITS, clamp } from "../validation";
 
@@ -29,7 +29,7 @@ export default function StarboardSettings() {
         if (cancelled) return;
         setConfig({
           enabled: Boolean(doc.enabled),
-          channel_id: doc.channel_id ? String(doc.channel_id) : "",
+          channel_id: doc.channel_id || "",
           emoji: doc.emoji || "\u2b50",
           threshold: doc.threshold || 3,
           count_self_stars: Boolean(doc.count_self_stars),
@@ -38,7 +38,7 @@ export default function StarboardSettings() {
       })
       .catch((err) => {
         if (cancelled) return;
-        setLoadError(err.message);
+        setLoadError(friendlyErrorMessage(err));
       })
       .finally(() => {
         if (!cancelled) setLoading(false);
@@ -56,14 +56,14 @@ export default function StarboardSettings() {
     try {
       await api.updateStarboard(guild.id, {
         enabled: config.enabled,
-        channel_id: config.channel_id ? Number(config.channel_id) : null,
+        channel_id: config.channel_id || null,
         emoji: config.emoji.trim().slice(0, LIMITS.EMOJI_MAX) || "\u2b50",
         threshold: clamp(config.threshold, LIMITS.THRESHOLD_MIN, LIMITS.THRESHOLD_MAX),
         count_self_stars: config.count_self_stars,
       });
       setFlash({ type: "success", message: "Saved!" });
     } catch (err) {
-      setFlash({ type: "error", message: err.message });
+      setFlash({ type: "error", message: friendlyErrorMessage(err) });
     } finally {
       setSaving(false);
     }
