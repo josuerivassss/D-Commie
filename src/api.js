@@ -53,7 +53,8 @@ export const api = {
   getGuildChannels: (guildId) => request(`/json/guilds/${guildId}/channels`),
   getGuildRoles: (guildId) => request(`/json/guilds/${guildId}/roles`),
   getAutoroles: (guildId) => request(`/json/guilds/${guildId}/autoroles`),
+  getGuildEmojis: (guildId) => request(`/json/guilds/${guildId}/emojis`),
   updateAutoroles: (guildId, body) => request(`/json/guilds/${guildId}/autoroles`, { method: "PATCH", body }),
   getStarboard: (guildId) => request(`/json/guilds/${guildId}/starboard`),
-  updateStarboard: (guildId, body) => request(`/json/guilds/${guildId}/starboard`, { method: "PATCH", body }),
+  updateStarboard: (guildId, body) => request(`/json/guilds/${guildId}/starboard`, { method: "PATCH", body })
 };

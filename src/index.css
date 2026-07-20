@@ -434,3 +434,55 @@ button { font-family: var(--font); }
 .access-denied h2 { margin: 0 0 0.5rem; font-size: 1.25rem; }
 .access-denied p { color: var(--text-muted); margin-bottom: 1.5rem; }
 .access-denied .btn { display: inline-flex; align-items: center; gap: 0.5rem; }
+
+/* -- emoji picker --------------------------------------------------------- */
+
+.emoji-picker { position: relative; display: inline-block; }
+
+.emoji-picker-trigger {
+  display: flex; align-items: center; justify-content: center;
+  width: 48px; height: 48px;
+  background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+  cursor: pointer; font-size: 1.3rem;
+}
+.emoji-picker-trigger:hover { border-color: var(--accent); }
+
+.emoji-preview-img,
+.emoji-picker-img { width: 22px; height: 22px; object-fit: contain; }
+
+.emoji-picker-panel {
+  position: absolute; top: calc(100% + 0.5rem); left: 0; z-index: 20;
+  width: 320px; max-height: 380px;
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+
+.emoji-picker-tabs { display: flex; border-bottom: 1px solid var(--border); }
+.emoji-picker-tab {
+  flex: 1; padding: 0.6rem; background: none; border: none; color: var(--text-muted);
+  font-size: 0.85rem; font-weight: 600; cursor: pointer; border-bottom: 2px solid transparent;
+}
+.emoji-picker-tab:hover { color: var(--text); }
+.emoji-picker-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+.emoji-picker-search {
+  margin: 0.6rem 0.75rem; padding: 0.45rem 0.7rem;
+  background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+  color: var(--text); font-size: 0.85rem; font-family: var(--font);
+}
+.emoji-picker-search:focus { outline: none; border-color: var(--accent); }
+
+.emoji-picker-grid-wrap { flex: 1; overflow-y: auto; padding: 0 0.75rem 0.75rem; }
+.emoji-picker-group-title {
+  font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;
+  color: var(--text-muted); margin: 0.6rem 0 0.35rem;
+}
+.emoji-picker-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.15rem; }
+.emoji-picker-cell {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; aspect-ratio: 1; background: none; border: none; border-radius: 6px;
+  cursor: pointer; font-size: 1.15rem;
+}
+.emoji-picker-cell:hover { background: rgba(255, 255, 255, 0.06); }
+.emoji-picker-status { padding: 1rem 0; text-align: center; }

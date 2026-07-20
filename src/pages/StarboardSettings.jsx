@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { api, friendlyErrorMessage } from "../api";
 import Toggle from "../components/Toggle";
+import EmojiPicker from "../components/EmojiPicker";
 import { LIMITS, clamp } from "../validation";
 
 export default function StarboardSettings() {
@@ -57,7 +58,7 @@ export default function StarboardSettings() {
       await api.updateStarboard(guild.id, {
         enabled: config.enabled,
         channel_id: config.channel_id || null,
-        emoji: config.emoji.trim().slice(0, LIMITS.EMOJI_MAX) || "\u2b50",
+        emoji: config.emoji.slice(0, LIMITS.EMOJI_MAX) || "\u2b50",
         threshold: clamp(config.threshold, LIMITS.THRESHOLD_MIN, LIMITS.THRESHOLD_MAX),
         count_self_stars: config.count_self_stars,
       });
@@ -116,19 +117,9 @@ export default function StarboardSettings() {
           </select>
         </div>
         <div className="field">
-          <div className="field-label-row">
-            <label>Emoji</label>
-            <span className={`char-count ${config.emoji.length >= LIMITS.EMOJI_MAX ? "warn" : ""}`}>
-              {config.emoji.length}/{LIMITS.EMOJI_MAX}
-            </span>
-          </div>
-          <input
-            type="text"
-            maxLength={LIMITS.EMOJI_MAX}
-            value={config.emoji}
-            onChange={(e) => setConfig({ ...config, emoji: e.target.value })}
-          />
-          <div className="hint">A standard emoji (&#11088;) or a custom server emoji.</div>
+          <label>Emoji</label>
+          <EmojiPicker value={config.emoji} onChange={(emoji) => setConfig({ ...config, emoji })} guildId={guild.id} />
+          <div className="hint">Elige un emoji estándar o uno personalizado del servidor (no animado, disponible para todos).</div>
         </div>
         <div className="field">
           <label>Star threshold</label>
