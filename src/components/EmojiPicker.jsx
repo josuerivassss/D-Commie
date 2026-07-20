@@ -4,9 +4,16 @@ import { api, friendlyErrorMessage } from "../api";
 
 const CUSTOM_EMOJI_PATTERN = /^<:(\w+):(\d+)>$/;
 const TWEMOJI_BASE = "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/";
-const GRID_COLUMNS = 7;
-const CELL_HEIGHT_PX = 34;
 const SEARCH_DEBOUNCE_MS = 150;
+
+// One tab per unicode group, icon = first emoji in that group. Computed
+// once at module scope since emojiData never changes at runtime.
+const CATEGORIES = emojiData.map((category, index) => ({
+  index,
+  slug: category.slug,
+  name: category.name,
+  icon: category.emojis[0]?.emoji,
+}));
 
 // Same conversion Twemoji itself uses to derive asset filenames from a
 // unicode emoji string -- keeps the dashboard's glyphs visually identical
@@ -76,6 +83,7 @@ function EmojiPreview({ value }) {
 export default function EmojiPicker({ value, onChange, guildId }) {
   const [open, setOpen] = useState(false);
   const [tab, setTab] = useState("standard");
+  const [activeCategory, setActiveCategory] = useState(0);
   const [search, setSearch] = useState("");
   const [customEmojis, setCustomEmojis] = useState(null);
   const [customLoading, setCustomLoading] = useState(false);
@@ -137,25 +145,25 @@ export default function EmojiPicker({ value, onChange, guildId }) {
 
   const query = debouncedSearch.trim().toLowerCase();
 
-  // data-by-group.json is an array of { name, slug, emojis: [...] } categories,
-  // not a plain object map -- see unicode-emoji-json's index.d.ts.
-  const filteredGroups = useMemo(
-    () =>
-      emojiData
-        .map((category) => ({
-          ...category,
-          emojis: query
-            ? category.emojis.filter((item) => item.name.toLowerCase().includes(query) || item.slug.includes(query))
-            : category.emojis,
-        }))
-        .filter((category) => category.emojis.length > 0),
-    [query]
-  );
+  // Only when searching do we scan every category -- otherwise just the
+  // active category's emojis are rendered, keeping the DOM small.
+  const searchResults = useMemo(() => {
+    if (!query) return null;
+    const results = [];
+    for (const category of emojiData) {
+      for (const item of category.emojis) {
+        if (item.name.toLowerCase().includes(query) || item.slug.includes(query)) results.push(item);
+      }
+    }
+    return results;
+  }, [query]);
 
   const filteredCustom = useMemo(
     () => (customEmojis || []).filter((e) => !query || e.name.toLowerCase().includes(query)),
     [customEmojis, query]
   );
+
+  const currentCategory = emojiData[activeCategory];
 
   return (
     <div className="emoji-picker" ref={containerRef}>
@@ -189,30 +197,56 @@ export default function EmojiPicker({ value, onChange, guildId }) {
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-          <div className="emoji-picker-grid-wrap">
-            {tab === "standard" &&
-              filteredGroups.map((category) => (
-                <div
+          {tab === "standard" && !query && (
+            <div className="emoji-picker-categories">
+              {CATEGORIES.map((category) => (
+                <button
+                  type="button"
                   key={category.slug}
-                  className="emoji-picker-group"
-                  style={{ containIntrinsicSize: `0 ${Math.ceil(category.emojis.length / GRID_COLUMNS) * CELL_HEIGHT_PX + 28}px` }}
+                  className={`emoji-picker-category-btn ${activeCategory === category.index ? "active" : ""}`}
+                  title={category.name}
+                  onClick={() => setActiveCategory(category.index)}
                 >
-                  <div className="emoji-picker-group-title">{category.name}</div>
-                  <div className="emoji-picker-grid">
-                    {category.emojis.map((item) => (
-                      <button
-                        type="button"
-                        key={item.slug}
-                        className="emoji-picker-cell"
-                        title={item.name}
-                        onClick={() => selectStandard(item.emoji)}
-                      >
-                        <TwemojiImage emoji={item.emoji} className="emoji-picker-img" alt={item.name} />
-                      </button>
-                    ))}
-                  </div>
-                </div>
+                  {category.icon && <TwemojiImage emoji={category.icon} className="emoji-picker-category-icon" />}
+                </button>
               ))}
+            </div>
+          )}
+          <div className="emoji-picker-grid-wrap">
+            {tab === "standard" && query && (
+              <div className="emoji-picker-grid">
+                {searchResults.length === 0 && <p className="hint emoji-picker-status">Sin resultados.</p>}
+                {searchResults.map((item) => (
+                  <button
+                    type="button"
+                    key={item.slug}
+                    className="emoji-picker-cell"
+                    title={item.name}
+                    onClick={() => selectStandard(item.emoji)}
+                  >
+                    <TwemojiImage emoji={item.emoji} className="emoji-picker-img" alt={item.name} />
+                  </button>
+                ))}
+              </div>
+            )}
+            {tab === "standard" && !query && currentCategory && (
+              <div className="emoji-picker-group">
+                <div className="emoji-picker-group-title">{currentCategory.name}</div>
+                <div className="emoji-picker-grid">
+                  {currentCategory.emojis.map((item) => (
+                    <button
+                      type="button"
+                      key={item.slug}
+                      className="emoji-picker-cell"
+                      title={item.name}
+                      onClick={() => selectStandard(item.emoji)}
+                    >
+                      <TwemojiImage emoji={item.emoji} className="emoji-picker-img" alt={item.name} />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
             {tab === "custom" && customLoading && <p className="hint emoji-picker-status">Cargando emojis&hellip;</p>}
             {tab === "custom" && customError && <p className="error-text emoji-picker-status">{customError}</p>}
             {tab === "custom" && !customLoading && !customError && filteredCustom.length === 0 && (
