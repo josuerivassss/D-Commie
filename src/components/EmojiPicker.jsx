@@ -1,9 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import emojiData from "unicode-emoji-json/data-by-group.json";
 import { api, friendlyErrorMessage } from "../api";
 
 const CUSTOM_EMOJI_PATTERN = /^<:(\w+):(\d+)>$/;
-const TWEMOJI_BASE = "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/72x72/";
+const TWEMOJI_BASE = "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/";
+const GRID_COLUMNS = 7;
+const CELL_HEIGHT_PX = 34;
+const SEARCH_DEBOUNCE_MS = 150;
 
 // Same conversion Twemoji itself uses to derive asset filenames from a
 // unicode emoji string -- keeps the dashboard's glyphs visually identical
@@ -29,13 +32,31 @@ function twemojiUrl(emoji) {
   // Twemoji drops the FE0F variation selector from single-codepoint emoji,
   // but keeps it for ZWJ sequences (combined emoji like professions/families).
   const normalized = emoji.includes("\u200d") ? emoji : emoji.replace(/\ufe0f/g, "");
-  return `${TWEMOJI_BASE}${toCodePoint(normalized)}.png`;
+  return `${TWEMOJI_BASE}${toCodePoint(normalized)}.svg`;
+}
+
+function useDebouncedValue(value, delayMs) {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() => {
+    const timer = setTimeout(() => setDebounced(value), delayMs);
+    return () => clearTimeout(timer);
+  }, [value, delayMs]);
+  return debounced;
 }
 
 function TwemojiImage({ emoji, className, alt }) {
   const [failed, setFailed] = useState(false);
   if (failed) return <span className={className}>{emoji}</span>;
-  return <img className={className} src={twemojiUrl(emoji)} alt={alt || emoji} onError={() => setFailed(true)} />;
+  return (
+    <img
+      className={className}
+      src={twemojiUrl(emoji)}
+      alt={alt || emoji}
+      loading="lazy"
+      decoding="async"
+      onError={() => setFailed(true)}
+    />
+  );
 }
 
 function EmojiPreview({ value }) {
@@ -60,6 +81,7 @@ export default function EmojiPicker({ value, onChange, guildId }) {
   const [customLoading, setCustomLoading] = useState(false);
   const [customError, setCustomError] = useState(null);
   const containerRef = useRef(null);
+  const debouncedSearch = useDebouncedValue(search, SEARCH_DEBOUNCE_MS);
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -113,18 +135,27 @@ export default function EmojiPicker({ value, onChange, guildId }) {
     setOpen(false);
   }
 
-  const query = search.trim().toLowerCase();
+  const query = debouncedSearch.trim().toLowerCase();
+
   // data-by-group.json is an array of { name, slug, emojis: [...] } categories,
   // not a plain object map -- see unicode-emoji-json's index.d.ts.
-  const filteredGroups = emojiData
-    .map((category) => ({
-      ...category,
-      emojis: query
-        ? category.emojis.filter((item) => item.name.toLowerCase().includes(query) || item.slug.includes(query))
-        : category.emojis,
-    }))
-    .filter((category) => category.emojis.length > 0);
-  const filteredCustom = (customEmojis || []).filter((e) => !query || e.name.toLowerCase().includes(query));
+  const filteredGroups = useMemo(
+    () =>
+      emojiData
+        .map((category) => ({
+          ...category,
+          emojis: query
+            ? category.emojis.filter((item) => item.name.toLowerCase().includes(query) || item.slug.includes(query))
+            : category.emojis,
+        }))
+        .filter((category) => category.emojis.length > 0),
+    [query]
+  );
+
+  const filteredCustom = useMemo(
+    () => (customEmojis || []).filter((e) => !query || e.name.toLowerCase().includes(query)),
+    [customEmojis, query]
+  );
 
   return (
     <div className="emoji-picker" ref={containerRef}>
@@ -161,7 +192,11 @@ export default function EmojiPicker({ value, onChange, guildId }) {
           <div className="emoji-picker-grid-wrap">
             {tab === "standard" &&
               filteredGroups.map((category) => (
-                <div key={category.slug} className="emoji-picker-group">
+                <div
+                  key={category.slug}
+                  className="emoji-picker-group"
+                  style={{ containIntrinsicSize: `0 ${Math.ceil(category.emojis.length / GRID_COLUMNS) * CELL_HEIGHT_PX + 28}px` }}
+                >
                   <div className="emoji-picker-group-title">{category.name}</div>
                   <div className="emoji-picker-grid">
                     {category.emojis.map((item) => (
@@ -193,7 +228,7 @@ export default function EmojiPicker({ value, onChange, guildId }) {
                     title={emoji.name}
                     onClick={() => selectCustom(emoji)}
                   >
-                    <img className="emoji-picker-img" src={emoji.url} alt={emoji.name} />
+                    <img className="emoji-picker-img" src={emoji.url} alt={emoji.name} loading="lazy" decoding="async" />
                   </button>
                 ))}
               </div>
