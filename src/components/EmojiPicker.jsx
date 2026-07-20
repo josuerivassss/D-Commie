@@ -114,12 +114,16 @@ export default function EmojiPicker({ value, onChange, guildId }) {
   }
 
   const query = search.trim().toLowerCase();
-  const filteredGroups = Object.entries(emojiData)
-    .map(([group, items]) => [
-      group,
-      query ? items.filter((item) => item.name.toLowerCase().includes(query) || item.slug.includes(query)) : items,
-    ])
-    .filter(([, items]) => items.length > 0);
+  // data-by-group.json is an array of { name, slug, emojis: [...] } categories,
+  // not a plain object map -- see unicode-emoji-json's index.d.ts.
+  const filteredGroups = emojiData
+    .map((category) => ({
+      ...category,
+      emojis: query
+        ? category.emojis.filter((item) => item.name.toLowerCase().includes(query) || item.slug.includes(query))
+        : category.emojis,
+    }))
+    .filter((category) => category.emojis.length > 0);
   const filteredCustom = (customEmojis || []).filter((e) => !query || e.name.toLowerCase().includes(query));
 
   return (
@@ -145,20 +149,22 @@ export default function EmojiPicker({ value, onChange, guildId }) {
               Del servidor
             </button>
           </div>
-          <input
-            type="text"
-            className="emoji-picker-search"
-            placeholder="Buscar emoji..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+          <div className="emoji-picker-search-row">
+            <input
+              type="text"
+              className="emoji-picker-search"
+              placeholder="Buscar emoji..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
           <div className="emoji-picker-grid-wrap">
             {tab === "standard" &&
-              filteredGroups.map(([group, items]) => (
-                <div key={group} className="emoji-picker-group">
-                  <div className="emoji-picker-group-title">{group}</div>
+              filteredGroups.map((category) => (
+                <div key={category.slug} className="emoji-picker-group">
+                  <div className="emoji-picker-group-title">{category.name}</div>
                   <div className="emoji-picker-grid">
-                    {items.map((item) => (
+                    {category.emojis.map((item) => (
                       <button
                         type="button"
                         key={item.slug}
