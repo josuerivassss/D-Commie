@@ -2,9 +2,10 @@ import { API_BASE_URL } from "./config";
 import { clearToken, getToken } from "./auth";
 
 export class ApiError extends Error {
-  constructor(message, status) {
+  constructor(message, status, data) {
     super(message);
     this.status = status;
+    this.data = data;
   }
 }
 
@@ -39,7 +40,7 @@ async function request(path, { method = "GET", body } = {}) {
 
   const payload = await res.json().catch(() => ({}));
   if (!res.ok) {
-    throw new ApiError(payload.error || `Request failed (${res.status})`, res.status);
+    throw new ApiError(payload.error || `Request failed (${res.status})`, res.status, payload.data);
   }
   return payload.data;
 }
@@ -53,8 +54,11 @@ export const api = {
   getGuildChannels: (guildId) => request(`/json/guilds/${guildId}/channels`),
   getGuildRoles: (guildId) => request(`/json/guilds/${guildId}/roles`),
   getAutoroles: (guildId) => request(`/json/guilds/${guildId}/autoroles`),
-  getGuildEmojis: (guildId) => request(`/json/guilds/${guildId}/emojis`),
   updateAutoroles: (guildId, body) => request(`/json/guilds/${guildId}/autoroles`, { method: "PATCH", body }),
   getStarboard: (guildId) => request(`/json/guilds/${guildId}/starboard`),
-  updateStarboard: (guildId, body) => request(`/json/guilds/${guildId}/starboard`, { method: "PATCH", body })
+  updateStarboard: (guildId, body) => request(`/json/guilds/${guildId}/starboard`, { method: "PATCH", body }),
+  getGuildEmojis: (guildId) => request(`/json/guilds/${guildId}/emojis`),
+  getSendableChannels: (guildId) => request(`/json/guilds/${guildId}/embeds/channels`),
+  getEmbedCooldown: (guildId) => request(`/json/guilds/${guildId}/embeds/cooldown`),
+  sendEmbed: (guildId, body) => request(`/json/guilds/${guildId}/embeds/send`, { method: "POST", body }),
 };

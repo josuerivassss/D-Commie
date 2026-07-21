@@ -173,9 +173,10 @@ export default function EmojiPicker({ value, onChange, guildId }) {
   );
 
   return (
+    
     <div className="emoji-picker" ref={containerRef}>
       <button type="button" className="emoji-picker-trigger" onClick={togglePanel}>
-        <EmojiPreview value={value} />
+        {renderTrigger ? renderTrigger() : <EmojiPreview value={value} />}
       </button>
       {open && (
         <div className="emoji-picker-panel">
