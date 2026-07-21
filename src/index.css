@@ -619,6 +619,27 @@ button { font-family: var(--font); }
 .embed-preview-footer { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.6rem; }
 .embed-preview-footer-icon { width: 18px; height: 18px; border-radius: 50%; object-fit: cover; }
 
+.embed-collapsible-body input[type="text"],
+.embed-field-card input[type="text"] {
+  width: 100%;
+  padding: 0.65rem 0.8rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 0.92rem;
+}
+.embed-collapsible-body input[type="text"]:focus,
+.embed-field-card input[type="text"]:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.embed-collapsible-body input[type="text"].invalid,
+.embed-field-card input[type="text"].invalid {
+  border-color: var(--danger);
+}
+
 .md-code { background: rgba(0, 0, 0, 0.3); padding: 0.05rem 0.3rem; border-radius: 4px; font-family: monospace; font-size: 0.85em; }
 
 /* -- modal ------------------------------------------------------------------- */
