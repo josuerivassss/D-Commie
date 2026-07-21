@@ -1,4 +1,5 @@
 import { renderDiscordMarkdown } from "../utils/discordMarkdown";
+import { isValidUrl } from "../validation";
 
 function EmbedCard({ embed }) {
   const color = embed.color != null ? `#${embed.color.toString(16).padStart(6, "0")}` : "#2b2d31";
@@ -16,7 +17,11 @@ function EmbedCard({ embed }) {
       )}
       {embed.title && (
         <div className="embed-preview-title">
-          {embed.url ? <a href={embed.url} target="_blank" rel="noopener noreferrer">{embed.title}</a> : embed.title}
+          {embed.url && isValidUrl(embed.url) ? (
+            <a href={embed.url} target="_blank" rel="noopener noreferrer">{embed.title}</a>
+          ) : (
+            embed.title
+          )}
         </div>
       )}
       {embed.description && <div className="embed-preview-description">{renderDiscordMarkdown(embed.description)}</div>}
