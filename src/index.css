@@ -647,7 +647,7 @@ button { font-family: var(--font); }
   margin: 0.4rem 0; overflow-x: auto; font-family: monospace; font-size: 0.82em; line-height: 1.4;
 }
 .md-codeblock-lang { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.3rem; text-transform: lowercase; }
-.md-codeblock code { white-space: pre; }
+.md-codeblock code.hljs { white-space: pre; background: transparent !important; padding: 0 !important; }
 
 /* -- modal ------------------------------------------------------------------- */
 
