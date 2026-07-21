@@ -80,7 +80,7 @@ function EmojiPreview({ value }) {
   return <TwemojiImage emoji={value || "\u2b50"} className="emoji-preview-img" />;
 }
 
-export default function EmojiPicker({ value, onChange, guildId }) {
+export default function EmojiPicker({ value, onChange, guildId, renderTrigger }) {
   const [open, setOpen] = useState(false);
   const [tab, setTab] = useState("standard");
   const [activeCategory, setActiveCategory] = useState(0);
