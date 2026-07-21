@@ -67,6 +67,12 @@ export function validateEmbedPayload(data) {
     if (embed.color !== undefined && embed.color !== null) {
       if (typeof embed.color !== "number" || embed.color < 0 || embed.color > 0xffffff) errors.push(`${label}: color debe ser un entero entre 0 y 16777215.`);
     }
+    if (embed.url && !isValidUrl(embed.url)) errors.push(`${label}: la URL del título no es válida (debe empezar con http:// o https://).`);
+    if (embed.image && !isValidUrl(embed.image)) errors.push(`${label}: la URL de la imagen no es válida.`);
+    if (embed.thumbnail && !isValidUrl(embed.thumbnail)) errors.push(`${label}: la URL del thumbnail no es válida.`);
+    if (embed.author?.url && !isValidUrl(embed.author.url)) errors.push(`${label}: la URL del autor no es válida.`);
+    if (embed.author?.icon_url && !isValidUrl(embed.author.icon_url)) errors.push(`${label}: la URL del ícono del autor no es válida.`);
+    if (embed.footer?.icon_url && !isValidUrl(embed.footer.icon_url)) errors.push(`${label}: la URL del ícono del footer no es válida.`);
     const fields = Array.isArray(embed.fields) ? embed.fields : [];
     if (fields.length > EMBED_LIMITS.FIELDS_MAX) errors.push(`${label}: máximo ${EMBED_LIMITS.FIELDS_MAX} campos.`);
     fields.forEach((field, fieldIndex) => {
@@ -87,4 +93,10 @@ export function validateEmbedPayload(data) {
   }
 
   return errors;
+}
+
+const URL_PATTERN = /^https?:\/\/\S+$/;
+
+export function isValidUrl(value) {
+  return !value || URL_PATTERN.test(value);
 }

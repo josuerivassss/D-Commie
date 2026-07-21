@@ -519,7 +519,39 @@ button { font-family: var(--font); }
 
 /* -- embed builder ---------------------------------------------------------- */
 
-.embed-builder-layout { display: grid; grid-template-columns: 1fr 380px; gap: 1.5rem; align-items: start; }
+.dash-content:has(.embed-builder-layout) { max-width: 1400px; }
+
+.embed-builder-layout {
+  display: grid;
+  grid-template-columns: minmax(480px, 1fr) 420px;
+  gap: 1.75rem;
+  align-items: start;
+}
+
+@media (max-width: 1000px) {
+  .embed-builder-layout { grid-template-columns: 1fr; }
+  .embed-builder-preview-pane { position: static; }
+}
+
+.embed-section-title {
+  font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--text-muted); margin: 1.5rem 0 0.75rem; padding-top: 1.25rem; border-top: 1px solid var(--border);
+}
+.embed-section-title:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+
+.embed-collapsible { border: 1px solid var(--border); border-radius: 8px; margin: 0.75rem 0; overflow: hidden; }
+.embed-collapsible summary {
+  cursor: pointer; padding: 0.75rem 1rem; font-size: 0.85rem; font-weight: 600; color: var(--text);
+  list-style: none; display: flex; justify-content: space-between; align-items: center;
+}
+.embed-collapsible summary::-webkit-details-marker { display: none; }
+.embed-collapsible summary::after { content: "\25be"; color: var(--text-muted); }
+.embed-collapsible[open] summary::after { content: "\25b4"; }
+.embed-collapsible-body { padding: 0 1rem 1rem; display: flex; flex-direction: column; gap: 0.6rem; }
+
+.embed-field-card { border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem; margin-bottom: 0.6rem; }
+.embed-field-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.6rem; }
+.embed-field-controls { display: flex; justify-content: space-between; align-items: center; }
 
 .flash.cooldown { background: rgba(241, 196, 15, 0.15); border: 1px solid #f1c40f; color: #f1c40f; }
 
@@ -544,7 +576,6 @@ button { font-family: var(--font); }
 .embed-color-row input[type="color"] { width: 44px; height: 38px; padding: 2px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); cursor: pointer; }
 .embed-color-hex { flex: 1; }
 
-.embed-field-row { display: grid; grid-template-columns: 1fr 1fr auto auto; gap: 0.5rem; align-items: center; margin-bottom: 0.6rem; }
 .embed-field-inline-toggle { display: flex; align-items: center; gap: 0.3rem; font-size: 0.8rem; color: var(--text-muted); white-space: nowrap; }
 
 .reactions-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { api, ApiError, friendlyErrorMessage } from "../api";
-import { EMBED_LIMITS, embedCharacterCount, validateEmbedPayload } from "../validation";
+import { EMBED_LIMITS, embedCharacterCount, isValidUrl, validateEmbedPayload } from "../validation";
 import { useUnsavedChangesGuard } from "../context/UnsavedChangesContext";
 import EmbedPreview from "../components/EmbedPreview";
 import EmojiPicker from "../components/EmojiPicker";
@@ -33,8 +33,17 @@ function toDiscordShape(embed) {
   if (embed.timestamp) payload.timestamp = embed.timestamp;
   if (embed.image) payload.image = embed.image;
   if (embed.thumbnail) payload.thumbnail = embed.thumbnail;
-  if (embed.author?.name || embed.author?.url || embed.author?.icon_url) payload.author = { ...embed.author };
-  if (embed.footer?.text || embed.footer?.icon_url) payload.footer = { ...embed.footer };
+  if (embed.author?.name || embed.author?.url || embed.author?.icon_url) {
+    payload.author = {};
+    if (embed.author.name) payload.author.name = embed.author.name;
+    if (embed.author.url) payload.author.url = embed.author.url;
+    if (embed.author.icon_url) payload.author.icon_url = embed.author.icon_url;
+  }
+  if (embed.footer?.text || embed.footer?.icon_url) {
+    payload.footer = {};
+    if (embed.footer.text) payload.footer.text = embed.footer.text;
+    if (embed.footer.icon_url) payload.footer.icon_url = embed.footer.icon_url;
+  }
   if (embed.fields?.length) payload.fields = embed.fields;
   return payload;
 }
@@ -76,6 +85,33 @@ function hexToInt(hex) {
   return parseInt(hex.replace("#", ""), 16);
 }
 
+function embedHasInvalidUrl(embed) {
+  return Boolean(
+    (embed.url && !isValidUrl(embed.url)) ||
+    (embed.image && !isValidUrl(embed.image)) ||
+    (embed.thumbnail && !isValidUrl(embed.thumbnail)) ||
+    (embed.author?.url && !isValidUrl(embed.author.url)) ||
+    (embed.author?.icon_url && !isValidUrl(embed.author.icon_url)) ||
+    (embed.footer?.icon_url && !isValidUrl(embed.footer.icon_url))
+  );
+}
+
+function UrlField({ value, placeholder, onChange }) {
+  const invalid = value && !isValidUrl(value);
+  return (
+    <div>
+      <input
+        type="text"
+        value={value}
+        placeholder={placeholder}
+        className={invalid ? "invalid" : ""}
+        onChange={(e) => onChange(e.target.value)}
+      />
+      {invalid && <div className="error-text">URL inválida (debe empezar con http:// o https://).</div>}
+    </div>
+  );
+}
+
 function ReactionChip({ value, onRemove }) {
   const custom = /^<a?:(\w+):(\d+)>$/.exec(value);
   return (
@@ -112,6 +148,7 @@ export default function EmbedSender() {
   const embed = embeds[activeEmbedIndex];
   const isDirty = savedSnapshot !== null && buildSnapshot(content, embeds, channelId, reactions) !== savedSnapshot;
   const totalCharacters = embeds.reduce((sum, e) => sum + embedCharacterCount(e), 0);
+  const hasInvalidUrls = embeds.some(embedHasInvalidUrl);
 
   useEffect(() => {
     let cancelled = false;
@@ -246,7 +283,7 @@ export default function EmbedSender() {
         content: content || null,
         embeds: nonEmptyEmbeds,
         reactions,
-        });
+      });
       setSendFlash({
         type: "success",
         message: result.failed_reactions?.length
@@ -322,6 +359,8 @@ export default function EmbedSender() {
               </button>
             </div>
 
+            <div className="embed-section-title">Contenido</div>
+
             <div className="field">
               <div className="field-label-row">
                 <label>Título</label>
@@ -334,7 +373,7 @@ export default function EmbedSender() {
 
             <div className="field">
               <label>URL del título (opcional)</label>
-              <input type="text" value={embed.url} placeholder="https://..." onChange={(e) => updateActiveEmbed({ url: e.target.value })} />
+              <UrlField value={embed.url} placeholder="https://..." onChange={(v) => updateActiveEmbed({ url: v })} />
             </div>
 
             <div className="field">
@@ -347,6 +386,8 @@ export default function EmbedSender() {
               <textarea maxLength={EMBED_LIMITS.DESCRIPTION_MAX} value={embed.description} onChange={(e) => updateActiveEmbed({ description: e.target.value })} />
               <div className="hint">Soporta **negritas**, *cursivas*, __subrayado__, ~~tachado~~ y `código`.</div>
             </div>
+
+            <div className="embed-section-title">Apariencia</div>
 
             <div className="field">
               <label>Color</label>
@@ -373,51 +414,61 @@ export default function EmbedSender() {
               <Toggle checked={Boolean(embed.timestamp)} onChange={(checked) => updateActiveEmbed({ timestamp: checked ? new Date().toISOString() : null })} />
             </div>
 
-            <div className="field">
-              <label>Imagen (URL)</label>
-              <input type="text" value={embed.image} placeholder="https://..." onChange={(e) => updateActiveEmbed({ image: e.target.value })} />
-            </div>
-
-            <div className="field">
-              <label>Thumbnail (URL)</label>
-              <input type="text" value={embed.thumbnail} placeholder="https://..." onChange={(e) => updateActiveEmbed({ thumbnail: e.target.value })} />
-            </div>
-
-            <div className="field">
-              <label>Autor</label>
-              <input type="text" placeholder="Nombre" maxLength={EMBED_LIMITS.AUTHOR_NAME_MAX} value={embed.author.name} onChange={(e) => updateActiveEmbedNested("author", { name: e.target.value })} />
-              <input type="text" placeholder="URL del autor (opcional)" value={embed.author.url} style={{ marginTop: "0.5rem" }} onChange={(e) => updateActiveEmbedNested("author", { url: e.target.value })} />
-              <input type="text" placeholder="URL del ícono (opcional)" value={embed.author.icon_url} style={{ marginTop: "0.5rem" }} onChange={(e) => updateActiveEmbedNested("author", { icon_url: e.target.value })} />
-            </div>
-
-            <div className="field">
-              <label>Footer</label>
-              <input type="text" placeholder="Texto" maxLength={EMBED_LIMITS.FOOTER_TEXT_MAX} value={embed.footer.text} onChange={(e) => updateActiveEmbedNested("footer", { text: e.target.value })} />
-              <input type="text" placeholder="URL del ícono (opcional)" value={embed.footer.icon_url} style={{ marginTop: "0.5rem" }} onChange={(e) => updateActiveEmbedNested("footer", { icon_url: e.target.value })} />
-            </div>
-
-            <div className="field">
-              <div className="field-label-row">
-                <label>Campos</label>
-                <span className="char-count">{embed.fields.length}/{EMBED_LIMITS.FIELDS_MAX}</span>
+            <details className="embed-collapsible" key={`images-${activeEmbedIndex}`} open={Boolean(embed.image || embed.thumbnail)}>
+              <summary>Imágenes (opcional)</summary>
+              <div className="embed-collapsible-body">
+                <div className="field">
+                  <label>Imagen (URL)</label>
+                  <UrlField value={embed.image} placeholder="https://..." onChange={(v) => updateActiveEmbed({ image: v })} />
+                </div>
+                <div className="field">
+                  <label>Thumbnail (URL)</label>
+                  <UrlField value={embed.thumbnail} placeholder="https://..." onChange={(v) => updateActiveEmbed({ thumbnail: v })} />
+                </div>
               </div>
-              {embed.fields.map((field, index) => (
-                <div key={index} className="embed-field-row">
+            </details>
+
+            <details className="embed-collapsible" key={`author-${activeEmbedIndex}`} open={Boolean(embed.author.name)}>
+              <summary>Autor (opcional)</summary>
+              <div className="embed-collapsible-body">
+                <input type="text" placeholder="Nombre" maxLength={EMBED_LIMITS.AUTHOR_NAME_MAX} value={embed.author.name} onChange={(e) => updateActiveEmbedNested("author", { name: e.target.value })} />
+                <UrlField value={embed.author.url} placeholder="URL del autor (opcional)" onChange={(v) => updateActiveEmbedNested("author", { url: v })} />
+                <UrlField value={embed.author.icon_url} placeholder="URL del ícono (opcional)" onChange={(v) => updateActiveEmbedNested("author", { icon_url: v })} />
+              </div>
+            </details>
+
+            <details className="embed-collapsible" key={`footer-${activeEmbedIndex}`} open={Boolean(embed.footer.text)}>
+              <summary>Footer (opcional)</summary>
+              <div className="embed-collapsible-body">
+                <input type="text" placeholder="Texto" maxLength={EMBED_LIMITS.FOOTER_TEXT_MAX} value={embed.footer.text} onChange={(e) => updateActiveEmbedNested("footer", { text: e.target.value })} />
+                <UrlField value={embed.footer.icon_url} placeholder="URL del ícono (opcional)" onChange={(v) => updateActiveEmbedNested("footer", { icon_url: v })} />
+              </div>
+            </details>
+
+            <div className="embed-section-title">Campos ({embed.fields.length}/{EMBED_LIMITS.FIELDS_MAX})</div>
+
+            {embed.fields.map((field, index) => (
+              <div key={index} className="embed-field-card">
+                <div className="embed-field-inputs">
                   <input type="text" placeholder="Nombre" maxLength={EMBED_LIMITS.FIELD_NAME_MAX} value={field.name} onChange={(e) => updateField(index, { name: e.target.value })} />
                   <input type="text" placeholder="Valor" maxLength={EMBED_LIMITS.FIELD_VALUE_MAX} value={field.value} onChange={(e) => updateField(index, { value: e.target.value })} />
+                </div>
+                <div className="embed-field-controls">
                   <label className="embed-field-inline-toggle">
                     <input type="checkbox" checked={field.inline} onChange={(e) => updateField(index, { inline: e.target.checked })} /> Inline
                   </label>
                   <button type="button" className="btn btn-outline" onClick={() => removeField(index)}>Quitar</button>
                 </div>
-              ))}
-              <button type="button" className="btn btn-outline" onClick={addField} disabled={embed.fields.length >= EMBED_LIMITS.FIELDS_MAX}>
-                + Agregar campo
-              </button>
-            </div>
+              </div>
+            ))}
+            <button type="button" className="btn btn-outline" onClick={addField} disabled={embed.fields.length >= EMBED_LIMITS.FIELDS_MAX}>
+              + Agregar campo
+            </button>
           </div>
 
           <div className="card">
+            <div className="embed-section-title">Enviar</div>
+
             <div className="field">
               <label>Reacciones ({reactions.length}/{EMBED_LIMITS.REACTIONS_MAX})</label>
               <div className="reactions-row">
@@ -454,10 +505,16 @@ export default function EmbedSender() {
             <button
               type="button"
               className="btn btn-primary btn-wide"
-              disabled={!channelId || sending || cooldownRemaining > 0}
+              disabled={!channelId || sending || cooldownRemaining > 0 || hasInvalidUrls}
               onClick={handleSend}
             >
-              {sending ? "Enviando\u2026" : cooldownRemaining > 0 ? `Espera ${cooldownRemaining}s` : "Enviar embed"}
+              {sending
+                ? "Enviando\u2026"
+                : cooldownRemaining > 0
+                ? `Espera ${cooldownRemaining}s`
+                : hasInvalidUrls
+                ? "Corrige las URLs inválidas"
+                : "Enviar embed"}
             </button>
           </div>
         </div>
