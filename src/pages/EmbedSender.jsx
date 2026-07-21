@@ -242,11 +242,11 @@ export default function EmbedSender() {
     setSendFlash(null);
     try {
       const result = await api.sendEmbed(guild.id, {
-        channel_id: Number(channelId),
+        channel_id: channelId,
         content: content || null,
         embeds: nonEmptyEmbeds,
         reactions,
-      });
+        });
       setSendFlash({
         type: "success",
         message: result.failed_reactions?.length
