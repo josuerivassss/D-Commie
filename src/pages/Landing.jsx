@@ -1,7 +1,8 @@
 import { useState } from "react";
 import Header from "../components/Header";
-import { botInviteUrl, SUPPORT_SERVER_URL } from "../config";
 import HeroPattern from "../components/HeroPattern";
+import PageTexture from "../components/PageTexture";
+import { botInviteUrl, SUPPORT_SERVER_URL } from "../config";
 
 const BOTS = [
   { key: "commie", label: "Commie" },
@@ -70,7 +71,8 @@ function Carousel() {
 
 export default function Landing() {
   return (
-    <>
+    <div className="landing-page">
+      <PageTexture />
       <Header user={null} />
       <div className="landing-hero">
         <HeroPattern />
@@ -131,6 +133,6 @@ export default function Landing() {
       </section>
 
       <Carousel />
-    </>
+    </div>
   );
 }
