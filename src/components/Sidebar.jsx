@@ -1,9 +1,11 @@
 import { NavLink } from "react-router-dom";
 import { useUnsavedChangesGuard } from "../context/UnsavedChangesContext";
+import { useTranslation } from "../context/LocaleContext";
 
 export default function Sidebar({ guild }) {
   const base = `/dash/${guild.id}`;
   const { confirmNavigation } = useUnsavedChangesGuard();
+  const { t } = useTranslation();
 
   function guardedClick(e) {
     if (!confirmNavigation()) e.preventDefault();
@@ -13,22 +15,22 @@ export default function Sidebar({ guild }) {
     <aside className="sidebar">
       <div className="guild-name">{guild.name}</div>
       <NavLink className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`} to={`${base}/general`} onClick={guardedClick}>
-        General
+        {t("sidebar.general")}
       </NavLink>
       <NavLink className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`} to={`${base}/welcome`} onClick={guardedClick}>
-        Welcome & Autoroles
+        {t("sidebar.welcome")}
       </NavLink>
       <NavLink className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`} to={`${base}/leave`} onClick={guardedClick}>
-        Leave
+        {t("sidebar.leave")}
       </NavLink>
       <NavLink className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`} to={`${base}/starboard`} onClick={guardedClick}>
-        Starboard
+        {t("sidebar.starboard")}
       </NavLink>
       <NavLink className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`} to={`${base}/embeds`} onClick={guardedClick}>
-        Embeds
+        {t("sidebar.embeds")}
       </NavLink>
       <NavLink className="nav-item switch-server" to="/dash" onClick={guardedClick}>
-        &larr; Switch server
+        {t("sidebar.switchServer")}
       </NavLink>
     </aside>
   );

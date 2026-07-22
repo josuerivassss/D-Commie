@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { api, friendlyErrorMessage } from "../api";
+import { useTranslation } from "../context/LocaleContext";
 import { LIMITS, LANGUAGES } from "../validation";
 
 export default function GeneralSettings() {
   const { guild } = useOutletContext();
+  const { t } = useTranslation();
   const [config, setConfig] = useState({ prefix: "", language: "en" });
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(null);
@@ -24,7 +26,7 @@ export default function GeneralSettings() {
       })
       .catch((err) => {
         if (cancelled) return;
-        setLoadError(friendlyErrorMessage(err));
+        setLoadError(friendlyErrorMessage(err, t));
       })
       .finally(() => {
         if (!cancelled) setLoading(false);
@@ -40,43 +42,39 @@ export default function GeneralSettings() {
     setSaving(true);
     setFlash(null);
     try {
-      // Always send prefix (even empty) so clearing the field actually
-      // resets it server-side, instead of the old value silently sticking.
       await api.updateGuildConfig(guild.id, {
         language: config.language,
         prefix: config.prefix.trim().slice(0, LIMITS.PREFIX_MAX),
       });
-      setFlash({ type: "success", message: "Saved!" });
+      setFlash({ type: "success", message: t("common.saved") });
     } catch (err) {
-      setFlash({ type: "error", message: friendlyErrorMessage(err) });
+      setFlash({ type: "error", message: friendlyErrorMessage(err, t) });
     } finally {
       setSaving(false);
     }
   }
 
-  if (loading) return <p className="section-sub">Loading&hellip;</p>;
+  if (loading) return <p className="section-sub">{t("common.loading")}</p>;
 
   if (loadError) {
     return (
       <>
-        <h1>General</h1>
+        <h1>{t("general.title")}</h1>
         <div className="flash error">{loadError}</div>
-        <button className="btn btn-outline" onClick={() => window.location.reload()}>
-          Retry
-        </button>
+        <button className="btn btn-outline" onClick={() => window.location.reload()}>{t("common.retry")}</button>
       </>
     );
   }
 
   return (
     <>
-      <h1>General</h1>
-      <p className="section-sub">Command prefix and language.</p>
+      <h1>{t("general.title")}</h1>
+      <p className="section-sub">{t("general.subtitle")}</p>
       {flash && <div className={`flash ${flash.type}`}>{flash.message}</div>}
       <form className="card" onSubmit={handleSubmit}>
         <div className="field">
           <div className="field-label-row">
-            <label>Command prefix</label>
+            <label>{t("general.prefixLabel")}</label>
             <span className={`char-count ${config.prefix.length >= LIMITS.PREFIX_MAX ? "warn" : ""}`}>
               {config.prefix.length}/{LIMITS.PREFIX_MAX}
             </span>
@@ -88,12 +86,10 @@ export default function GeneralSettings() {
             value={config.prefix}
             onChange={(e) => setConfig({ ...config, prefix: e.target.value })}
           />
-          <div className="hint">
-            Used alongside slash commands, e.g. <code>c!ping</code>. Leave blank to use the default.
-          </div>
+          <div className="hint">{t("general.prefixHint", { prefix: "c!" })}</div>
         </div>
         <div className="field">
-          <label>Language</label>
+          <label>{t("general.languageLabel")}</label>
           <select value={config.language} onChange={(e) => setConfig({ ...config, language: e.target.value })}>
             {LANGUAGES.map((lang) => (
               <option key={lang.code} value={lang.code}>
@@ -103,7 +99,7 @@ export default function GeneralSettings() {
           </select>
         </div>
         <button className="btn btn-primary" type="submit" disabled={saving}>
-          {saving ? "Saving\u2026" : "Save changes"}
+          {saving ? t("common.saving") : t("common.saveChanges")}
         </button>
       </form>
     </>

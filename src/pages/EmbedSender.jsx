@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { api, ApiError, friendlyErrorMessage } from "../api";
+import { useTranslation } from "../context/LocaleContext";
 import { EMBED_LIMITS, embedCharacterCount, isValidUrl, validateEmbedPayload } from "../validation";
 import { useUnsavedChangesGuard } from "../context/UnsavedChangesContext";
 import EmbedPreview from "../components/EmbedPreview";
@@ -97,6 +98,7 @@ function embedHasInvalidUrl(embed) {
 }
 
 function UrlField({ value, placeholder, onChange }) {
+  const { t } = useTranslation();
   const invalid = value && !isValidUrl(value);
   return (
     <div>
@@ -107,7 +109,7 @@ function UrlField({ value, placeholder, onChange }) {
         className={invalid ? "invalid" : ""}
         onChange={(e) => onChange(e.target.value)}
       />
-      {invalid && <div className="error-text">URL inválida (debe empezar con http:// o https://).</div>}
+      {invalid && <div className="error-text">{t("embeds.invalidUrl")}</div>}
     </div>
   );
 }
@@ -121,13 +123,14 @@ function ReactionChip({ value, onRemove }) {
       ) : (
         <span className="reaction-chip-glyph">{value}</span>
       )}
-      <button type="button" onClick={onRemove} aria-label="Quitar reacción">×</button>
+      <button type="button" onClick={onRemove} aria-label="Remove reaction">×</button>
     </span>
   );
 }
 
 export default function EmbedSender() {
   const { guild } = useOutletContext();
+  const { t } = useTranslation();
   const { setGuard } = useUnsavedChangesGuard();
 
   const [content, setContent] = useState("");
@@ -161,7 +164,7 @@ export default function EmbedSender() {
         setCooldownRemaining(Math.ceil(cd.seconds_remaining));
         setSavedSnapshot(buildSnapshot("", [cloneEmptyEmbed()], "", []));
       })
-      .catch((err) => { if (!cancelled) setLoadError(friendlyErrorMessage(err)); })
+      .catch((err) => { if (!cancelled) setLoadError(friendlyErrorMessage(err, t)); })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
   }, [guild.id]);
@@ -251,13 +254,13 @@ export default function EmbedSender() {
       try {
         parsed = JSON.parse(reader.result);
       } catch {
-        setImportError({ title: "Este JSON está corrompido", details: ["El archivo no contiene JSON válido (error de sintaxis)."] });
+        setImportError({ title: t("embeds.corruptedJsonTitle"), details: [t("validation.parseError")] });
         return;
       }
       const normalized = normalizeImportedPayload(parsed);
-      const errors = validateEmbedPayload(normalized);
+      const errors = validateEmbedPayload(normalized, t);
       if (errors.length > 0) {
-        setImportError({ title: "Este JSON está corrompido", details: errors });
+        setImportError({ title: t("embeds.corruptedJsonTitle"), details: errors });
         return;
       }
       setContent(normalized.content || "");
@@ -265,14 +268,14 @@ export default function EmbedSender() {
       setActiveEmbedIndex(0);
       setReactions(Array.isArray(normalized.reactions) ? normalized.reactions : []);
     };
-    reader.onerror = () => setImportError({ title: "Este JSON está corrompido", details: ["No se pudo leer el archivo."] });
+    reader.onerror = () => setImportError({ title: t("embeds.corruptedJsonTitle"), details: [t("validation.readError")] });
     reader.readAsText(file);
   }
 
   async function handleSend() {
     const nonEmptyEmbeds = embeds.filter((e) => !isEmbedEmpty(e)).map(toDiscordShape);
     if (nonEmptyEmbeds.length === 0 && !content.trim()) {
-      setSendFlash({ type: "error", message: "Agrega contenido o al menos un embed con datos." });
+      setSendFlash({ type: "error", message: t("embeds.emptyEmbedError") });
       return;
     }
     setSending(true);
@@ -287,8 +290,8 @@ export default function EmbedSender() {
       setSendFlash({
         type: "success",
         message: result.failed_reactions?.length
-          ? `Enviado, pero ${result.failed_reactions.length} reacción(es) no se pudieron agregar.`
-          : "¡Embed enviado!",
+          ? t("embeds.sentPartial", { count: result.failed_reactions.length })
+          : t("embeds.sentSuccess"),
       });
       setSavedSnapshot(buildSnapshot(content, embeds, channelId, reactions));
       const cooldown = await api.getEmbedCooldown(guild.id);
@@ -297,31 +300,31 @@ export default function EmbedSender() {
       if (err instanceof ApiError && err.status === 429 && err.data?.seconds_remaining) {
         setCooldownRemaining(Math.ceil(err.data.seconds_remaining));
       }
-      setSendFlash({ type: "error", message: friendlyErrorMessage(err) });
+      setSendFlash({ type: "error", message: friendlyErrorMessage(err, t) });
     } finally {
       setSending(false);
     }
   }
 
-  if (loading) return <p className="section-sub">Loading&hellip;</p>;
+  if (loading) return <p className="section-sub">{t("common.loading")}</p>;
 
   if (loadError) {
     return (
       <>
-        <h1>Embeds</h1>
+        <h1>{t("embeds.title")}</h1>
         <div className="flash error">{loadError}</div>
-        <button className="btn btn-outline" onClick={() => window.location.reload()}>Retry</button>
+        <button className="btn btn-outline" onClick={() => window.location.reload()}>{t("common.retry")}</button>
       </>
     );
   }
 
   return (
     <>
-      <h1>Embeds</h1>
-      <p className="section-sub">Construye, previsualiza y envía embeds a cualquier canal del servidor.</p>
+      <h1>{t("embeds.title")}</h1>
+      <p className="section-sub">{t("embeds.subtitle")}</p>
 
       {cooldownRemaining > 0 && (
-        <div className="flash cooldown">Cooldown activo: podrás enviar otro embed en {cooldownRemaining}s.</div>
+        <div className="flash cooldown">{t("embeds.cooldownActive", { seconds: cooldownRemaining })}</div>
       )}
       {sendFlash && <div className={`flash ${sendFlash.type}`}>{sendFlash.message}</div>}
 
@@ -330,7 +333,7 @@ export default function EmbedSender() {
           <div className="card">
             <div className="field">
               <div className="field-label-row">
-                <label>Contenido del mensaje (fuera de los embeds)</label>
+                <label>{t("embeds.contentLabel")}</label>
                 <span className={`char-count ${content.length >= EMBED_LIMITS.CONTENT_MAX ? "warn" : ""}`}>
                   {content.length}/{EMBED_LIMITS.CONTENT_MAX}
                 </span>
@@ -348,22 +351,22 @@ export default function EmbedSender() {
                   className={`embed-tab ${activeEmbedIndex === index ? "active" : ""}`}
                   onClick={() => setActiveEmbedIndex(index)}
                 >
-                  Embed {index + 1}
+                  {t("embeds.embedTabLabel", { n: index + 1 })}
                   {embeds.length > 1 && (
                     <span className="embed-tab-remove" onClick={(e) => { e.stopPropagation(); removeEmbed(index); }}>×</span>
                   )}
                 </button>
               ))}
               <button type="button" className="embed-tab-add" onClick={addEmbed} disabled={embeds.length >= EMBED_LIMITS.EMBEDS_MAX}>
-                + Embed
+                {t("embeds.addEmbed")}
               </button>
             </div>
 
-            <div className="embed-section-title">Contenido</div>
+            <div className="embed-section-title">{t("embeds.sectionContent")}</div>
 
             <div className="field">
               <div className="field-label-row">
-                <label>Título</label>
+                <label>{t("embeds.titleLabel")}</label>
                 <span className={`char-count ${embed.title.length >= EMBED_LIMITS.TITLE_MAX ? "warn" : ""}`}>
                   {embed.title.length}/{EMBED_LIMITS.TITLE_MAX}
                 </span>
@@ -372,25 +375,25 @@ export default function EmbedSender() {
             </div>
 
             <div className="field">
-              <label>URL del título (opcional)</label>
+              <label>{t("embeds.titleUrlLabel")}</label>
               <UrlField value={embed.url} placeholder="https://..." onChange={(v) => updateActiveEmbed({ url: v })} />
             </div>
 
             <div className="field">
               <div className="field-label-row">
-                <label>Descripción</label>
+                <label>{t("embeds.descriptionLabel")}</label>
                 <span className={`char-count ${embed.description.length >= EMBED_LIMITS.DESCRIPTION_MAX ? "warn" : ""}`}>
                   {embed.description.length}/{EMBED_LIMITS.DESCRIPTION_MAX}
                 </span>
               </div>
               <textarea maxLength={EMBED_LIMITS.DESCRIPTION_MAX} value={embed.description} onChange={(e) => updateActiveEmbed({ description: e.target.value })} />
-              <div className="hint">Soporta **negritas**, *cursivas*, __subrayado__, ~~tachado~~ y `código`.</div>
+              <div className="hint">{t("embeds.descriptionHint")}</div>
             </div>
 
-            <div className="embed-section-title">Apariencia</div>
+            <div className="embed-section-title">{t("embeds.sectionAppearance")}</div>
 
             <div className="field">
-              <label>Color</label>
+              <label>{t("embeds.colorLabel")}</label>
               <div className="embed-color-row">
                 <input type="color" value={embed.color != null ? intToHex(embed.color) : "#2b2d31"} onChange={(e) => updateActiveEmbed({ color: hexToInt(e.target.value) })} />
                 <input
@@ -404,73 +407,73 @@ export default function EmbedSender() {
                   }}
                 />
                 {embed.color != null && (
-                  <button type="button" className="btn btn-outline" onClick={() => updateActiveEmbed({ color: null })}>Quitar</button>
+                  <button type="button" className="btn btn-outline" onClick={() => updateActiveEmbed({ color: null })}>{t("embeds.removeColor")}</button>
                 )}
               </div>
             </div>
 
             <div className="field toggle-row">
-              <label style={{ marginBottom: 0 }}>Incluir marca de tiempo</label>
+              <label style={{ marginBottom: 0 }}>{t("embeds.timestampToggle")}</label>
               <Toggle checked={Boolean(embed.timestamp)} onChange={(checked) => updateActiveEmbed({ timestamp: checked ? new Date().toISOString() : null })} />
             </div>
 
             <details className="embed-collapsible" key={`images-${activeEmbedIndex}`} open={Boolean(embed.image || embed.thumbnail)}>
-              <summary>Imágenes (opcional)</summary>
+              <summary>{t("embeds.imagesSection")}</summary>
               <div className="embed-collapsible-body">
                 <div className="field">
-                  <label>Imagen (URL)</label>
+                  <label>{t("embeds.imageLabel")}</label>
                   <UrlField value={embed.image} placeholder="https://..." onChange={(v) => updateActiveEmbed({ image: v })} />
                 </div>
                 <div className="field">
-                  <label>Thumbnail (URL)</label>
+                  <label>{t("embeds.thumbnailLabel")}</label>
                   <UrlField value={embed.thumbnail} placeholder="https://..." onChange={(v) => updateActiveEmbed({ thumbnail: v })} />
                 </div>
               </div>
             </details>
 
             <details className="embed-collapsible" key={`author-${activeEmbedIndex}`} open={Boolean(embed.author.name)}>
-              <summary>Autor (opcional)</summary>
+              <summary>{t("embeds.authorSection")}</summary>
               <div className="embed-collapsible-body">
-                <input type="text" placeholder="Nombre" maxLength={EMBED_LIMITS.AUTHOR_NAME_MAX} value={embed.author.name} onChange={(e) => updateActiveEmbedNested("author", { name: e.target.value })} />
-                <UrlField value={embed.author.url} placeholder="URL del autor (opcional)" onChange={(v) => updateActiveEmbedNested("author", { url: v })} />
-                <UrlField value={embed.author.icon_url} placeholder="URL del ícono (opcional)" onChange={(v) => updateActiveEmbedNested("author", { icon_url: v })} />
+                <input type="text" placeholder={t("embeds.authorNamePlaceholder")} maxLength={EMBED_LIMITS.AUTHOR_NAME_MAX} value={embed.author.name} onChange={(e) => updateActiveEmbedNested("author", { name: e.target.value })} />
+                <UrlField value={embed.author.url} placeholder={t("embeds.authorUrlPlaceholder")} onChange={(v) => updateActiveEmbedNested("author", { url: v })} />
+                <UrlField value={embed.author.icon_url} placeholder={t("embeds.authorIconPlaceholder")} onChange={(v) => updateActiveEmbedNested("author", { icon_url: v })} />
               </div>
             </details>
 
             <details className="embed-collapsible" key={`footer-${activeEmbedIndex}`} open={Boolean(embed.footer.text)}>
-              <summary>Footer (opcional)</summary>
+              <summary>{t("embeds.footerSection")}</summary>
               <div className="embed-collapsible-body">
-                <input type="text" placeholder="Texto" maxLength={EMBED_LIMITS.FOOTER_TEXT_MAX} value={embed.footer.text} onChange={(e) => updateActiveEmbedNested("footer", { text: e.target.value })} />
-                <UrlField value={embed.footer.icon_url} placeholder="URL del ícono (opcional)" onChange={(v) => updateActiveEmbedNested("footer", { icon_url: v })} />
+                <input type="text" placeholder={t("embeds.footerTextPlaceholder")} maxLength={EMBED_LIMITS.FOOTER_TEXT_MAX} value={embed.footer.text} onChange={(e) => updateActiveEmbedNested("footer", { text: e.target.value })} />
+                <UrlField value={embed.footer.icon_url} placeholder={t("embeds.footerIconPlaceholder")} onChange={(v) => updateActiveEmbedNested("footer", { icon_url: v })} />
               </div>
             </details>
 
-            <div className="embed-section-title">Campos ({embed.fields.length}/{EMBED_LIMITS.FIELDS_MAX})</div>
+            <div className="embed-section-title">{t("embeds.fieldsSection")} ({embed.fields.length}/{EMBED_LIMITS.FIELDS_MAX})</div>
 
             {embed.fields.map((field, index) => (
               <div key={index} className="embed-field-card">
                 <div className="embed-field-inputs">
-                  <input type="text" placeholder="Nombre" maxLength={EMBED_LIMITS.FIELD_NAME_MAX} value={field.name} onChange={(e) => updateField(index, { name: e.target.value })} />
-                  <input type="text" placeholder="Valor" maxLength={EMBED_LIMITS.FIELD_VALUE_MAX} value={field.value} onChange={(e) => updateField(index, { value: e.target.value })} />
+                  <input type="text" placeholder={t("embeds.fieldNamePlaceholder")} maxLength={EMBED_LIMITS.FIELD_NAME_MAX} value={field.name} onChange={(e) => updateField(index, { name: e.target.value })} />
+                  <input type="text" placeholder={t("embeds.fieldValuePlaceholder")} maxLength={EMBED_LIMITS.FIELD_VALUE_MAX} value={field.value} onChange={(e) => updateField(index, { value: e.target.value })} />
                 </div>
                 <div className="embed-field-controls">
                   <label className="embed-field-inline-toggle">
-                    <input type="checkbox" checked={field.inline} onChange={(e) => updateField(index, { inline: e.target.checked })} /> Inline
+                    <input type="checkbox" checked={field.inline} onChange={(e) => updateField(index, { inline: e.target.checked })} /> {t("embeds.inlineLabel")}
                   </label>
-                  <button type="button" className="btn btn-outline" onClick={() => removeField(index)}>Quitar</button>
+                  <button type="button" className="btn btn-outline" onClick={() => removeField(index)}>{t("embeds.removeField")}</button>
                 </div>
               </div>
             ))}
             <button type="button" className="btn btn-outline" onClick={addField} disabled={embed.fields.length >= EMBED_LIMITS.FIELDS_MAX}>
-              + Agregar campo
+              {t("embeds.addField")}
             </button>
           </div>
 
           <div className="card">
-            <div className="embed-section-title">Enviar</div>
+            <div className="embed-section-title">{t("embeds.sectionSend")}</div>
 
             <div className="field">
-              <label>Reacciones ({reactions.length}/{EMBED_LIMITS.REACTIONS_MAX})</label>
+              <label>{t("embeds.reactionsLabel")} ({reactions.length}/{EMBED_LIMITS.REACTIONS_MAX})</label>
               <div className="reactions-row">
                 {reactions.map((r) => (
                   <ReactionChip key={r} value={r} onRemove={() => removeReaction(r)} />
@@ -482,23 +485,23 @@ export default function EmbedSender() {
             </div>
 
             <div className="field">
-              <label>Canal</label>
+              <label>{t("common.channelLabel")}</label>
               <select value={channelId} onChange={(e) => setChannelId(e.target.value)}>
-                <option value="">— Selecciona un canal —</option>
+                <option value="">{t("common.selectChannel")}</option>
                 {channels.map((c) => (
                   <option key={c.id} value={c.id} disabled={!c.can_send}>
-                    #{c.name}{!c.can_send ? " (sin permisos)" : ""}
+                    #{c.name}{!c.can_send ? t("common.noPermissionsSuffix") : ""}
                   </option>
                 ))}
               </select>
             </div>
 
             <div className="embed-actions-row">
-              <button type="button" className="btn btn-outline" onClick={handleExport}>Exportar JSON</button>
-              <button type="button" className="btn btn-outline" onClick={() => fileInputRef.current?.click()}>Importar JSON</button>
+              <button type="button" className="btn btn-outline" onClick={handleExport}>{t("embeds.exportJson")}</button>
+              <button type="button" className="btn btn-outline" onClick={() => fileInputRef.current?.click()}>{t("embeds.importJson")}</button>
               <input ref={fileInputRef} type="file" accept="application/json" hidden onChange={handleImportFile} />
               <span className={`char-count ${totalCharacters > EMBED_LIMITS.TOTAL_CHARACTERS_MAX ? "warn" : ""}`}>
-                Total: {totalCharacters}/{EMBED_LIMITS.TOTAL_CHARACTERS_MAX}
+                {t("embeds.totalCharacters")}: {totalCharacters}/{EMBED_LIMITS.TOTAL_CHARACTERS_MAX}
               </span>
             </div>
 
@@ -509,12 +512,12 @@ export default function EmbedSender() {
               onClick={handleSend}
             >
               {sending
-                ? "Enviando\u2026"
+                ? t("embeds.sending")
                 : cooldownRemaining > 0
-                ? `Espera ${cooldownRemaining}s`
+                ? t("embeds.waitSeconds", { seconds: cooldownRemaining })
                 : hasInvalidUrls
-                ? "Corrige las URLs inválidas"
-                : "Enviar embed"}
+                ? t("embeds.fixInvalidUrls")
+                : t("embeds.sendButton")}
             </button>
           </div>
         </div>
@@ -531,7 +534,7 @@ export default function EmbedSender() {
             <ul className="modal-error-list">
               {importError.details.map((detail, index) => <li key={index}>{detail}</li>)}
             </ul>
-            <button type="button" className="btn btn-primary" onClick={() => setImportError(null)}>Cerrar</button>
+            <button type="button" className="btn btn-primary" onClick={() => setImportError(null)}>{t("embeds.close")}</button>
           </div>
         </div>
       )}

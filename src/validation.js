@@ -1,9 +1,6 @@
-// Centralized limits so every form validates consistently, and so a limit
-// only ever needs to change in one place.
-
 export const LIMITS = {
   PREFIX_MAX: 10,
-  MESSAGE_MAX: 1000, // welcome/leave templates; comfortably under Discord's 2000-char message cap
+  MESSAGE_MAX: 1000,
   EMOJI_MAX: 60,
   THRESHOLD_MIN: 1,
   THRESHOLD_MAX: 500,
@@ -16,8 +13,8 @@ export function clamp(value, min, max) {
 }
 
 export const LANGUAGES = [
-  { code: "es", label: "Español", flag: "\uD83C\uDDF2\uD83C\uDDFD" }, // 🇲🇽
-  { code: "en", label: "English", flag: "\uD83C\uDDFA\uD83C\uDDF8" }, // 🇺🇸
+  { code: "es", label: "Español", flag: "\uD83C\uDDF2\uD83C\uDDFD" },
+  { code: "en", label: "English", flag: "\uD83C\uDDFA\uD83C\uDDF8" },
 ];
 
 export const EMBED_LIMITS = {
@@ -42,61 +39,65 @@ export function embedCharacterCount(embed) {
   return total;
 }
 
-/** Mirrors the backend's SendEmbedRequest validation so JSON import gets
- * the same, specific error messages without a round trip to the API. */
-export function validateEmbedPayload(data) {
+const URL_PATTERN = /^https?:\/\/\S+$/;
+
+export function isValidUrl(value) {
+  return !value || URL_PATTERN.test(value);
+}
+
+/** Mirrors the backend's SendEmbedRequest validation so JSON import/paste
+ * gets the same, specific error messages without a round trip to the API.
+ * `t` is the translation function from useTranslation() -- pass it in from
+ * the calling component so this stays a plain function, not a hook. */
+export function validateEmbedPayload(data, t) {
   const errors = [];
-  if (!data || typeof data !== "object") return ["El JSON no es un objeto válido."];
+  if (!data || typeof data !== "object") return [t("validation.notObject")];
 
   const embeds = Array.isArray(data.embeds) ? data.embeds : null;
-  if (!embeds || embeds.length === 0) errors.push("Debe incluir al menos un embed en 'embeds'.");
-  else if (embeds.length > EMBED_LIMITS.EMBEDS_MAX) errors.push(`Máximo ${EMBED_LIMITS.EMBEDS_MAX} embeds por mensaje.`);
+  if (!embeds || embeds.length === 0) errors.push(t("validation.missingEmbeds"));
+  else if (embeds.length > EMBED_LIMITS.EMBEDS_MAX) errors.push(t("validation.tooManyEmbeds", { max: EMBED_LIMITS.EMBEDS_MAX }));
 
   if (data.content !== undefined && data.content !== null) {
-    if (typeof data.content !== "string") errors.push("'content' debe ser texto.");
-    else if (data.content.length > EMBED_LIMITS.CONTENT_MAX) errors.push(`'content' excede ${EMBED_LIMITS.CONTENT_MAX} caracteres.`);
+    if (typeof data.content !== "string") errors.push(t("validation.contentNotString"));
+    else if (data.content.length > EMBED_LIMITS.CONTENT_MAX) errors.push(t("validation.contentTooLong", { max: EMBED_LIMITS.CONTENT_MAX }));
   }
 
   let totalCharacters = 0;
   (embeds || []).forEach((embed, index) => {
-    const label = `Embed ${index + 1}`;
-    if (embed.title && embed.title.length > EMBED_LIMITS.TITLE_MAX) errors.push(`${label}: título excede ${EMBED_LIMITS.TITLE_MAX} caracteres.`);
-    if (embed.description && embed.description.length > EMBED_LIMITS.DESCRIPTION_MAX) errors.push(`${label}: descripción excede ${EMBED_LIMITS.DESCRIPTION_MAX} caracteres.`);
-    if (embed.footer?.text && embed.footer.text.length > EMBED_LIMITS.FOOTER_TEXT_MAX) errors.push(`${label}: footer excede ${EMBED_LIMITS.FOOTER_TEXT_MAX} caracteres.`);
-    if (embed.author?.name && embed.author.name.length > EMBED_LIMITS.AUTHOR_NAME_MAX) errors.push(`${label}: nombre de autor excede ${EMBED_LIMITS.AUTHOR_NAME_MAX} caracteres.`);
+    const label = t("embeds.embedTabLabel", { n: index + 1 });
+    if (embed.title && embed.title.length > EMBED_LIMITS.TITLE_MAX) errors.push(t("validation.titleTooLong", { label, max: EMBED_LIMITS.TITLE_MAX }));
+    if (embed.description && embed.description.length > EMBED_LIMITS.DESCRIPTION_MAX) errors.push(t("validation.descriptionTooLong", { label, max: EMBED_LIMITS.DESCRIPTION_MAX }));
+    if (embed.footer?.text && embed.footer.text.length > EMBED_LIMITS.FOOTER_TEXT_MAX) errors.push(t("validation.footerTooLong", { label, max: EMBED_LIMITS.FOOTER_TEXT_MAX }));
+    if (embed.author?.name && embed.author.name.length > EMBED_LIMITS.AUTHOR_NAME_MAX) errors.push(t("validation.authorNameTooLong", { label, max: EMBED_LIMITS.AUTHOR_NAME_MAX }));
     if (embed.color !== undefined && embed.color !== null) {
-      if (typeof embed.color !== "number" || embed.color < 0 || embed.color > 0xffffff) errors.push(`${label}: color debe ser un entero entre 0 y 16777215.`);
+      if (typeof embed.color !== "number" || embed.color < 0 || embed.color > 0xffffff) errors.push(t("validation.invalidColor", { label }));
     }
-    if (embed.url && !isValidUrl(embed.url)) errors.push(`${label}: la URL del título no es válida (debe empezar con http:// o https://).`);
-    if (embed.image && !isValidUrl(embed.image)) errors.push(`${label}: la URL de la imagen no es válida.`);
-    if (embed.thumbnail && !isValidUrl(embed.thumbnail)) errors.push(`${label}: la URL del thumbnail no es válida.`);
-    if (embed.author?.url && !isValidUrl(embed.author.url)) errors.push(`${label}: la URL del autor no es válida.`);
-    if (embed.author?.icon_url && !isValidUrl(embed.author.icon_url)) errors.push(`${label}: la URL del ícono del autor no es válida.`);
-    if (embed.footer?.icon_url && !isValidUrl(embed.footer.icon_url)) errors.push(`${label}: la URL del ícono del footer no es válida.`);
+    if (embed.url && !isValidUrl(embed.url)) errors.push(t("validation.invalidTitleUrl", { label }));
+    if (embed.image && !isValidUrl(embed.image)) errors.push(t("validation.invalidImageUrl", { label }));
+    if (embed.thumbnail && !isValidUrl(embed.thumbnail)) errors.push(t("validation.invalidThumbnailUrl", { label }));
+    if (embed.author?.url && !isValidUrl(embed.author.url)) errors.push(t("validation.invalidAuthorUrl", { label }));
+    if (embed.author?.icon_url && !isValidUrl(embed.author.icon_url)) errors.push(t("validation.invalidAuthorIconUrl", { label }));
+    if (embed.footer?.icon_url && !isValidUrl(embed.footer.icon_url)) errors.push(t("validation.invalidFooterIconUrl", { label }));
+
     const fields = Array.isArray(embed.fields) ? embed.fields : [];
-    if (fields.length > EMBED_LIMITS.FIELDS_MAX) errors.push(`${label}: máximo ${EMBED_LIMITS.FIELDS_MAX} campos.`);
+    if (fields.length > EMBED_LIMITS.FIELDS_MAX) errors.push(t("validation.tooManyFields", { label, max: EMBED_LIMITS.FIELDS_MAX }));
     fields.forEach((field, fieldIndex) => {
-      if (!field.name || !field.value) errors.push(`${label}, campo ${fieldIndex + 1}: 'name' y 'value' son requeridos.`);
-      if (field.name && field.name.length > EMBED_LIMITS.FIELD_NAME_MAX) errors.push(`${label}, campo ${fieldIndex + 1}: nombre excede ${EMBED_LIMITS.FIELD_NAME_MAX} caracteres.`);
-      if (field.value && field.value.length > EMBED_LIMITS.FIELD_VALUE_MAX) errors.push(`${label}, campo ${fieldIndex + 1}: valor excede ${EMBED_LIMITS.FIELD_VALUE_MAX} caracteres.`);
+      const n = fieldIndex + 1;
+      if (!field.name || !field.value) errors.push(t("validation.fieldRequired", { label, n }));
+      if (field.name && field.name.length > EMBED_LIMITS.FIELD_NAME_MAX) errors.push(t("validation.fieldNameTooLong", { label, n, max: EMBED_LIMITS.FIELD_NAME_MAX }));
+      if (field.value && field.value.length > EMBED_LIMITS.FIELD_VALUE_MAX) errors.push(t("validation.fieldValueTooLong", { label, n, max: EMBED_LIMITS.FIELD_VALUE_MAX }));
     });
     totalCharacters += embedCharacterCount(embed);
   });
 
   if (totalCharacters > EMBED_LIMITS.TOTAL_CHARACTERS_MAX) {
-    errors.push(`El total combinado de texto (${totalCharacters}) excede el límite de Discord de ${EMBED_LIMITS.TOTAL_CHARACTERS_MAX} caracteres.`);
+    errors.push(t("validation.totalCharactersExceeded", { total: totalCharacters, max: EMBED_LIMITS.TOTAL_CHARACTERS_MAX }));
   }
 
   if (data.reactions !== undefined) {
-    if (!Array.isArray(data.reactions)) errors.push("'reactions' debe ser una lista.");
-    else if (data.reactions.length > EMBED_LIMITS.REACTIONS_MAX) errors.push(`Máximo ${EMBED_LIMITS.REACTIONS_MAX} reacciones.`);
+    if (!Array.isArray(data.reactions)) errors.push(t("validation.reactionsNotArray"));
+    else if (data.reactions.length > EMBED_LIMITS.REACTIONS_MAX) errors.push(t("validation.tooManyReactions", { max: EMBED_LIMITS.REACTIONS_MAX }));
   }
 
   return errors;
-}
-
-const URL_PATTERN = /^https?:\/\/\S+$/;
-
-export function isValidUrl(value) {
-  return !value || URL_PATTERN.test(value);
 }

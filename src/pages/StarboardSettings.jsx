@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { api, friendlyErrorMessage } from "../api";
+import { useTranslation } from "../context/LocaleContext";
 import Toggle from "../components/Toggle";
 import EmojiPicker from "../components/EmojiPicker";
 import { LIMITS, clamp } from "../validation";
 
 export default function StarboardSettings() {
   const { guild } = useOutletContext();
+  const { t } = useTranslation();
   const [config, setConfig] = useState({
     enabled: false,
     channel_id: "",
@@ -39,7 +41,7 @@ export default function StarboardSettings() {
       })
       .catch((err) => {
         if (cancelled) return;
-        setLoadError(friendlyErrorMessage(err));
+        setLoadError(friendlyErrorMessage(err, t));
       })
       .finally(() => {
         if (!cancelled) setLoading(false);
@@ -62,24 +64,22 @@ export default function StarboardSettings() {
         threshold: clamp(config.threshold, LIMITS.THRESHOLD_MIN, LIMITS.THRESHOLD_MAX),
         count_self_stars: config.count_self_stars,
       });
-      setFlash({ type: "success", message: "Saved!" });
+      setFlash({ type: "success", message: t("common.saved") });
     } catch (err) {
-      setFlash({ type: "error", message: friendlyErrorMessage(err) });
+      setFlash({ type: "error", message: friendlyErrorMessage(err, t) });
     } finally {
       setSaving(false);
     }
   }
 
-  if (loading) return <p className="section-sub">Loading&hellip;</p>;
+  if (loading) return <p className="section-sub">{t("common.loading")}</p>;
 
   if (loadError) {
     return (
       <>
-        <h1>Starboard</h1>
+        <h1>{t("starboard.title")}</h1>
         <div className="flash error">{loadError}</div>
-        <button className="btn btn-outline" onClick={() => window.location.reload()}>
-          Retry
-        </button>
+        <button className="btn btn-outline" onClick={() => window.location.reload()}>{t("common.retry")}</button>
       </>
     );
   }
@@ -90,25 +90,25 @@ export default function StarboardSettings() {
 
   return (
     <>
-      <h1>Starboard</h1>
-      <p className="section-sub">Pins community-highlighted messages once they collect enough star reactions.</p>
+      <h1>{t("starboard.title")}</h1>
+      <p className="section-sub">{t("starboard.subtitle")}</p>
       {flash && <div className={`flash ${flash.type}`}>{flash.message}</div>}
       <form className="card" onSubmit={handleSubmit}>
         <div className="field toggle-row">
-          <label style={{ marginBottom: 0 }}>Enabled</label>
+          <label style={{ marginBottom: 0 }}>{t("common.enabledLabel")}</label>
           <Toggle
             checked={config.enabled}
             onChange={(checked) => setConfig({ ...config, enabled: checked })}
-            label="Enable starboard"
+            label={t("starboard.enableToggle")}
           />
         </div>
         <div className="field">
-          <label>Channel</label>
+          <label>{t("common.channelLabel")}</label>
           <select
             value={config.channel_id}
             onChange={(e) => setConfig({ ...config, channel_id: e.target.value })}
           >
-            <option value="">&mdash; Select a channel &mdash;</option>
+            <option value="">{t("common.selectChannel")}</option>
             {channels.map((c) => (
               <option key={c.id} value={c.id}>
                 #{c.name}
@@ -117,12 +117,12 @@ export default function StarboardSettings() {
           </select>
         </div>
         <div className="field">
-          <label>Emoji</label>
+          <label>{t("starboard.emojiLabel")}</label>
           <EmojiPicker value={config.emoji} onChange={(emoji) => setConfig({ ...config, emoji })} guildId={guild.id} />
-          <div className="hint">Elige un emoji estándar o uno personalizado del servidor (no animado, disponible para todos).</div>
+          <div className="hint">{t("starboard.emojiHint")}</div>
         </div>
         <div className="field">
-          <label>Star threshold</label>
+          <label>{t("starboard.thresholdLabel")}</label>
           <input
             type="number"
             min={LIMITS.THRESHOLD_MIN}
@@ -136,22 +136,22 @@ export default function StarboardSettings() {
           />
           {thresholdOutOfRange ? (
             <div className="error-text">
-              Must be between {LIMITS.THRESHOLD_MIN} and {LIMITS.THRESHOLD_MAX}.
+              {t("starboard.thresholdError", { min: LIMITS.THRESHOLD_MIN, max: LIMITS.THRESHOLD_MAX })}
             </div>
           ) : (
-            <div className="hint">Minimum number of stars a message needs to reach the starboard.</div>
+            <div className="hint">{t("starboard.thresholdHint")}</div>
           )}
         </div>
         <div className="field toggle-row">
-          <label style={{ marginBottom: 0 }}>Allow authors to star their own messages</label>
+          <label style={{ marginBottom: 0 }}>{t("starboard.selfStarsLabel")}</label>
           <Toggle
             checked={config.count_self_stars}
             onChange={(checked) => setConfig({ ...config, count_self_stars: checked })}
-            label="Allow self-stars"
+            label={t("starboard.selfStarsToggle")}
           />
         </div>
         <button className="btn btn-primary" type="submit" disabled={saving}>
-          {saving ? "Saving\u2026" : "Save changes"}
+          {saving ? t("common.saving") : t("common.saveChanges")}
         </button>
       </form>
     </>

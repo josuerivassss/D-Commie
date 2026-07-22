@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { api, friendlyErrorMessage } from "../api";
+import { useTranslation } from "../context/LocaleContext";
 import Toggle from "../components/Toggle";
 import { LIMITS } from "../validation";
 
 const MAX_ROLES_PER_KIND = 2;
 
 function RoleSelector({ title, roles, selected, onToggle }) {
+  const { t } = useTranslation();
   return (
     <div className="autoroles-group">
       <div className="autoroles-group-title">
@@ -14,7 +16,7 @@ function RoleSelector({ title, roles, selected, onToggle }) {
         <span className="char-count">{selected.length}/{MAX_ROLES_PER_KIND}</span>
       </div>
       {roles.length === 0 ? (
-        <p className="hint">No assignable roles found in this server.</p>
+        <p className="hint">{t("welcome.noRoles")}</p>
       ) : (
         <div className="role-chip-grid">
           {roles.map((role) => {
@@ -40,6 +42,7 @@ function RoleSelector({ title, roles, selected, onToggle }) {
 
 export default function WelcomeAutorolesSettings() {
   const { guild } = useOutletContext();
+  const { t } = useTranslation();
   const [config, setConfig] = useState({ enabled: false, channel: "", message: "" });
   const [channels, setChannels] = useState([]);
   const [roles, setRoles] = useState([]);
@@ -79,7 +82,7 @@ export default function WelcomeAutorolesSettings() {
       })
       .catch((err) => {
         if (cancelled) return;
-        setLoadError(friendlyErrorMessage(err));
+        setLoadError(friendlyErrorMessage(err, t));
       })
       .finally(() => {
         if (!cancelled) setLoading(false);
@@ -100,9 +103,9 @@ export default function WelcomeAutorolesSettings() {
         welcome_channel_id: config.channel || null,
         welcome_message: config.message.slice(0, LIMITS.MESSAGE_MAX),
       });
-      setWelcomeFlash({ type: "success", message: "Saved!" });
+      setWelcomeFlash({ type: "success", message: t("common.saved") });
     } catch (err) {
-      setWelcomeFlash({ type: "error", message: friendlyErrorMessage(err) });
+      setWelcomeFlash({ type: "error", message: friendlyErrorMessage(err, t) });
     } finally {
       setSavingWelcome(false);
     }
@@ -126,47 +129,45 @@ export default function WelcomeAutorolesSettings() {
         humans: autoroles.humans,
         bots: autoroles.bots,
       });
-      setAutorolesFlash({ type: "success", message: "Saved!" });
+      setAutorolesFlash({ type: "success", message: t("common.saved") });
     } catch (err) {
-      setAutorolesFlash({ type: "error", message: friendlyErrorMessage(err) });
+      setAutorolesFlash({ type: "error", message: friendlyErrorMessage(err, t) });
     } finally {
       setSavingAutoroles(false);
     }
   }
 
-  if (loading) return <p className="section-sub">Loading&hellip;</p>;
+  if (loading) return <p className="section-sub">{t("common.loading")}</p>;
 
   if (loadError) {
     return (
       <>
-        <h1>Welcome &amp; Autoroles</h1>
+        <h1>{t("welcome.title")}</h1>
         <div className="flash error">{loadError}</div>
-        <button className="btn btn-outline" onClick={() => window.location.reload()}>
-          Retry
-        </button>
+        <button className="btn btn-outline" onClick={() => window.location.reload()}>{t("common.retry")}</button>
       </>
     );
   }
 
   return (
     <>
-      <h1>Welcome &amp; Autoroles</h1>
-      <p className="section-sub">Welcome message and automatic role assignment for new members.</p>
+      <h1>{t("welcome.title")}</h1>
+      <p className="section-sub">{t("welcome.subtitle")}</p>
 
       {welcomeFlash && <div className={`flash ${welcomeFlash.type}`}>{welcomeFlash.message}</div>}
       <form className="card" onSubmit={handleWelcomeSubmit}>
         <div className="field toggle-row">
-          <label style={{ marginBottom: 0 }}>Enabled</label>
+          <label style={{ marginBottom: 0 }}>{t("common.enabledLabel")}</label>
           <Toggle
             checked={config.enabled}
             onChange={(checked) => setConfig({ ...config, enabled: checked })}
-            label="Enable welcome messages"
+            label={t("welcome.enableToggle")}
           />
         </div>
         <div className="field">
-          <label>Channel</label>
+          <label>{t("common.channelLabel")}</label>
           <select value={config.channel} onChange={(e) => setConfig({ ...config, channel: e.target.value })}>
-            <option value="">&mdash; Select a channel &mdash;</option>
+            <option value="">{t("common.selectChannel")}</option>
             {channels.map((c) => (
               <option key={c.id} value={c.id}>#{c.name}</option>
             ))}
@@ -174,37 +175,41 @@ export default function WelcomeAutorolesSettings() {
         </div>
         <div className="field">
           <div className="field-label-row">
-            <label>Message</label>
+            <label>{t("common.messageLabel")}</label>
             <span className={`char-count ${config.message.length >= LIMITS.MESSAGE_MAX ? "warn" : ""}`}>
               {config.message.length}/{LIMITS.MESSAGE_MAX}
             </span>
           </div>
           <textarea
             maxLength={LIMITS.MESSAGE_MAX}
-            placeholder="Welcome {user.mention} to {guild.name}!"
+            placeholder={t("welcome.messagePlaceholder", { p1: "{user.mention}", p2: "{guild.name}" })}
             value={config.message}
             onChange={(e) => setConfig({ ...config, message: e.target.value })}
           />
           <div className="hint">
-            Supports placeholders like <code>{"{user.mention}"}</code>, <code>{"{user.name}"}</code>,{" "}
-            <code>{"{guild.name}"}</code>, <code>{"{guild.members}"}</code>, and embed builders like{" "}
-            <code>{"{embed.title:...}"}</code>.
+            {t("welcome.messageHint", {
+              p1: "{user.mention}",
+              p2: "{user.name}",
+              p3: "{guild.name}",
+              p4: "{guild.members}",
+              p5: "{embed.title:...}",
+            })}
           </div>
         </div>
         <button className="btn btn-primary" type="submit" disabled={savingWelcome}>
-          {savingWelcome ? "Saving\u2026" : "Save changes"}
+          {savingWelcome ? t("common.saving") : t("common.saveChanges")}
         </button>
       </form>
 
       {autorolesFlash && <div className={`flash ${autorolesFlash.type}`}>{autorolesFlash.message}</div>}
       <form className="card" onSubmit={handleAutorolesSubmit}>
         <p className="section-sub" style={{ marginBottom: "1rem" }}>
-          Up to 2 roles per type, assigned automatically when a member joins.
+          {t("welcome.autorolesSubtitle")}
         </p>
-        <RoleSelector title="Humans" roles={roles} selected={autoroles.humans} onToggle={(id) => toggleRole("humans", id)} />
-        <RoleSelector title="Bots" roles={roles} selected={autoroles.bots} onToggle={(id) => toggleRole("bots", id)} />
+        <RoleSelector title={t("welcome.humans")} roles={roles} selected={autoroles.humans} onToggle={(id) => toggleRole("humans", id)} />
+        <RoleSelector title={t("welcome.bots")} roles={roles} selected={autoroles.bots} onToggle={(id) => toggleRole("bots", id)} />
         <button className="btn btn-primary" type="submit" disabled={savingAutoroles}>
-          {savingAutoroles ? "Saving\u2026" : "Save changes"}
+          {savingAutoroles ? t("common.saving") : t("common.saveChanges")}
         </button>
       </form>
     </>

@@ -9,8 +9,9 @@ export class ApiError extends Error {
   }
 }
 
-export function friendlyErrorMessage(err) {
+export function friendlyErrorMessage(err, t) {
   if (err instanceof ApiError && err.status === 0) {
+    if (t) return t("common.networkError");
     return "No se pudo conectar con el servidor. Si usas Brave, prueba desactivar Shields para este sitio (icono del león en la barra de direcciones) e intenta de nuevo.";
   }
   return err.message;
