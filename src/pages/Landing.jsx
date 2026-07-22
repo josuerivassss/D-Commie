@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Header from "../components/Header";
 import { botInviteUrl, SUPPORT_SERVER_URL } from "../config";
+import HeroPattern from "../components/HeroPattern";
 
 const BOTS = [
   { key: "commie", label: "Commie" },
@@ -72,6 +73,7 @@ export default function Landing() {
     <>
       <Header user={null} />
       <div className="landing-hero">
+        <HeroPattern />
         <img className="logo" src="/logo-square.png" alt="Commie logo" />
         <h1>Commie</h1>
         <p className="tagline">

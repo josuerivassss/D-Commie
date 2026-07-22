@@ -103,6 +103,14 @@ button { font-family: var(--font); }
   background: radial-gradient(ellipse at top, var(--wine) 0%, var(--bg) 65%);
 }
 
+.landing-hero { position: relative; overflow: hidden; }
+.landing-hero > *:not(.hero-pattern) { position: relative; z-index: 1; }
+
+.hero-pattern {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  z-index: 0; pointer-events: none;
+}
+
 .landing-hero .logo {
   height: 120px;
   width: 120px;
