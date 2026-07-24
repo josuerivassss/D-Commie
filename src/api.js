@@ -62,4 +62,8 @@ export const api = {
   getSendableChannels: (guildId) => request(`/json/guilds/${guildId}/embeds/channels`),
   getEmbedCooldown: (guildId) => request(`/json/guilds/${guildId}/embeds/cooldown`),
   sendEmbed: (guildId, body) => request(`/json/guilds/${guildId}/embeds/send`, { method: "POST", body }),
+  getTicketsConfig: (guildId) => request(`/json/guilds/${guildId}/tickets`),
+  updateTicketsConfig: (guildId, body) => request(`/json/guilds/${guildId}/tickets`, { method: "PATCH", body }),
+  getTicketChannels: (guildId) => request(`/json/guilds/${guildId}/tickets/channels`),
+  postTicketPanel: (guildId, body) => request(`/json/guilds/${guildId}/tickets/panel`, { method: "POST", body }),
 };

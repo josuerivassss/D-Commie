@@ -9,6 +9,7 @@ import WelcomeAutorolesSettings from "./pages/WelcomeAutorolesSettings";
 import LeaveSettings from "./pages/LeaveSettings";
 import StarboardSettings from "./pages/StarboardSettings";
 import EmbedSender from "./pages/EmbedSender";
+import TicketsSettings from "./pages/TicketsSettings";
 
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
             <Route path="welcome" element={<WelcomeAutorolesSettings />} />
             <Route path="leave" element={<LeaveSettings />} />
             <Route path="starboard" element={<StarboardSettings />} />
+            <Route path="tickets" element={<TicketsSettings />} />
             <Route path="embeds" element={<EmbedSender />} />
           </Route>
 

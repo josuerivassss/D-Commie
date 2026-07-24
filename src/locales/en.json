@@ -15,6 +15,7 @@
   "sidebar": {
     "general": "General",
     "welcome": "Welcome & Autoroles",
+    "tickets": "Tickets",
     "leave": "Leave",
     "starboard": "Starboard",
     "embeds": "Embeds",
@@ -131,5 +132,24 @@
     "invalidFooterIconUrl": "{label}: footer icon URL is not valid.",
     "parseError": "The file does not contain valid JSON (syntax error).",
     "readError": "Could not read the file."
+  },
+  "tickets": {
+    "title": "Tickets",
+    "subtitle": "Private support threads for members, opened via a button panel.",
+    "enableToggle": "Enable tickets",
+    "parentChannelLabel": "Parent channel",
+    "parentChannelHint": "New ticket threads are created under this channel. The bot needs View Channel, Create Private Threads, and Send Messages in Threads here.",
+    "staffRoleLabel": "Staff role (optional)",
+    "noStaffRole": "— No staff role —",
+    "staffRoleHint": "Automatically added to new tickets and mentioned when one opens.",
+    "welcomeMessageLabel": "Welcome message",
+    "welcomeMessageHint": "Posted inside every new ticket. Supports placeholders like {p1}, {p2}.",
+    "messageTooShort": "Must be at least {min} characters.",
+    "panelSection": "Publish panel",
+    "panelSectionHint": "Posts an embed with an \"Open Ticket\" button in the channel you choose. Members click it to open a ticket.",
+    "publishPanel": "Publish panel",
+    "publishing": "Publishing…",
+    "panelPublished": "Panel published!",
+    "needParentFirst": "Set and save a parent channel before publishing the panel."
   }
 }

@@ -26,6 +26,9 @@ export default function Sidebar({ guild }) {
       <NavLink className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`} to={`${base}/starboard`} onClick={guardedClick}>
         {t("sidebar.starboard")}
       </NavLink>
+      <NavLink className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`} to={`${base}/tickets`} onClick={guardedClick}>
+        {t("sidebar.tickets")}
+      </NavLink>
       <NavLink className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`} to={`${base}/embeds`} onClick={guardedClick}>
         {t("sidebar.embeds")}
       </NavLink>

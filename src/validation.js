@@ -101,3 +101,5 @@ export function validateEmbedPayload(data, t) {
 
   return errors;
 }
+
+export const TICKET_LIMITS = { MESSAGE_MIN: 5, MESSAGE_MAX: 1800 };
