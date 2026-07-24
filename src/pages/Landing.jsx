@@ -19,7 +19,7 @@ const FEATURES = [
   { name: "Welcome & Leave", commie: "yes", mee6: "yes", dyno: "yes", carlbot: "yes", probot: "yes" },
   { name: "Autoroles", commie: "yes", mee6: "yes", dyno: "yes", carlbot: "yes", probot: "yes" },
   { name: "Multi-idioma", commie: "yes", mee6: "note:Limitado", dyno: "no", carlbot: "no", probot: "no" },
-  { name: "Dashboard", commie: "note:Authorization", mee6: "note:Premium", dyno: "yes", carlbot: "yes", probot: "yes" },
+  { name: "Dashboard", commie: "note:Authorization", mee6: "yes", dyno: "yes", carlbot: "yes", probot: "yes" },
   { name: "Tickets", commie: "yes", mee6: "no", dyno: "yes", carlbot: "no", probot: "no" },
 ];
 
