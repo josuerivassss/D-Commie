@@ -8,16 +8,16 @@ import { TICKET_LIMITS } from "../validation";
 export default function TicketsSettings() {
   const { guild } = useOutletContext();
   const { t } = useTranslation();
-  const [config, setConfig] = useState({ enabled: false, parent_channel_id: "", staff_role_id: "", welcome_message: "" });
+  const [config, setConfig] = useState({ enabled: false, staff_role_id: "", welcome_message: "" });
+  const [channelId, setChannelId] = useState("");
+  const [panelStatus, setPanelStatus] = useState({ channelId: "", messageId: "" });
   const [channels, setChannels] = useState([]);
   const [roles, setRoles] = useState([]);
-  const [panelChannelId, setPanelChannelId] = useState("");
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(null);
   const [saving, setSaving] = useState(false);
-  const [publishing, setPublishing] = useState(false);
+  const [sendingPanel, setSendingPanel] = useState(false);
   const [flash, setFlash] = useState(null);
-  const [panelFlash, setPanelFlash] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -28,10 +28,11 @@ export default function TicketsSettings() {
         if (cancelled) return;
         setConfig({
           enabled: Boolean(doc.enabled),
-          parent_channel_id: doc.parent_channel_id || "",
           staff_role_id: doc.staff_role_id || "",
           welcome_message: doc.welcome_message || "",
         });
+        setChannelId(doc.panel_channel_id || "");
+        setPanelStatus({ channelId: doc.panel_channel_id || "", messageId: doc.panel_message_id || "" });
         setChannels(ch);
         setRoles(rl);
       })
@@ -47,7 +48,6 @@ export default function TicketsSettings() {
     try {
       await api.updateTicketsConfig(guild.id, {
         enabled: config.enabled,
-        parent_channel_id: config.parent_channel_id || null,
         staff_role_id: config.staff_role_id || null,
         welcome_message: config.welcome_message.slice(0, TICKET_LIMITS.MESSAGE_MAX),
       });
@@ -59,17 +59,18 @@ export default function TicketsSettings() {
     }
   }
 
-  async function handlePublishPanel() {
-    setPublishing(true);
-    setPanelFlash(null);
+  async function handleSendPanel() {
+    setSendingPanel(true);
+    setFlash(null);
     try {
-      await api.postTicketPanel(guild.id, { channel_id: panelChannelId });
-      setPanelFlash({ type: "success", message: t("tickets.panelPublished") });
+      const result = await api.postTicketPanel(guild.id, { channel_id: channelId });
+      setPanelStatus({ channelId: result.panel_channel_id, messageId: result.panel_message_id });
       setConfig((prev) => ({ ...prev, enabled: true }));
+      setFlash({ type: "success", message: t("tickets.panelSentSuccess") });
     } catch (err) {
-      setPanelFlash({ type: "error", message: friendlyErrorMessage(err, t) });
+      setFlash({ type: "error", message: friendlyErrorMessage(err, t) });
     } finally {
-      setPublishing(false);
+      setSendingPanel(false);
     }
   }
 
@@ -87,6 +88,7 @@ export default function TicketsSettings() {
 
   const messageLength = config.welcome_message.length;
   const messageTooShort = messageLength > 0 && messageLength < TICKET_LIMITS.MESSAGE_MIN;
+  const activePanelChannel = panelStatus.messageId ? channels.find((c) => c.id === panelStatus.channelId) : null;
 
   return (
     <>
@@ -100,8 +102,8 @@ export default function TicketsSettings() {
           <Toggle checked={config.enabled} onChange={(checked) => setConfig({ ...config, enabled: checked })} label={t("tickets.enableToggle")} />
         </div>
         <div className="field">
-          <label>{t("tickets.parentChannelLabel")}</label>
-          <select value={config.parent_channel_id} onChange={(e) => setConfig({ ...config, parent_channel_id: e.target.value })}>
+          <label>{t("tickets.channelLabel")}</label>
+          <select value={channelId} onChange={(e) => setChannelId(e.target.value)}>
             <option value="">{t("common.selectChannel")}</option>
             {channels.map((c) => (
               <option key={c.id} value={c.id} disabled={!c.can_host_tickets}>
@@ -109,7 +111,9 @@ export default function TicketsSettings() {
               </option>
             ))}
           </select>
-          <div className="hint">{t("tickets.parentChannelHint")}</div>
+          <div className="hint">
+            {activePanelChannel ? t("tickets.panelActiveHint", { channel: `#${activePanelChannel.name}` }) : t("tickets.channelHint")}
+          </div>
         </div>
         <div className="field">
           <label>{t("tickets.staffRoleLabel")}</label>
@@ -140,36 +144,15 @@ export default function TicketsSettings() {
             <div className="hint">{t("tickets.welcomeMessageHint", { p1: "{user.mention}", p2: "{guild.name}" })}</div>
           )}
         </div>
-        <button className="btn btn-primary" type="submit" disabled={saving || messageTooShort}>
-          {saving ? t("common.saving") : t("common.saveChanges")}
-        </button>
-      </form>
-
-      <div className="card">
-        <div className="embed-section-title">{t("tickets.panelSection")}</div>
-        <p className="hint" style={{ marginBottom: "1rem" }}>{t("tickets.panelSectionHint")}</p>
-        {panelFlash && <div className={`flash ${panelFlash.type}`}>{panelFlash.message}</div>}
-        <div className="field">
-          <label>{t("common.channelLabel")}</label>
-          <select value={panelChannelId} onChange={(e) => setPanelChannelId(e.target.value)}>
-            <option value="">{t("common.selectChannel")}</option>
-            {channels.map((c) => (
-              <option key={c.id} value={c.id} disabled={!c.can_send_panel}>
-                #{c.name}{!c.can_send_panel ? t("common.noPermissionsSuffix") : ""}
-              </option>
-            ))}
-          </select>
+        <div className="form-actions-row">
+          <button className="btn btn-primary" type="submit" disabled={saving || messageTooShort}>
+            {saving ? t("common.saving") : t("common.saveChanges")}
+          </button>
+          <button type="button" className="btn btn-outline" disabled={!channelId || sendingPanel} onClick={handleSendPanel}>
+            {sendingPanel ? t("tickets.sendingPanel") : t("tickets.sendPanel")}
+          </button>
         </div>
-        <button
-          type="button"
-          className="btn btn-primary"
-          disabled={!panelChannelId || !config.parent_channel_id || publishing}
-          onClick={handlePublishPanel}
-        >
-          {publishing ? t("tickets.publishing") : t("tickets.publishPanel")}
-        </button>
-        {!config.parent_channel_id && <div className="hint" style={{ marginTop: "0.5rem" }}>{t("tickets.needParentFirst")}</div>}
-      </div>
+      </form>
     </>
   );
 }

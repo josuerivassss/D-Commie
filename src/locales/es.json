@@ -137,19 +137,17 @@
     "title": "Tickets",
     "subtitle": "Hilos privados de soporte para miembros, abiertos mediante un panel con botón.",
     "enableToggle": "Habilitar tickets",
-    "parentChannelLabel": "Canal padre",
-    "parentChannelHint": "Los nuevos hilos de tickets se crean bajo este canal. El bot necesita Ver Canal, Crear Hilos Privados y Enviar Mensajes en Hilos ahí.",
+    "channelLabel": "Canal de tickets",
+    "channelHint": "Aloja el botón \"Open Ticket\" y es donde se crean los nuevos hilos privados. El bot necesita Ver Canal, Enviar Mensajes, Insertar Enlaces, Crear Hilos Privados y Enviar Mensajes en Hilos ahí.",
+    "panelActiveHint": "Actualmente activo en {channel}.",
     "staffRoleLabel": "Rol de staff (opcional)",
     "noStaffRole": "— Sin rol de staff —",
     "staffRoleHint": "Se agrega automáticamente a los nuevos tickets y se menciona cuando se abre uno.",
     "welcomeMessageLabel": "Mensaje de bienvenida",
     "welcomeMessageHint": "Se publica dentro de cada ticket nuevo. Soporta placeholders como {p1}, {p2}.",
     "messageTooShort": "Debe tener al menos {min} caracteres.",
-    "panelSection": "Publicar panel",
-    "panelSectionHint": "Publica un embed con un botón \"Open Ticket\" en el canal que elijas. Los miembros hacen clic para abrir un ticket.",
-    "publishPanel": "Publicar panel",
-    "publishing": "Publicando…",
-    "panelPublished": "¡Panel publicado!",
-    "needParentFirst": "Configura y guarda un canal padre antes de publicar el panel."
+    "sendPanel": "Enviar panel",
+    "sendingPanel": "Enviando…",
+    "panelSentSuccess": "¡Panel enviado!"
   }
 }

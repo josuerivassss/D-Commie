@@ -678,3 +678,5 @@ button { font-family: var(--font); }
 .modal-card h3 { margin: 0 0 0.75rem; color: var(--danger); }
 .modal-error-list { margin: 0 0 1.25rem; padding-left: 1.2rem; font-size: 0.85rem; color: var(--text-muted); }
 .modal-error-list li { margin-bottom: 0.3rem; }
+
+.form-actions-row { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; }

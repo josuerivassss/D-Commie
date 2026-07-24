@@ -137,19 +137,17 @@
     "title": "Tickets",
     "subtitle": "Private support threads for members, opened via a button panel.",
     "enableToggle": "Enable tickets",
-    "parentChannelLabel": "Parent channel",
-    "parentChannelHint": "New ticket threads are created under this channel. The bot needs View Channel, Create Private Threads, and Send Messages in Threads here.",
+    "channelLabel": "Ticket channel",
+    "channelHint": "Hosts the \"Open Ticket\" button and is where new private ticket threads are created. The bot needs View Channel, Send Messages, Embed Links, Create Private Threads, and Send Messages in Threads here.",
+    "panelActiveHint": "Currently active in {channel}.",
     "staffRoleLabel": "Staff role (optional)",
     "noStaffRole": "— No staff role —",
     "staffRoleHint": "Automatically added to new tickets and mentioned when one opens.",
     "welcomeMessageLabel": "Welcome message",
     "welcomeMessageHint": "Posted inside every new ticket. Supports placeholders like {p1}, {p2}.",
     "messageTooShort": "Must be at least {min} characters.",
-    "panelSection": "Publish panel",
-    "panelSectionHint": "Posts an embed with an \"Open Ticket\" button in the channel you choose. Members click it to open a ticket.",
-    "publishPanel": "Publish panel",
-    "publishing": "Publishing…",
-    "panelPublished": "Panel published!",
-    "needParentFirst": "Set and save a parent channel before publishing the panel."
+    "sendPanel": "Send panel",
+    "sendingPanel": "Sending…",
+    "panelSentSuccess": "Panel sent!"
   }
 }
