@@ -403,9 +403,9 @@ button { font-family: var(--font); }
 .feature-table th:first-child, .feature-table td:first-child { text-align: left; color: var(--text); font-weight: 600; }
 
 .feature-badge { display: inline-block; padding: 0.2rem 0.65rem; border-radius: 999px; font-size: 0.78rem; font-weight: 600; }
-.feature-badge.yes { background: rgba(35, 165, 90, 0.15); color: #6cd694; }
-.feature-badge.no { background: rgba(218, 55, 60, 0.15); color: #ff9a9a; }
-.feature-badge.note { background: rgba(241, 196, 15, 0.15); color: #f1c40f; }
+.feature-badge.yes { background: rgba(37, 187, 100, 0.15); color: #6cd694; }
+.feature-badge.no { background: rgba(232, 55, 61, 0.15); color: #ff9a9a; }
+.feature-badge.note { background: rgba(241, 195, 11, 0.15); color: #f1c40f; }
 
 /* -- carousel --------------------------------------------------------------- */
 
