@@ -1,5 +1,6 @@
 {
   "common": {
+    "waitSeconds": "Wait {seconds}s",
     "loading": "Loading…",
     "retry": "Retry",
     "saveChanges": "Save changes",

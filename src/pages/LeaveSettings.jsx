@@ -3,6 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import { api, friendlyErrorMessage } from "../api";
 import { useTranslation } from "../context/LocaleContext";
 import { useToast } from "../context/ToastContext";
+import { useActionCooldown } from "../hooks/useActionCooldown";
 import Toggle from "../components/Toggle";
 import { LIMITS } from "../validation";
 
@@ -10,6 +11,7 @@ export default function LeaveSettings() {
   const { guild } = useOutletContext();
   const { t } = useTranslation();
   const { showToast } = useToast();
+  const { remaining, startCooldown } = useActionCooldown();
   const [config, setConfig] = useState({ enabled: false, channel: "", message: "" });
   const [channels, setChannels] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -47,6 +49,7 @@ export default function LeaveSettings() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    startCooldown();
     setSaving(true);
     try {
       await api.updateGuildConfig(guild.id, {
@@ -115,8 +118,8 @@ export default function LeaveSettings() {
             {t("leave.messageHint", { p1: "{user.name}", p2: "{guild.name}", p3: "{guild.members}" })}
           </div>
         </div>
-        <button className="btn btn-primary" type="submit" disabled={saving}>
-          {saving ? t("common.saving") : t("common.saveChanges")}
+        <button className="btn btn-primary" type="submit" disabled={saving || remaining > 0}>
+          {saving ? t("common.saving") : remaining > 0 ? t("common.waitSeconds", { seconds: remaining }) : t("common.saveChanges")}
         </button>
       </form>
     </>

@@ -3,6 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import { api, friendlyErrorMessage } from "../api";
 import { useTranslation } from "../context/LocaleContext";
 import { useToast } from "../context/ToastContext";
+import { useActionCooldown } from "../hooks/useActionCooldown";
 import Toggle from "../components/Toggle";
 import { TICKET_LIMITS } from "../validation";
 
@@ -10,6 +11,8 @@ export default function TicketsSettings() {
   const { guild } = useOutletContext();
   const { t } = useTranslation();
   const { showToast } = useToast();
+  const saveCooldown = useActionCooldown();
+  const panelCooldown = useActionCooldown();
   const [config, setConfig] = useState({ enabled: false, staff_role_id: "", welcome_message: "" });
   const [channelId, setChannelId] = useState("");
   const [panelStatus, setPanelStatus] = useState({ channelId: "", messageId: "" });
@@ -44,6 +47,7 @@ export default function TicketsSettings() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    saveCooldown.startCooldown();
     setSaving(true);
     try {
       await api.updateTicketsConfig(guild.id, {
@@ -60,6 +64,7 @@ export default function TicketsSettings() {
   }
 
   async function handleSendPanel() {
+    panelCooldown.startCooldown();
     setSendingPanel(true);
     try {
       const result = await api.postTicketPanel(guild.id, { channel_id: channelId });
@@ -143,11 +148,24 @@ export default function TicketsSettings() {
           )}
         </div>
         <div className="form-actions-row">
-          <button className="btn btn-primary" type="submit" disabled={saving || messageTooShort}>
-            {saving ? t("common.saving") : t("common.saveChanges")}
+          <button className="btn btn-primary" type="submit" disabled={saving || saveCooldown.remaining > 0 || messageTooShort}>
+            {saving
+              ? t("common.saving")
+              : saveCooldown.remaining > 0
+              ? t("common.waitSeconds", { seconds: saveCooldown.remaining })
+              : t("common.saveChanges")}
           </button>
-          <button type="button" className="btn btn-outline" disabled={!channelId || sendingPanel} onClick={handleSendPanel}>
-            {sendingPanel ? t("tickets.sendingPanel") : t("tickets.sendPanel")}
+          <button
+            type="button"
+            className="btn btn-outline"
+            disabled={!channelId || sendingPanel || panelCooldown.remaining > 0}
+            onClick={handleSendPanel}
+          >
+            {sendingPanel
+              ? t("tickets.sendingPanel")
+              : panelCooldown.remaining > 0
+              ? t("common.waitSeconds", { seconds: panelCooldown.remaining })
+              : t("tickets.sendPanel")}
           </button>
         </div>
       </form>

@@ -3,6 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import { api, friendlyErrorMessage } from "../api";
 import { useTranslation } from "../context/LocaleContext";
 import { useToast } from "../context/ToastContext";
+import { useActionCooldown } from "../hooks/useActionCooldown";
 import Toggle from "../components/Toggle";
 import { LIMITS } from "../validation";
 
@@ -45,6 +46,8 @@ export default function WelcomeAutorolesSettings() {
   const { guild } = useOutletContext();
   const { t } = useTranslation();
   const { showToast } = useToast();
+  const welcomeCooldown = useActionCooldown();
+  const autorolesCooldown = useActionCooldown();
   const [config, setConfig] = useState({ enabled: false, channel: "", message: "" });
   const [channels, setChannels] = useState([]);
   const [roles, setRoles] = useState([]);
@@ -95,6 +98,7 @@ export default function WelcomeAutorolesSettings() {
 
   async function handleWelcomeSubmit(e) {
     e.preventDefault();
+    welcomeCooldown.startCooldown();
     setSavingWelcome(true);
     try {
       await api.updateGuildConfig(guild.id, {
@@ -121,6 +125,7 @@ export default function WelcomeAutorolesSettings() {
 
   async function handleAutorolesSubmit(e) {
     e.preventDefault();
+    autorolesCooldown.startCooldown();
     setSavingAutoroles(true);
     try {
       await api.updateAutoroles(guild.id, {
@@ -193,8 +198,12 @@ export default function WelcomeAutorolesSettings() {
             })}
           </div>
         </div>
-        <button className="btn btn-primary" type="submit" disabled={savingWelcome}>
-          {savingWelcome ? t("common.saving") : t("common.saveChanges")}
+        <button className="btn btn-primary" type="submit" disabled={savingWelcome || welcomeCooldown.remaining > 0}>
+          {savingWelcome
+            ? t("common.saving")
+            : welcomeCooldown.remaining > 0
+            ? t("common.waitSeconds", { seconds: welcomeCooldown.remaining })
+            : t("common.saveChanges")}
         </button>
       </form>
 
@@ -204,8 +213,12 @@ export default function WelcomeAutorolesSettings() {
         </p>
         <RoleSelector title={t("welcome.humans")} roles={roles} selected={autoroles.humans} onToggle={(id) => toggleRole("humans", id)} />
         <RoleSelector title={t("welcome.bots")} roles={roles} selected={autoroles.bots} onToggle={(id) => toggleRole("bots", id)} />
-        <button className="btn btn-primary" type="submit" disabled={savingAutoroles}>
-          {savingAutoroles ? t("common.saving") : t("common.saveChanges")}
+        <button className="btn btn-primary" type="submit" disabled={savingAutoroles || autorolesCooldown.remaining > 0}>
+          {savingAutoroles
+            ? t("common.saving")
+            : autorolesCooldown.remaining > 0
+            ? t("common.waitSeconds", { seconds: autorolesCooldown.remaining })
+            : t("common.saveChanges")}
         </button>
       </form>
     </>

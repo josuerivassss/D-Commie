@@ -3,12 +3,14 @@ import { useOutletContext } from "react-router-dom";
 import { api, friendlyErrorMessage } from "../api";
 import { useTranslation } from "../context/LocaleContext";
 import { useToast } from "../context/ToastContext";
+import { useActionCooldown } from "../hooks/useActionCooldown";
 import { LIMITS, LANGUAGES } from "../validation";
 
 export default function GeneralSettings() {
   const { guild } = useOutletContext();
   const { t } = useTranslation();
   const { showToast } = useToast();
+  const { remaining, startCooldown } = useActionCooldown();
   const [config, setConfig] = useState({ prefix: "", language: "en" });
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(null);
@@ -40,6 +42,7 @@ export default function GeneralSettings() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    startCooldown();
     setSaving(true);
     try {
       await api.updateGuildConfig(guild.id, {
@@ -97,8 +100,8 @@ export default function GeneralSettings() {
             ))}
           </select>
         </div>
-        <button className="btn btn-primary" type="submit" disabled={saving}>
-          {saving ? t("common.saving") : t("common.saveChanges")}
+        <button className="btn btn-primary" type="submit" disabled={saving || remaining > 0}>
+          {saving ? t("common.saving") : remaining > 0 ? t("common.waitSeconds", { seconds: remaining }) : t("common.saveChanges")}
         </button>
       </form>
     </>
