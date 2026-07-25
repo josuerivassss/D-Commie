@@ -2,16 +2,17 @@ import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { api, friendlyErrorMessage } from "../api";
 import { useTranslation } from "../context/LocaleContext";
+import { useToast } from "../context/ToastContext";
 import { LIMITS, LANGUAGES } from "../validation";
 
 export default function GeneralSettings() {
   const { guild } = useOutletContext();
   const { t } = useTranslation();
+  const { showToast } = useToast();
   const [config, setConfig] = useState({ prefix: "", language: "en" });
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(null);
   const [saving, setSaving] = useState(false);
-  const [flash, setFlash] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -40,15 +41,14 @@ export default function GeneralSettings() {
   async function handleSubmit(e) {
     e.preventDefault();
     setSaving(true);
-    setFlash(null);
     try {
       await api.updateGuildConfig(guild.id, {
         language: config.language,
         prefix: config.prefix.trim().slice(0, LIMITS.PREFIX_MAX),
       });
-      setFlash({ type: "success", message: t("common.saved") });
+      showToast(t("common.saved"), "success");
     } catch (err) {
-      setFlash({ type: "error", message: friendlyErrorMessage(err, t) });
+      showToast(friendlyErrorMessage(err, t), "error");
     } finally {
       setSaving(false);
     }
@@ -70,7 +70,6 @@ export default function GeneralSettings() {
     <>
       <h1>{t("general.title")}</h1>
       <p className="section-sub">{t("general.subtitle")}</p>
-      {flash && <div className={`flash ${flash.type}`}>{flash.message}</div>}
       <form className="card" onSubmit={handleSubmit}>
         <div className="field">
           <div className="field-label-row">

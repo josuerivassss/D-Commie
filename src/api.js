@@ -17,6 +17,30 @@ export function friendlyErrorMessage(err, t) {
   return err.message;
 }
 
+const FETCH_RETRIES = 2;
+const FETCH_RETRY_DELAY_MS = 400;
+
+// A raw fetch() failure (TypeError: Failed to fetch) can come from a
+// transient blip -- DNS hiccup, a browser extension's request interception
+// racing with the page, a stale keep-alive socket right after the machine
+// wakes from sleep -- not just an actual connectivity block. Retrying a
+// couple of times with a short backoff transparently absorbs those without
+// forcing the user to hard-refresh the page.
+async function fetchWithRetry(url, options) {
+  let lastError;
+  for (let attempt = 0; attempt <= FETCH_RETRIES; attempt++) {
+    try {
+      return await fetch(url, options);
+    } catch (err) {
+      lastError = err;
+      if (attempt < FETCH_RETRIES) {
+        await new Promise((resolve) => setTimeout(resolve, FETCH_RETRY_DELAY_MS * (attempt + 1)));
+      }
+    }
+  }
+  throw lastError;
+}
+
 async function request(path, { method = "GET", body } = {}) {
   const token = getToken();
   const headers = { "Content-Type": "application/json" };
@@ -24,7 +48,7 @@ async function request(path, { method = "GET", body } = {}) {
 
   let res;
   try {
-    res = await fetch(`${API_BASE_URL}${path}`, {
+    res = await fetchWithRetry(`${API_BASE_URL}${path}`, {
       method,
       headers,
       body: body !== undefined ? JSON.stringify(body) : undefined,

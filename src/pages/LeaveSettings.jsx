@@ -2,18 +2,19 @@ import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { api, friendlyErrorMessage } from "../api";
 import { useTranslation } from "../context/LocaleContext";
+import { useToast } from "../context/ToastContext";
 import Toggle from "../components/Toggle";
 import { LIMITS } from "../validation";
 
 export default function LeaveSettings() {
   const { guild } = useOutletContext();
   const { t } = useTranslation();
+  const { showToast } = useToast();
   const [config, setConfig] = useState({ enabled: false, channel: "", message: "" });
   const [channels, setChannels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(null);
   const [saving, setSaving] = useState(false);
-  const [flash, setFlash] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -47,16 +48,15 @@ export default function LeaveSettings() {
   async function handleSubmit(e) {
     e.preventDefault();
     setSaving(true);
-    setFlash(null);
     try {
       await api.updateGuildConfig(guild.id, {
         leave_enabled: config.enabled,
         leave_channel_id: config.channel || null,
         leave_message: config.message.slice(0, LIMITS.MESSAGE_MAX),
       });
-      setFlash({ type: "success", message: t("common.saved") });
+      showToast(t("common.saved"), "success");
     } catch (err) {
-      setFlash({ type: "error", message: friendlyErrorMessage(err, t) });
+      showToast(friendlyErrorMessage(err, t), "error");
     } finally {
       setSaving(false);
     }
@@ -78,7 +78,6 @@ export default function LeaveSettings() {
     <>
       <h1>{t("leave.title")}</h1>
       <p className="section-sub">{t("leave.subtitle")}</p>
-      {flash && <div className={`flash ${flash.type}`}>{flash.message}</div>}
       <form className="card" onSubmit={handleSubmit}>
         <div className="field toggle-row">
           <label style={{ marginBottom: 0 }}>{t("common.enabledLabel")}</label>

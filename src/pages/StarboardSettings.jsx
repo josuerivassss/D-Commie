@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { api, friendlyErrorMessage } from "../api";
 import { useTranslation } from "../context/LocaleContext";
+import { useToast } from "../context/ToastContext";
 import Toggle from "../components/Toggle";
 import EmojiPicker from "../components/EmojiPicker";
 import { LIMITS, clamp } from "../validation";
@@ -9,6 +10,7 @@ import { LIMITS, clamp } from "../validation";
 export default function StarboardSettings() {
   const { guild } = useOutletContext();
   const { t } = useTranslation();
+  const { showToast } = useToast();
   const [config, setConfig] = useState({
     enabled: false,
     channel_id: "",
@@ -20,7 +22,6 @@ export default function StarboardSettings() {
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(null);
   const [saving, setSaving] = useState(false);
-  const [flash, setFlash] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -55,7 +56,6 @@ export default function StarboardSettings() {
   async function handleSubmit(e) {
     e.preventDefault();
     setSaving(true);
-    setFlash(null);
     try {
       await api.updateStarboard(guild.id, {
         enabled: config.enabled,
@@ -64,9 +64,9 @@ export default function StarboardSettings() {
         threshold: clamp(config.threshold, LIMITS.THRESHOLD_MIN, LIMITS.THRESHOLD_MAX),
         count_self_stars: config.count_self_stars,
       });
-      setFlash({ type: "success", message: t("common.saved") });
+      showToast(t("common.saved"), "success");
     } catch (err) {
-      setFlash({ type: "error", message: friendlyErrorMessage(err, t) });
+      showToast(friendlyErrorMessage(err, t), "error");
     } finally {
       setSaving(false);
     }
@@ -92,7 +92,6 @@ export default function StarboardSettings() {
     <>
       <h1>{t("starboard.title")}</h1>
       <p className="section-sub">{t("starboard.subtitle")}</p>
-      {flash && <div className={`flash ${flash.type}`}>{flash.message}</div>}
       <form className="card" onSubmit={handleSubmit}>
         <div className="field toggle-row">
           <label style={{ marginBottom: 0 }}>{t("common.enabledLabel")}</label>

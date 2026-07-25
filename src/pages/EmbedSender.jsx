@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { api, ApiError, friendlyErrorMessage } from "../api";
 import { useTranslation } from "../context/LocaleContext";
+import { useToast } from "../context/ToastContext";
 import { EMBED_LIMITS, embedCharacterCount, isValidUrl, validateEmbedPayload } from "../validation";
 import { useUnsavedChangesGuard } from "../context/UnsavedChangesContext";
 import EmbedPreview from "../components/EmbedPreview";
@@ -143,7 +144,7 @@ export default function EmbedSender() {
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(null);
   const [sending, setSending] = useState(false);
-  const [sendFlash, setSendFlash] = useState(null);
+  const { showToast } = useToast();
   const [importError, setImportError] = useState(null);
   const [savedSnapshot, setSavedSnapshot] = useState(null);
   const fileInputRef = useRef(null);
@@ -275,11 +276,10 @@ export default function EmbedSender() {
   async function handleSend() {
     const nonEmptyEmbeds = embeds.filter((e) => !isEmbedEmpty(e)).map(toDiscordShape);
     if (nonEmptyEmbeds.length === 0 && !content.trim()) {
-      setSendFlash({ type: "error", message: t("embeds.emptyEmbedError") });
+      showToast(t("embeds.emptyEmbedError"), "error");
       return;
     }
     setSending(true);
-    setSendFlash(null);
     try {
       const result = await api.sendEmbed(guild.id, {
         channel_id: channelId,
@@ -287,12 +287,12 @@ export default function EmbedSender() {
         embeds: nonEmptyEmbeds,
         reactions,
       });
-      setSendFlash({
-        type: "success",
-        message: result.failed_reactions?.length
+      showToast(
+        result.failed_reactions?.length
           ? t("embeds.sentPartial", { count: result.failed_reactions.length })
           : t("embeds.sentSuccess"),
-      });
+        "success"
+      );
       setSavedSnapshot(buildSnapshot(content, embeds, channelId, reactions));
       const cooldown = await api.getEmbedCooldown(guild.id);
       setCooldownRemaining(Math.ceil(cooldown.seconds_remaining));
@@ -300,7 +300,7 @@ export default function EmbedSender() {
       if (err instanceof ApiError && err.status === 429 && err.data?.seconds_remaining) {
         setCooldownRemaining(Math.ceil(err.data.seconds_remaining));
       }
-      setSendFlash({ type: "error", message: friendlyErrorMessage(err, t) });
+      showToast(friendlyErrorMessage(err, t), "error");
     } finally {
       setSending(false);
     }
@@ -326,7 +326,6 @@ export default function EmbedSender() {
       {cooldownRemaining > 0 && (
         <div className="flash cooldown">{t("embeds.cooldownActive", { seconds: cooldownRemaining })}</div>
       )}
-      {sendFlash && <div className={`flash ${sendFlash.type}`}>{sendFlash.message}</div>}
 
       <div className="embed-builder-layout">
         <div className="embed-builder-form">

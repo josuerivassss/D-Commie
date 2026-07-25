@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { api, friendlyErrorMessage } from "../api";
 import { useTranslation } from "../context/LocaleContext";
+import { useToast } from "../context/ToastContext";
 import Toggle from "../components/Toggle";
 import { LIMITS } from "../validation";
 
@@ -43,6 +44,7 @@ function RoleSelector({ title, roles, selected, onToggle }) {
 export default function WelcomeAutorolesSettings() {
   const { guild } = useOutletContext();
   const { t } = useTranslation();
+  const { showToast } = useToast();
   const [config, setConfig] = useState({ enabled: false, channel: "", message: "" });
   const [channels, setChannels] = useState([]);
   const [roles, setRoles] = useState([]);
@@ -51,8 +53,6 @@ export default function WelcomeAutorolesSettings() {
   const [loadError, setLoadError] = useState(null);
   const [savingWelcome, setSavingWelcome] = useState(false);
   const [savingAutoroles, setSavingAutoroles] = useState(false);
-  const [welcomeFlash, setWelcomeFlash] = useState(null);
-  const [autorolesFlash, setAutorolesFlash] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -96,16 +96,15 @@ export default function WelcomeAutorolesSettings() {
   async function handleWelcomeSubmit(e) {
     e.preventDefault();
     setSavingWelcome(true);
-    setWelcomeFlash(null);
     try {
       await api.updateGuildConfig(guild.id, {
         welcome_enabled: config.enabled,
         welcome_channel_id: config.channel || null,
         welcome_message: config.message.slice(0, LIMITS.MESSAGE_MAX),
       });
-      setWelcomeFlash({ type: "success", message: t("common.saved") });
+      showToast(t("common.saved"), "success");
     } catch (err) {
-      setWelcomeFlash({ type: "error", message: friendlyErrorMessage(err, t) });
+      showToast(friendlyErrorMessage(err, t), "error");
     } finally {
       setSavingWelcome(false);
     }
@@ -123,15 +122,14 @@ export default function WelcomeAutorolesSettings() {
   async function handleAutorolesSubmit(e) {
     e.preventDefault();
     setSavingAutoroles(true);
-    setAutorolesFlash(null);
     try {
       await api.updateAutoroles(guild.id, {
         humans: autoroles.humans,
         bots: autoroles.bots,
       });
-      setAutorolesFlash({ type: "success", message: t("common.saved") });
+      showToast(t("common.saved"), "success");
     } catch (err) {
-      setAutorolesFlash({ type: "error", message: friendlyErrorMessage(err, t) });
+      showToast(friendlyErrorMessage(err, t), "error");
     } finally {
       setSavingAutoroles(false);
     }
@@ -154,7 +152,6 @@ export default function WelcomeAutorolesSettings() {
       <h1>{t("welcome.title")}</h1>
       <p className="section-sub">{t("welcome.subtitle")}</p>
 
-      {welcomeFlash && <div className={`flash ${welcomeFlash.type}`}>{welcomeFlash.message}</div>}
       <form className="card" onSubmit={handleWelcomeSubmit}>
         <div className="field toggle-row">
           <label style={{ marginBottom: 0 }}>{t("common.enabledLabel")}</label>
@@ -201,7 +198,6 @@ export default function WelcomeAutorolesSettings() {
         </button>
       </form>
 
-      {autorolesFlash && <div className={`flash ${autorolesFlash.type}`}>{autorolesFlash.message}</div>}
       <form className="card" onSubmit={handleAutorolesSubmit}>
         <p className="section-sub" style={{ marginBottom: "1rem" }}>
           {t("welcome.autorolesSubtitle")}

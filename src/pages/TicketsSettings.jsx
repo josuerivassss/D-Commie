@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { api, friendlyErrorMessage } from "../api";
 import { useTranslation } from "../context/LocaleContext";
+import { useToast } from "../context/ToastContext";
 import Toggle from "../components/Toggle";
 import { TICKET_LIMITS } from "../validation";
 
 export default function TicketsSettings() {
   const { guild } = useOutletContext();
   const { t } = useTranslation();
+  const { showToast } = useToast();
   const [config, setConfig] = useState({ enabled: false, staff_role_id: "", welcome_message: "" });
   const [channelId, setChannelId] = useState("");
   const [panelStatus, setPanelStatus] = useState({ channelId: "", messageId: "" });
@@ -17,7 +19,6 @@ export default function TicketsSettings() {
   const [loadError, setLoadError] = useState(null);
   const [saving, setSaving] = useState(false);
   const [sendingPanel, setSendingPanel] = useState(false);
-  const [flash, setFlash] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -44,16 +45,15 @@ export default function TicketsSettings() {
   async function handleSubmit(e) {
     e.preventDefault();
     setSaving(true);
-    setFlash(null);
     try {
       await api.updateTicketsConfig(guild.id, {
         enabled: config.enabled,
         staff_role_id: config.staff_role_id || null,
         welcome_message: config.welcome_message.slice(0, TICKET_LIMITS.MESSAGE_MAX),
       });
-      setFlash({ type: "success", message: t("common.saved") });
+      showToast(t("common.saved"), "success");
     } catch (err) {
-      setFlash({ type: "error", message: friendlyErrorMessage(err, t) });
+      showToast(friendlyErrorMessage(err, t), "error");
     } finally {
       setSaving(false);
     }
@@ -61,14 +61,13 @@ export default function TicketsSettings() {
 
   async function handleSendPanel() {
     setSendingPanel(true);
-    setFlash(null);
     try {
       const result = await api.postTicketPanel(guild.id, { channel_id: channelId });
       setPanelStatus({ channelId: result.panel_channel_id, messageId: result.panel_message_id });
       setConfig((prev) => ({ ...prev, enabled: true }));
-      setFlash({ type: "success", message: t("tickets.panelSentSuccess") });
+      showToast(t("tickets.panelSentSuccess"), "success");
     } catch (err) {
-      setFlash({ type: "error", message: friendlyErrorMessage(err, t) });
+      showToast(friendlyErrorMessage(err, t), "error");
     } finally {
       setSendingPanel(false);
     }
@@ -95,7 +94,6 @@ export default function TicketsSettings() {
       <h1>{t("tickets.title")}</h1>
       <p className="section-sub">{t("tickets.subtitle")}</p>
 
-      {flash && <div className={`flash ${flash.type}`}>{flash.message}</div>}
       <form className="card" onSubmit={handleSubmit}>
         <div className="field toggle-row">
           <label style={{ marginBottom: 0 }}>{t("common.enabledLabel")}</label>
