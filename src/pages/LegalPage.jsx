@@ -12,6 +12,7 @@ import termsEn from "../legal/terms.en.md?raw";
 import termsEs from "../legal/terms.es.md?raw";
 import privacyEn from "../legal/privacy.en.md?raw";
 import privacyEs from "../legal/privacy.es.md?raw";
+import Footer from "../components/Footer";
 
 const DOCS = {
   terms: { en: termsEn, es: termsEs },
@@ -128,9 +129,12 @@ export default function LegalPage() {
   }, [language]);
 
   return (
+    <>
     <LocaleProvider language={language}>
       <Header user={null} />
       <LegalContent language={language} onLanguageChange={setLanguage} />
     </LocaleProvider>
+    <Footer />
+    </>
   );
 }

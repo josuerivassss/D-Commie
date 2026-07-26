@@ -63,7 +63,7 @@ export default function GuildPicker() {
             Log in with Discord
           </a>
         </div>
-        <Footer />
+      <Footer />
       </>
     );
   }
