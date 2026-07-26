@@ -6,6 +6,7 @@ import AccessDenied from "../components/AccessDenied";
 import { api, ApiError } from "../api";
 import { discordLoginUrl } from "../config";
 import { isLoggedIn } from "../auth";
+import Footer from "../components/Footer";
 
 const LOGIN_ERROR_MESSAGES = {
   network: "No se pudo completar el inicio de sesión por un problema de conexión. Si usas Brave, prueba desactivar Shields para este sitio (icono del león en la barra de direcciones) e inténtalo de nuevo.",
@@ -45,6 +46,7 @@ export default function GuildPicker() {
       <>
         <Header user={null} />
         <AccessDenied />
+        <Footer />
       </>
     );
   }
@@ -61,6 +63,7 @@ export default function GuildPicker() {
             Log in with Discord
           </a>
         </div>
+        <Footer />
       </>
     );
   }
@@ -91,6 +94,7 @@ export default function GuildPicker() {
           ))}
         </div>
       </div>
+      <Footer />
     </>
   );
 }

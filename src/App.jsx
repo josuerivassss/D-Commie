@@ -11,6 +11,7 @@ import LeaveSettings from "./pages/LeaveSettings";
 import StarboardSettings from "./pages/StarboardSettings";
 import EmbedSender from "./pages/EmbedSender";
 import TicketsSettings from "./pages/TicketsSettings";
+import LegalPage from "./pages/LegalPage";
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
             <Route path="/" element={<Landing />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
             <Route path="/dash" element={<GuildPicker />} />
+            <Route path="/legal" element={<LegalPage />} />
 
             <Route path="/dash/:guildId" element={<DashboardLayout />}>
               <Route index element={<Navigate to="general" replace />} />

@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import HeroPattern from "../components/HeroPattern";
 import PageTexture from "../components/PageTexture";
 import { botInviteUrl, SUPPORT_SERVER_URL } from "../config";
+import Footer from "../components/Footer";
 
 const BOTS = [
   { key: "commie", label: "Commie" },
@@ -134,6 +135,7 @@ export default function Landing() {
       </section>
 
       <Carousel />
+      <Footer />
     </div>
   );
 }

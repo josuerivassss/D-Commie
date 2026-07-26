@@ -150,5 +150,13 @@
     "sendPanel": "Enviar panel",
     "sendingPanel": "Enviando…",
     "panelSentSuccess": "¡Panel enviado!"
+  },
+  "legal": {
+    "termsTab": "Términos de Servicio",
+    "privacyTab": "Política de Privacidad",
+    "languageLabel": "Idioma",
+    "lastUpdated": "Última actualización: {date}",
+    "onThisPage": "En esta página",
+    "backHome": "← Volver al inicio"
   }
 }
