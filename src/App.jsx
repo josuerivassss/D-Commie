@@ -12,6 +12,8 @@ import StarboardSettings from "./pages/StarboardSettings";
 import EmbedSender from "./pages/EmbedSender";
 import TicketsSettings from "./pages/TicketsSettings";
 import LegalPage from "./pages/LegalPage";
+import ExternalRedirect from "./pages/ExternalRedirect";
+import { botInviteUrl, SUPPORT_SERVER_URL } from "./config";
 
 export default function App() {
   return (
@@ -23,6 +25,8 @@ export default function App() {
             <Route path="/auth/callback" element={<AuthCallback />} />
             <Route path="/dash" element={<GuildPicker />} />
             <Route path="/legal" element={<LegalPage />} />
+            <Route path="/invite" element={<ExternalRedirect to={botInviteUrl()} />} />
+            <Route path="/server" element={<ExternalRedirect to={SUPPORT_SERVER_URL} />} />
 
             <Route path="/dash/:guildId" element={<DashboardLayout />}>
               <Route index element={<Navigate to="general" replace />} />
