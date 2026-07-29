@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/generate-vercel-config.mjs && vite build",
+    "build": "vite build",
+    "generate:vercel-config": "node scripts/generate-vercel-config.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
