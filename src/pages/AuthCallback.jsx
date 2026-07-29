@@ -13,8 +13,17 @@ export default function AuthCallback() {
     ranOnce.current = true;
 
     const sessionCode = searchParams.get("session_code");
+    const returnedState = searchParams.get("state");
+    const expectedState = sessionStorage.getItem("oauth_state");
+    sessionStorage.removeItem("oauth_state");
+
     if (!sessionCode) {
       navigate("/dash?login_failed=missing_code", { replace: true });
+      return;
+    }
+
+    if (!expectedState || !returnedState || returnedState !== expectedState) {
+      navigate("/dash?login_failed=state_mismatch", { replace: true });
       return;
     }
 

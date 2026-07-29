@@ -13,6 +13,7 @@ import EmbedSender from "./pages/EmbedSender";
 import TicketsSettings from "./pages/TicketsSettings";
 import LegalPage from "./pages/LegalPage";
 import ExternalRedirect from "./pages/ExternalRedirect";
+import Changelog from "./pages/Changelog";
 import { botInviteUrl, SUPPORT_SERVER_URL } from "./config";
 
 export default function App() {
@@ -27,6 +28,7 @@ export default function App() {
             <Route path="/legal" element={<LegalPage />} />
             <Route path="/invite" element={<ExternalRedirect to={botInviteUrl()} />} />
             <Route path="/server" element={<ExternalRedirect to={SUPPORT_SERVER_URL} />} />
+            <Route path="/changelog" element={<Changelog />} />
 
             <Route path="/dash/:guildId" element={<DashboardLayout />}>
               <Route index element={<Navigate to="general" replace />} />

@@ -26,14 +26,22 @@ export function botInviteUrlForGuild(guildId) {
 /** Sends the browser to Discord's OAuth consent screen. Discord redirects
  * back to the API's own /json/auth/callback (registered in the Discord
  * Developer Portal), which then redirects here to /auth/callback with a
- * session token -- see pages/AuthCallback.jsx. */
+ * session token -- see pages/AuthCallback.jsx.
+ *
+ * A random `state` is generated and stored in sessionStorage, then sent to
+ * Discord and echoed back through the API's callback redirect. This defends
+ * against CSRF login fixation: without it, an attacker could trick a victim
+ * into completing an OAuth flow initiated by the attacker. */
 export function discordLoginUrl() {
+  const state = crypto.randomUUID();
+  sessionStorage.setItem("oauth_state", state);
   const redirectUri = `${API_BASE_URL}/json/auth/callback`;
   const params = new URLSearchParams({
     client_id: DISCORD_CLIENT_ID,
     redirect_uri: redirectUri,
     response_type: "code",
     scope: "identify guilds",
+    state,
   });
   return `https://discord.com/oauth2/authorize?${params.toString()}`;
 }

@@ -1,14 +1,15 @@
 import { Link } from "react-router-dom";
 import { botInviteUrl, SUPPORT_SERVER_URL } from "../config";
-import { clearToken } from "../auth";
+import { logout as logoutRequest } from "../auth";
 
 export default function Header({ user }) {
-  function logout() {
-    clearToken();
+  async function logout() {
+    await logoutRequest();
     window.location.href = "/";
   }
 
   return (
+    
     <header className="header">
       <Link className="brand" to="/">
         <img src="/logo-mascot.png" alt="Commie logo" />

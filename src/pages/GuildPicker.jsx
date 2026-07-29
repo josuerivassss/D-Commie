@@ -12,6 +12,7 @@ const LOGIN_ERROR_MESSAGES = {
   network: "No se pudo completar el inicio de sesión por un problema de conexión. Si usas Brave, prueba desactivar Shields para este sitio (icono del león en la barra de direcciones) e inténtalo de nuevo.",
   exchange: "El código de inicio de sesión expiró o no es válido. Intenta iniciar sesión de nuevo.",
   missing_code: "No se recibió un código de inicio de sesión válido de Discord.",
+  state_mismatch: "No se pudo verificar el origen del inicio de sesión. Por seguridad, intenta iniciar sesión de nuevo.",
   1: "Ocurrió un error al iniciar sesión. Intenta de nuevo.",
 };
 
