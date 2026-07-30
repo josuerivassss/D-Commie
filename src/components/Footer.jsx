@@ -6,6 +6,7 @@ export default function Footer() {
     <footer className="site-footer">
       <span>&copy; {new Date().getFullYear()} Commie</span>
       <nav className="footer-links">
+        <Link to="/commands">Commands</Link>
         <Link to="/changelog">Changelog</Link>
         <Link to="/legal?doc=terms">Terms of Service</Link>
         <Link to="/legal?doc=privacy">Privacy Policy</Link>
