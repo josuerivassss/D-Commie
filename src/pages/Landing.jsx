@@ -16,12 +16,12 @@ const BOTS = [
 ];
 
 const FEATURES = [
-  { name: "Moderación", commie: "yes", mee6: "yes", dyno: "yes", carlbot: "yes", probot: "yes" },
+  { name: "Moderation", commie: "yes", mee6: "yes", dyno: "yes", carlbot: "yes", probot: "yes" },
   { name: "Custom commands", commie: "note:Tags", mee6: "yes", dyno: "yes", carlbot: "yes", probot: "note:Limited" },
   { name: "Starboard", commie: "yes", mee6: "no", dyno: "yes", carlbot: "yes", probot: "no" },
   { name: "Welcome & Leave", commie: "yes", mee6: "yes", dyno: "yes", carlbot: "yes", probot: "yes" },
   { name: "Autoroles", commie: "yes", mee6: "yes", dyno: "yes", carlbot: "yes", probot: "yes" },
-  { name: "Multi-idioma", commie: "yes", mee6: "note:Limited", dyno: "no", carlbot: "no", probot: "no" },
+  { name: "Multilanguage", commie: "yes", mee6: "note:Limited", dyno: "no", carlbot: "no", probot: "no" },
   { name: "Dashboard", commie: "note:Authorization", mee6: "yes", dyno: "yes", carlbot: "yes", probot: "yes" },
   { name: "Tickets", commie: "yes", mee6: "no", dyno: "yes", carlbot: "no", probot: "no" },
 ];
