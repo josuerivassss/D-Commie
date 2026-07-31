@@ -44,11 +44,13 @@ export default function GuildPicker() {
 
   if (state.accessDenied) {
     return (
-      <>
+      <div className="page-shell">
         <Header user={null} />
-        <AccessDenied />
+        <main className="page-main">
+          <AccessDenied />
+        </main>
         <Footer />
-      </>
+      </div>
     );
   }
 
@@ -76,28 +78,30 @@ export default function GuildPicker() {
   }
 
   return (
-    <>
+    <div className="page-shell">
       <Header user={state.user} />
-      <div className="picker-wrap">
-        <h1>Select a server</h1>
-        <p className="sub">
-          Servers in color already have Commie &mdash; click one to configure it. Greyed-out servers
-          don&rsquo;t have the bot yet &mdash; click one to invite it there.
-        </p>
-        {state.error && <div className="flash error">{state.error}</div>}
-        <div className="guild-grid">
-          {state.guilds.length === 0 && !state.error && (
-            <p className="sub">
-              You don&rsquo;t manage any servers. You need the &ldquo;Manage Server&rdquo; permission to
-              configure Commie somewhere.
-            </p>
-          )}
-          {state.guilds.map((guild) => (
-            <GuildCard key={guild.id} guild={guild} />
-          ))}
+      <main className="page-main">
+        <div className="picker-wrap">
+          <h1>Select a server</h1>
+          <p className="sub">
+            Servers in color already have Commie &mdash; click one to configure it. Greyed-out servers
+            don&rsquo;t have the bot yet &mdash; click one to invite it there.
+          </p>
+          {state.error && <div className="flash error">{state.error}</div>}
+          <div className="guild-grid">
+            {state.guilds.length === 0 && !state.error && (
+              <p className="sub">
+                You don&rsquo;t manage any servers. You need the &ldquo;Manage Server&rdquo; permission to
+                configure Commie somewhere.
+              </p>
+            )}
+            {state.guilds.map((guild) => (
+              <GuildCard key={guild.id} guild={guild} />
+            ))}
+          </div>
         </div>
-      </div>
+      </main>
       <Footer />
-    </>
+    </div>
   );
 }
