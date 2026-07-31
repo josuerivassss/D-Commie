@@ -18,6 +18,7 @@ export default function Header({ user }) {
       <nav>
         <a href={botInviteUrl()}>Add to Server</a>
         <Link to="/commands">Commands</Link>
+        <Link to="/placeholders">Placeholders</Link>
         <Link to="/dash">Dashboard</Link>
         <a href={SUPPORT_SERVER_URL} target="_blank" rel="noopener noreferrer">
           Support Server

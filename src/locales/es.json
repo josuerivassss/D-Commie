@@ -158,5 +158,120 @@
     "lastUpdated": "Última actualización: {date}",
     "onThisPage": "En esta página",
     "backHome": "← Volver al inicio"
+  },
+  "placeholders": {
+  "tabTitle": "Placeholders",
+  "languageLabel": "Idioma",
+  "hero": {
+    "title": "Placeholders",
+    "subtitle": "Texto dinámico que puedes usar en mensajes de bienvenida, despedida, tags y mensajes de tickets -- se resuelve en tiempo real cada vez que Commie los envía."
+  },
+  "nav": {
+    "gettingStarted": "Introducción",
+    "syntax": "Sintaxis",
+    "reference": "Placeholders",
+    "applications": "Aplicaciones reales",
+    "limits": "Límites"
+  },
+  "gettingStarted": {
+    "title": "Introducción",
+    "p1": "Un placeholder es un pequeño fragmento de texto entre llaves, como {user.mention}, que Commie reemplaza con información real en el momento en que se envía un mensaje: quién se unió, en qué servidor, cuántos miembros tiene, y más.",
+    "p2": "Los encontrarás en cuatro lugares: el mensaje de bienvenida (/welcome message), el mensaje de despedida (/leave message), el contenido de los tags (/tag create y /tag update), y el mensaje de apertura de un ticket (/ticket message). Cualquier comando marcado con \"Placeholders available\" en la página de Comandos soporta todo lo de esta guía.",
+    "p3": "No necesitas escribir código -- solo coloca el placeholder donde quieras que aparezca el valor, guarda el comando, y Commie lo completa automáticamente."
+  },
+  "syntax": {
+    "title": "Sintaxis",
+    "basicTitle": "Variables",
+    "basicBody": "Los placeholders más simples no reciben argumentos -- solo un nombre entre llaves. Se reemplazan por un único valor.",
+    "argsTitle": "Funciones",
+    "argsBody": "Algunos placeholders reciben argumentos, separados por punto y coma: {name:arg1;arg2}. Úsalos para transformar texto o construir embeds pieza por pieza.",
+    "nestedTitle": "Anidamiento",
+    "nestedBody": "Los placeholders pueden contener otros placeholders como argumentos, resolviéndose de adentro hacia afuera.",
+    "escapeTitle": "Escapar caracteres",
+    "escapeBody": "Para mostrar una llave literal en vez de activar un placeholder, escápala con una barra invertida: \\{ y \\}.",
+    "fallbackTitle": "Placeholders desconocidos",
+    "fallbackBody": "Un placeholder mal escrito o no reconocido nunca genera un error -- se deja tal cual lo escribiste, para que puedas ver y corregir el typo."
+  },
+  "reference": {
+    "title": "Placeholders",
+    "subtitle": "Todos los placeholders que Commie entiende actualmente, agrupados por lo que hacen.",
+    "categories": {
+      "user": "Usuario",
+      "guild": "Servidor",
+      "channel": "Canal",
+      "text": "Texto",
+      "math": "Matemáticas",
+      "embed": "Constructor de embeds",
+      "misc": "Varios"
+    },
+    "variable": "Variable",
+    "function": "Función",
+    "argsLabel": "Argumentos",
+    "ref": {
+      "userName": "El nombre de usuario de Discord de quien envía el mensaje.",
+      "userId": "El ID de Discord de quien envía el mensaje.",
+      "userMention": "Una mención clicable de quien envía el mensaje.",
+      "userDiscriminator": "El discriminador antiguo del autor (\"0\" para nombres de usuario actuales).",
+      "userAvatar": "La URL del avatar actual del autor.",
+      "userTag": "El tag completo del autor, ej. usuario#0.",
+      "guildName": "El nombre del servidor actual, o \"DM\" fuera de un servidor.",
+      "guildId": "El ID del servidor actual, o \"DM\" fuera de un servidor.",
+      "guildMembers": "El número de miembros del servidor actual.",
+      "guildIcon": "La URL del ícono del servidor actual, vacío si no tiene.",
+      "channelName": "El nombre del canal actual, o \"DM\".",
+      "channelId": "El ID del canal actual.",
+      "channelMention": "Una mención clicable del canal actual, vacío en DMs.",
+      "upper": "Convierte el texto a MAYÚSCULAS.",
+      "lower": "Convierte el texto a minúsculas.",
+      "title": "Convierte El Texto A Formato Título.",
+      "length": "Devuelve cuántos caracteres tiene el texto.",
+      "repeat": "Repite el texto un número de veces (0-10).",
+      "sum": "Suma cualquier cantidad de valores.",
+      "sub": "Resta el segundo valor del primero.",
+      "mul": "Multiplica dos valores.",
+      "div": "Divide el primer valor entre el segundo (\"undefined\" si se divide entre cero).",
+      "embedTitle": "Inicia un nuevo embed con este título.",
+      "embedDescription": "Establece la descripción del embed actual.",
+      "embedColor": "Establece el color del embed actual desde un código hex, con o sin \"#\".",
+      "embedFooter": "Establece el texto del footer del embed actual.",
+      "embedImage": "Establece la imagen principal del embed actual.",
+      "embedThumbnail": "Establece la miniatura del embed actual.",
+      "embedField": "Agrega un campo al embed actual. Pon el tercer argumento en \"false\" para un campo de ancho completo.",
+      "emoji": "Reacciona al mensaje enviado con este emoji una vez publicado.",
+      "if": "Devuelve el segundo argumento si el primero es verdadero, si no el tercero (o nada)."
+    }
+  },
+  "applications": {
+    "title": "Aplicaciones reales",
+    "subtitle": "Cómo otros servidores usan los placeholders en la práctica, de principio a fin.",
+    "welcome": {
+      "title": "Mensaje de bienvenida",
+      "description": "Saluda a los nuevos miembros con un embed que muestra su avatar y el número de miembros en vivo del servidor.",
+      "note": "Ejecuta primero /welcome channel para que el mensaje tenga a dónde ir -- activa los mensajes de bienvenida automáticamente."
+    },
+    "leave": {
+      "title": "Mensaje de despedida",
+      "description": "Una despedida corta en texto plano publicada cuando alguien deja el servidor.",
+      "note": "Los mensajes de despedida no necesitan un embed -- el texto plano evita que se sientan como un anuncio."
+    },
+    "tags": {
+      "title": "Tags",
+      "description": "Construye una respuesta reutilizable tipo FAQ una sola vez, y deja que cualquiera en el servidor la consulte con /tag view.",
+      "note": "Los placeholders se resuelven contra quien ejecuta /tag view, no contra quien creó el tag."
+    },
+    "tickets": {
+      "title": "Mensaje de bienvenida del ticket",
+      "description": "Personaliza el primer mensaje dentro de cada nuevo hilo de soporte.",
+      "note": "Este mensaje se renderiza una sola vez, al abrir el ticket -- {user.mention} se refiere a quien lo abrió."
+    }
+  },
+  "limits": {
+    "title": "Límites",
+    "item1": "Los placeholders pueden anidarse hasta 15 niveles de profundidad -- más allá de eso, el más interno se deja como texto literal en vez de resolverse, como protección ante plantillas descontroladas.",
+    "item2": "{repeat:texto;veces} limita \"veces\" entre 0 y 10, incluso si pides más.",
+    "item3": "Los campos de embed construidos con {embed.field:...} siguen los límites propios de Discord: 256 caracteres para un título, 4096 para una descripción, 1024 para el valor de un campo, y un máximo de 25 campos por embed.",
+    "item4": "Si un placeholder de función lanza un error interno, se resuelve silenciosamente como una cadena vacía en vez de romper el resto de tu mensaje.",
+    "item5": "Solo se envían los primeros 10 embeds y las primeras 20 reacciones producidas por un mismo render, siguiendo los límites propios de Discord por mensaje."
   }
+}
 }

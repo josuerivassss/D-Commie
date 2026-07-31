@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { categoryMeta } from "../../commands/categories";
+import { Link } from "react-router-dom";
 import Badge from "./Badge";
 
 const COPY_FEEDBACK_MS = 2000;
@@ -69,7 +70,12 @@ function CommandBody({ command, parentName }) {
   return (
     <>
       <p className="cmd-description">{command.description || "No description provided."}</p>
-
+      {command.supports_placeholders && (
+      <Link to="/placeholders" className="cmd-badge cmd-badge-placeholder">
+        <span className="cmd-badge-brace">{"{ }"}</span>
+        Placeholders available
+      </Link>
+      )}
       <div className="cmd-badges-row">
         {command.owner_only && <Badge tone="danger" icon="lock">Owner only</Badge>}
         {command.guild_only && <Badge tone="neutral" icon="server">Server only</Badge>}

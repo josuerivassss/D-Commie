@@ -158,5 +158,120 @@
     "lastUpdated": "Last updated: {date}",
     "onThisPage": "On this page",
     "backHome": "← Back to home"
+  },
+  "placeholders": {
+  "tabTitle": "Placeholders",
+  "languageLabel": "Language",
+  "hero": {
+    "title": "Placeholders",
+    "subtitle": "Dynamic text you can drop into welcome messages, leave messages, tags, and ticket messages -- resolved live every time Commie sends them."
+  },
+  "nav": {
+    "gettingStarted": "Getting started",
+    "syntax": "Syntax",
+    "reference": "Placeholders",
+    "applications": "Real applications",
+    "limits": "Limits"
+  },
+  "gettingStarted": {
+    "title": "Getting started",
+    "p1": "A placeholder is a small piece of text wrapped in curly braces, like {user.mention}, that Commie replaces with real information the moment a message is sent -- who joined, which server, how many members it has, and more.",
+    "p2": "You'll find them in four places: the welcome message (/welcome message), the leave message (/leave message), tag content (/tag create and /tag update), and a ticket's opening message (/ticket message). Any command tagged \"Placeholders available\" on the Commands page supports everything on this guide.",
+    "p3": "You don't need to write any code -- just type the placeholder where you want the value to appear, save the command, and Commie fills it in automatically."
+  },
+  "syntax": {
+    "title": "Syntax",
+    "basicTitle": "Variables",
+    "basicBody": "The simplest placeholders take no arguments -- just a name in braces. They're replaced with a single value.",
+    "argsTitle": "Functions",
+    "argsBody": "Some placeholders take arguments, separated by semicolons: {name:arg1;arg2}. Use these to transform text or build embeds piece by piece.",
+    "nestedTitle": "Nesting",
+    "nestedBody": "Placeholders can contain other placeholders as arguments, resolved from the inside out.",
+    "escapeTitle": "Escaping",
+    "escapeBody": "To show a literal brace instead of triggering a placeholder, escape it with a backslash: \\{ and \\}.",
+    "fallbackTitle": "Unknown placeholders",
+    "fallbackBody": "A misspelled or unrecognized placeholder is never an error -- it's left exactly as typed, so you can see and fix the typo."
+  },
+  "reference": {
+    "title": "Placeholders",
+    "subtitle": "Every placeholder Commie currently understands, grouped by what it does.",
+    "categories": {
+      "user": "User",
+      "guild": "Server",
+      "channel": "Channel",
+      "text": "Text",
+      "math": "Math",
+      "embed": "Embed builder",
+      "misc": "Misc"
+    },
+    "variable": "Variable",
+    "function": "Function",
+    "argsLabel": "Arguments",
+    "ref": {
+      "userName": "The message author's Discord username.",
+      "userId": "The message author's Discord user ID.",
+      "userMention": "A clickable mention of the message author.",
+      "userDiscriminator": "The author's legacy discriminator (\"0\" for current-style usernames).",
+      "userAvatar": "The URL of the author's current display avatar.",
+      "userTag": "The author's full tag, e.g. username#0.",
+      "guildName": "The current server's name, or \"DM\" outside a server.",
+      "guildId": "The current server's ID, or \"DM\" outside a server.",
+      "guildMembers": "The current server's member count.",
+      "guildIcon": "The current server's icon URL, empty if it has none.",
+      "channelName": "The current channel's name, or \"DM\".",
+      "channelId": "The current channel's ID.",
+      "channelMention": "A clickable mention of the current channel, empty in DMs.",
+      "upper": "Converts text to UPPERCASE.",
+      "lower": "Converts text to lowercase.",
+      "title": "Converts Text To Title Case.",
+      "length": "Returns how many characters the text has.",
+      "repeat": "Repeats text a number of times (0-10).",
+      "sum": "Adds together any number of values.",
+      "sub": "Subtracts the second value from the first.",
+      "mul": "Multiplies two values.",
+      "div": "Divides the first value by the second (\"undefined\" if dividing by zero).",
+      "embedTitle": "Starts a new embed with this title.",
+      "embedDescription": "Sets the description of the current embed.",
+      "embedColor": "Sets the current embed's color from a hex code, with or without \"#\".",
+      "embedFooter": "Sets the footer text of the current embed.",
+      "embedImage": "Sets the main image of the current embed.",
+      "embedThumbnail": "Sets the thumbnail of the current embed.",
+      "embedField": "Adds a field to the current embed. Set the third argument to \"false\" for a full-width field.",
+      "emoji": "Reacts to the sent message with this emoji once it's posted.",
+      "if": "Returns the second argument if the first is truthy, otherwise the third (or nothing)."
+    }
+  },
+  "applications": {
+    "title": "Real applications",
+    "subtitle": "How other servers actually use placeholders, end to end.",
+    "welcome": {
+      "title": "Welcome message",
+      "description": "Greet new members with an embed that shows their avatar and the server's live member count.",
+      "note": "Run /welcome channel first so the message has somewhere to go -- it enables welcome messages automatically."
+    },
+    "leave": {
+      "title": "Leave message",
+      "description": "A short, plain-text goodbye posted when someone leaves.",
+      "note": "Leave messages don't need an embed -- plain text keeps them from feeling like an announcement."
+    },
+    "tags": {
+      "title": "Tags",
+      "description": "Build a reusable FAQ-style answer once, then let anyone in the server pull it up with /tag view.",
+      "note": "Placeholders resolve against whoever runs /tag view, not whoever created the tag."
+    },
+    "tickets": {
+      "title": "Ticket welcome message",
+      "description": "Personalize the first message inside every new support thread.",
+      "note": "This message is rendered once, when the ticket opens -- {user.mention} refers to whoever opened it."
+    }
+  },
+  "limits": {
+    "title": "Limits",
+    "item1": "Placeholders can nest up to 15 levels deep -- beyond that, the innermost one is left as literal text instead of resolving, guarding against runaway templates.",
+    "item2": "{repeat:text;times} clamps \"times\" between 0 and 10, even if you ask for more.",
+    "item3": "Embed fields built with {embed.field:...} follow Discord's own limits: 256 characters for a title, 4096 for a description, 1024 for a field value, and a maximum of 25 fields per embed.",
+    "item4": "If a function placeholder throws an internal error, it silently resolves to an empty string instead of breaking the rest of your message.",
+    "item5": "Only the first 10 embeds and first 20 reactions produced by a single render are actually sent, matching Discord's own per-message limits."
   }
+}
 }
