@@ -54,18 +54,20 @@ export default function GuildPicker() {
 
   if (!isLoggedIn()) {
     return (
-      <>
+      <div className="page-shell">
         <Header user={null} />
-        <div className="picker-wrap">
-          <h1>Select a server</h1>
-          <p className="sub">Log in with Discord to see and configure the servers you manage.</p>
-          {loginFailed && <div className="flash error">{LOGIN_ERROR_MESSAGES[loginFailed] || LOGIN_ERROR_MESSAGES[1]}</div>}
-          <a className="btn btn-primary" href={discordLoginUrl()}>
-            Log in with Discord
-          </a>
-        </div>
-      <Footer />
-      </>
+        <main className="page-main">
+          <div className="picker-wrap">
+            <h1>Select a server</h1>
+            <p className="sub">Log in with Discord to see and configure the servers you manage.</p>
+            {loginFailed && <div className="flash error">{LOGIN_ERROR_MESSAGES[loginFailed] || LOGIN_ERROR_MESSAGES[1]}</div>}
+            <a className="btn btn-primary" href={discordLoginUrl()}>
+              Log in with Discord
+            </a>
+          </div>
+        </main>
+        <Footer />
+      </div>
     );
   }
 

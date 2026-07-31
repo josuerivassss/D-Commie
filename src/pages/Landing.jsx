@@ -27,10 +27,11 @@ const FEATURES = [
 ];
 
 const SCREENSHOTS = [
-  { seed: "commie-moderation", title: "Moderation" },
-  { seed: "commie-welcome", title: "Welcome & Autoroles" },
-  { seed: "commie-starboard", title: "Starboard" },
-  { seed: "commie-dashboard", title: "Dashboard" },
+  { seed: "greetings", title: "Welcome & Autoroles" },
+  // { seed: "commie-moderation", title: "Moderation" },
+  { seed: "starboard", title: "Starboard" },
+  { seed: "tickets", title: "Tickets" },
+  { seed: "dashboard", title: "Dashboard" },
 ];
 
 function FeatureBadge({ value }) {
@@ -80,7 +81,11 @@ function Carousel() {
           <div className="carousel-track" style={{ transform: `translateX(-${index * 100}%)` }}>
             {SCREENSHOTS.map((s) => (
               <div className="carousel-slide" key={s.seed}>
-                <img src={`https://picsum.photos/seed/${s.seed}/1400/600`} alt={s.title} />
+                <div
+                  className="carousel-slide-bg"
+                  style={{ backgroundImage: `url(/features/${s.seed}.png)` }}
+                />
+                <img src={`/features/${s.seed}.png`} alt={s.title} />
                 <div className="carousel-caption">{s.title}</div>
               </div>
             ))}
