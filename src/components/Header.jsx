@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { botInviteUrl, SUPPORT_SERVER_URL } from "../config";
 import { logout as logoutRequest } from "../auth";
 
@@ -9,20 +9,25 @@ export default function Header({ user }) {
   }
 
   return (
-    
     <header className="header">
       <Link className="brand" to="/">
         <img src="/logo-mascot.png" alt="Commie logo" />
         Commie
       </Link>
       <nav>
-        <a href={botInviteUrl()}>Add to Server</a>
-        <Link to="/commands">Commands</Link>
-        <Link to="/placeholders">Placeholders</Link>
-        <Link to="/dash">Dashboard</Link>
-        <a href={SUPPORT_SERVER_URL} target="_blank" rel="noopener noreferrer">
+        <NavLink className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`} to="/commands">
+          Commands
+        </NavLink>
+        <NavLink className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`} to="/placeholders">
+          Placeholders
+        </NavLink>
+        <NavLink className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`} to="/dash">
+          Dashboard
+        </NavLink>
+        <a className="nav-link" href={SUPPORT_SERVER_URL} target="_blank" rel="noopener noreferrer">
           Support Server
         </a>
+        <a className="nav-cta" href={botInviteUrl()}>Add to Server</a>
         {user && (
           <span className="user-chip">
             {user.avatar && (
