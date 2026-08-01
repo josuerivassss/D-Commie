@@ -37,19 +37,34 @@ export default function CommandsPage() {
     return () => { cancelled = true; };
   }, []);
 
+  const activeCategory = searchParams.get("cat");
   const activeCommand = searchParams.get("cmd");
   const activeChild = searchParams.get("subcmd");
   const filtered = useCommandSearch(state.commands, query);
   const categories = useMemo(() => groupByCategory(filtered), [filtered]);
 
+  function selectCategory(name) {
+    setSearchParams({ cat: name }, { replace: true });
+  }
+
   function selectCommand(name, subName) {
+    const command = state.commands.find((c) => c.name === name);
     const next = { cmd: name };
     if (subName) next.subcmd = subName;
+    // Keep the category in the URL so the back button returns to the
+    // right category page, whether the command was reached via the
+    // category grid or picked directly from the sidebar tree.
+    next.cat = command ? command.category : activeCategory || "";
+    if (!next.cat) delete next.cat;
     setSearchParams(next, { replace: true });
   }
 
-  function clearSelection() {
+  function backToOverview() {
     setSearchParams({}, { replace: true });
+  }
+
+  function backToCategory() {
+    setSearchParams(activeCategory ? { cat: activeCategory } : {}, { replace: true });
   }
 
   if (state.loading) return <div className="center-loading">Loading commands&hellip;</div>;
@@ -67,7 +82,7 @@ export default function CommandsPage() {
   return (
     <>
       <Header user={null} />
-      <div className={`cmd-page ${activeCommand ? "cmd-detail-open" : ""}`}>
+      <div className={`cmd-page ${activeCommand || activeCategory ? "cmd-detail-open" : ""}`}>
         <CommandSidebar
           categories={categories}
           activeCommand={activeCommand}
@@ -75,13 +90,18 @@ export default function CommandsPage() {
           onSelect={selectCommand}
           query={query}
           onQueryChange={setQuery}
+          isOverview={!activeCategory && !activeCommand}
+          onGoOverview={backToOverview}
         />
         <CommandDetail
           commands={state.commands}
+          activeCategory={activeCategory}
           activeCommand={activeCommand}
           activeChild={activeChild}
-          onSelect={selectCommand}
-          onBack={clearSelection}
+          onSelectCategory={selectCategory}
+          onSelectCommand={selectCommand}
+          onBackToOverview={backToOverview}
+          onBackToCategory={backToCategory}
         />
       </div>
       <Footer />

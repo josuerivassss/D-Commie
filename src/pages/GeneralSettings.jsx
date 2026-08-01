@@ -4,7 +4,8 @@ import { api, friendlyErrorMessage } from "../api";
 import { useTranslation } from "../context/LocaleContext";
 import { useToast } from "../context/ToastContext";
 import { useActionCooldown } from "../hooks/useActionCooldown";
-import { LIMITS, LANGUAGES } from "../validation";
+import { LIMITS } from "../validation";
+import LanguageSelect from "../components/LanguageSelect";
 
 export default function GeneralSettings() {
   const { guild } = useOutletContext();
@@ -92,13 +93,7 @@ export default function GeneralSettings() {
         </div>
         <div className="field">
           <label>{t("general.languageLabel")}</label>
-          <select value={config.language} onChange={(e) => setConfig({ ...config, language: e.target.value })}>
-            {LANGUAGES.map((lang) => (
-              <option key={lang.code} value={lang.code}>
-                {lang.flag} {lang.label}
-              </option>
-            ))}
-          </select>
+          <LanguageSelect value={config.language} onChange={(code) => setConfig({ ...config, language: code })} />
         </div>
         <button className="btn btn-primary" type="submit" disabled={saving || remaining > 0}>
           {saving ? t("common.saving") : remaining > 0 ? t("common.waitSeconds", { seconds: remaining }) : t("common.saveChanges")}

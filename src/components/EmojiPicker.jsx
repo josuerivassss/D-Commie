@@ -1,46 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import emojiData from "unicode-emoji-json/data-by-group.json";
 import { api, friendlyErrorMessage } from "../api";
+import { twemojiUrl } from "../utils/twemoji";
 
 const CUSTOM_EMOJI_PATTERN = /^<:(\w+):(\d+)>$/;
-const TWEMOJI_BASE = "https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/";
 const SEARCH_DEBOUNCE_MS = 150;
-
-// One tab per unicode group, icon = first emoji in that group. Computed
-// once at module scope since emojiData never changes at runtime.
-const CATEGORIES = emojiData.map((category, index) => ({
-  index,
-  slug: category.slug,
-  name: category.name,
-  icon: category.emojis[0]?.emoji,
-}));
-
-// Same conversion Twemoji itself uses to derive asset filenames from a
-// unicode emoji string -- keeps the dashboard's glyphs visually identical
-// to what the bot renders (see ImagesManager.EMOJI_CDN in the bot repo).
-function toCodePoint(unicodeSurrogates) {
-  const codePoints = [];
-  let previousSurrogate = 0;
-  for (let i = 0; i < unicodeSurrogates.length; i++) {
-    const charCode = unicodeSurrogates.charCodeAt(i);
-    if (previousSurrogate) {
-      codePoints.push((0x10000 + (previousSurrogate - 0xd800) * 0x400 + (charCode - 0xdc00)).toString(16));
-      previousSurrogate = 0;
-    } else if (charCode >= 0xd800 && charCode <= 0xdbff) {
-      previousSurrogate = charCode;
-    } else {
-      codePoints.push(charCode.toString(16));
-    }
-  }
-  return codePoints.join("-");
-}
-
-function twemojiUrl(emoji) {
-  // Twemoji drops the FE0F variation selector from single-codepoint emoji,
-  // but keeps it for ZWJ sequences (combined emoji like professions/families).
-  const normalized = emoji.includes("\u200d") ? emoji : emoji.replace(/\ufe0f/g, "");
-  return `${TWEMOJI_BASE}${toCodePoint(normalized)}.svg`;
-}
 
 function useDebouncedValue(value, delayMs) {
   const [debounced, setDebounced] = useState(value);

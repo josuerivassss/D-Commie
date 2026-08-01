@@ -121,7 +121,7 @@ function countLabel(list) {
   return `${commandLabel}, ${subCount} subcommand${subCount === 1 ? "" : "s"}`;
 }
 
-function CommandsOverview({ commands, onSelect }) {
+function CommandsOverview({ commands, onSelectCategory }) {
   const categories = useMemo(() => {
     const map = new Map();
     for (const command of commands) {
@@ -141,7 +141,7 @@ function CommandsOverview({ commands, onSelect }) {
         {categories.map(([name, list]) => {
           const meta = categoryMeta(name);
           return (
-            <button type="button" key={name} className="cmd-overview-card" style={{ "--card-color": meta.color }} onClick={() => onSelect(list[0].name)}>
+            <button type="button" key={name} className="cmd-overview-card" style={{ "--card-color": meta.color }} onClick={() => onSelectCategory(name)}>
               <span className="cmd-overview-card-name">{name}</span>
               <span className="cmd-overview-card-count">{countLabel(list)}</span>
               {meta.description && <span className="cmd-overview-card-desc">{meta.description}</span>}
@@ -153,11 +153,73 @@ function CommandsOverview({ commands, onSelect }) {
   );
 }
 
-export default function CommandDetail({ commands, activeCommand, activeChild, onSelect, onBack }) {
+function CategoryCommandCard({ command, onSelect }) {
+  return (
+    <button type="button" className="cmd-subcommand-card" onClick={() => onSelect(command.name)}>
+      <span className="cmd-subcommand-name">{command.name}</span>
+      <span className="cmd-subcommand-desc">{command.description || "No description provided."}</span>
+      {command.children?.length > 0 && (
+        <span className="cmd-subcommand-count">
+          {command.children.length} subcommand{command.children.length === 1 ? "" : "s"}
+        </span>
+      )}
+    </button>
+  );
+}
+
+function CategoryDetail({ commands, category, onSelectCommand, onBack }) {
+  const meta = categoryMeta(category);
+  const list = useMemo(() => commands.filter((c) => c.category === category), [commands, category]);
+
+  return (
+    <section className="cmd-detail">
+      <button type="button" className="cmd-back-btn" onClick={onBack}>&larr; All categories</button>
+
+      <div className="cmd-detail-header">
+        <span className="cmd-category-pill" style={{ "--pill-color": meta.color }}>{category}</span>
+        <h1>{category}</h1>
+      </div>
+      {meta.description && <p className="cmd-description">{meta.description}</p>}
+
+      <div className="cmd-subcommands">
+        <div className="cmd-subcommands-title">Commands</div>
+        <div className="cmd-subcommands-grid">
+          {list.map((command) => (
+            <CategoryCommandCard key={command.name} command={command} onSelect={onSelectCommand} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default function CommandDetail({
+  commands,
+  activeCategory,
+  activeCommand,
+  activeChild,
+  onSelectCategory,
+  onSelectCommand,
+  onBackToOverview,
+  onBackToCategory,
+}) {
   const command = useMemo(() => (activeCommand ? findCommand(commands, activeCommand) : null), [commands, activeCommand]);
   const child = useMemo(() => (command && activeChild ? findCommand(command.children, activeChild) : null), [command, activeChild]);
 
-  if (!command) return <CommandsOverview commands={commands} onSelect={onSelect} />;
+  if (!activeCategory && !command) {
+    return <CommandsOverview commands={commands} onSelectCategory={onSelectCategory} />;
+  }
+
+  if (!command) {
+    return (
+      <CategoryDetail
+        commands={commands}
+        category={activeCategory}
+        onSelectCommand={onSelectCommand}
+        onBack={onBackToOverview}
+      />
+    );
+  }
 
   const meta = categoryMeta(command.category);
   const displayed = child || command;
@@ -165,7 +227,7 @@ export default function CommandDetail({ commands, activeCommand, activeChild, on
 
   return (
     <section className="cmd-detail">
-      <button type="button" className="cmd-back-btn" onClick={onBack}>&larr; All commands</button>
+      <button type="button" className="cmd-back-btn" onClick={onBackToCategory}>&larr; {command.category}</button>
 
       <div className="cmd-detail-header">
         <span className="cmd-category-pill" style={{ "--pill-color": meta.color }}>{command.category}</span>
@@ -179,7 +241,7 @@ export default function CommandDetail({ commands, activeCommand, activeChild, on
           <div className="cmd-subcommands-title">Subcommands</div>
           <div className="cmd-subcommands-grid">
             {command.children.map((sub) => (
-              <button type="button" key={sub.name} className="cmd-subcommand-card" onClick={() => onSelect(command.name, sub.name)}>
+              <button type="button" key={sub.name} className="cmd-subcommand-card" onClick={() => onSelectCommand(command.name, sub.name)}>
                 <span className="cmd-subcommand-name">{sub.name}</span>
                 <span className="cmd-subcommand-desc">{sub.description}</span>
               </button>
