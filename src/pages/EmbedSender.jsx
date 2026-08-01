@@ -5,6 +5,7 @@ import { useTranslation } from "../context/LocaleContext";
 import { useToast } from "../context/ToastContext";
 import { EMBED_LIMITS, embedCharacterCount, isValidUrl, validateEmbedPayload } from "../validation";
 import { useUnsavedChangesGuard } from "../context/UnsavedChangesContext";
+import AutoGrowTextarea from "../components/AutoGrowTextArea";
 import EmbedPreview from "../components/EmbedPreview";
 import EmojiPicker from "../components/EmojiPicker";
 import Toggle from "../components/Toggle";
@@ -327,7 +328,7 @@ export default function EmbedSender() {
                   {content.length}/{EMBED_LIMITS.CONTENT_MAX}
                 </span>
               </div>
-              <textarea maxLength={EMBED_LIMITS.CONTENT_MAX} value={content} onChange={(e) => setContent(e.target.value)} />
+              <AutoGrowTextarea maxLength={EMBED_LIMITS.CONTENT_MAX} value={content} onChange={(e) => setContent(e.target.value)} />
             </div>
           </div>
 
@@ -375,7 +376,7 @@ export default function EmbedSender() {
                   {embed.description.length}/{EMBED_LIMITS.DESCRIPTION_MAX}
                 </span>
               </div>
-              <textarea maxLength={EMBED_LIMITS.DESCRIPTION_MAX} value={embed.description} onChange={(e) => updateActiveEmbed({ description: e.target.value })} />
+              <AutoGrowTextarea maxLength={EMBED_LIMITS.DESCRIPTION_MAX} value={embed.description} onChange={(e) => updateActiveEmbed({ description: e.target.value })} />
               <div className="hint">{t("embeds.descriptionHint")}</div>
             </div>
 
@@ -447,7 +448,13 @@ export default function EmbedSender() {
                 </div>
                 <div className="embed-field-controls">
                   <label className="embed-field-inline-toggle">
-                    <input type="checkbox" checked={field.inline} onChange={(e) => updateField(index, { inline: e.target.checked })} /> {t("embeds.inlineLabel")}
+                    <input type="checkbox" checked={field.inline} onChange={(e) => updateField(index, { inline: e.target.checked })} />
+                    <span className="embed-field-inline-box">
+                      <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="white" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M3.5 8.5L6.5 11.5L12.5 4.5" />
+                      </svg>
+                    </span>
+                    {t("embeds.inlineLabel")}
                   </label>
                   <button type="button" className="btn btn-outline" onClick={() => removeField(index)}>{t("embeds.removeField")}</button>
                 </div>

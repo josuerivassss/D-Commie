@@ -6,6 +6,7 @@ import { useToast } from "../context/ToastContext";
 import { useActionCooldown } from "../hooks/useActionCooldown";
 import { useUnsavedChangesGuard } from "../context/UnsavedChangesContext";
 import Toggle from "../components/Toggle";
+import AutoGrowTextarea from "../components/AutoGrowTextArea";
 import { TICKET_LIMITS } from "../validation";
 
 export default function TicketsSettings() {
@@ -154,7 +155,7 @@ export default function TicketsSettings() {
               {messageLength}/{TICKET_LIMITS.MESSAGE_MAX}
             </span>
           </div>
-          <textarea
+          <AutoGrowTextarea
             maxLength={TICKET_LIMITS.MESSAGE_MAX}
             className={messageTooShort ? "invalid" : ""}
             value={config.welcome_message}

@@ -5,6 +5,7 @@ import { useTranslation } from "../context/LocaleContext";
 import { useToast } from "../context/ToastContext";
 import { useUnsavedChangesGuard } from "../context/UnsavedChangesContext";
 import { useActionCooldown } from "../hooks/useActionCooldown";
+import AutoGrowTextarea from "../components/AutoGrowTextArea";
 import Toggle from "../components/Toggle";
 import { LIMITS } from "../validation";
 
@@ -196,7 +197,7 @@ export default function WelcomeAutorolesSettings() {
               {config.message.length}/{LIMITS.MESSAGE_MAX}
             </span>
           </div>
-          <textarea
+          <AutoGrowTextarea
             maxLength={LIMITS.MESSAGE_MAX}
             placeholder={t("welcome.messagePlaceholder", { p1: "{user.mention}", p2: "{guild.name}" })}
             value={config.message}

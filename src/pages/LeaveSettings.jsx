@@ -6,6 +6,7 @@ import { useToast } from "../context/ToastContext";
 import { useActionCooldown } from "../hooks/useActionCooldown";
 import { useUnsavedChangesGuard } from "../context/UnsavedChangesContext";
 import Toggle from "../components/Toggle";
+import AutoGrowTextarea from "../components/AutoGrowTextArea";
 import { LIMITS } from "../validation";
 
 export default function LeaveSettings() {
@@ -120,7 +121,7 @@ export default function LeaveSettings() {
               {config.message.length}/{LIMITS.MESSAGE_MAX}
             </span>
           </div>
-          <textarea
+          <AutoGrowTextarea
             maxLength={LIMITS.MESSAGE_MAX}
             placeholder={t("leave.messagePlaceholder", { p1: "{user.name}", p2: "{guild.name}" })}
             value={config.message}

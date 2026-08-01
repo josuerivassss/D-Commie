@@ -1,9 +1,9 @@
 export const LIMITS = {
   PREFIX_MAX: 10,
-  MESSAGE_MAX: 1000,
+  MESSAGE_MAX: 800,
   EMOJI_MAX: 60,
-  THRESHOLD_MIN: 1,
-  THRESHOLD_MAX: 500,
+  THRESHOLD_MIN: 2,
+  THRESHOLD_MAX: 250,
 };
 
 export function clamp(value, min, max) {
@@ -102,4 +102,4 @@ export function validateEmbedPayload(data, t) {
   return errors;
 }
 
-export const TICKET_LIMITS = { MESSAGE_MIN: 5, MESSAGE_MAX: 1800 };
+export const TICKET_LIMITS = { MESSAGE_MIN: 5, MESSAGE_MAX: 1000 };

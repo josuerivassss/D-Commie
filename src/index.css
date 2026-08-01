@@ -358,7 +358,14 @@ button { font-family: var(--font); }
   font-size: 0.92rem;
 }
 
-.field textarea { min-height: 90px; resize: vertical; }
+.field textarea { min-height: 90px; }
+
+.autogrow-textarea {
+  resize: none;
+  overflow-y: auto;
+  max-height: 420px;
+  transition: height 0.12s ease;
+}
 
 .field input:focus, .field select:focus, .field textarea:focus {
   outline: none;
@@ -734,8 +741,33 @@ button { font-family: var(--font); }
 .embed-color-row input[type="color"] { width: 44px; height: 38px; padding: 2px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); cursor: pointer; }
 .embed-color-hex { flex: 1; }
 
-.embed-field-inline-toggle { display: flex; align-items: center; gap: 0.3rem; font-size: 0.8rem; color: var(--text-muted); white-space: nowrap; }
+.embed-field-inline-toggle {
+  display: inline-flex; align-items: center; gap: 0.55rem;
+  padding: 0.4rem 0.65rem; margin-left: -0.65rem; border-radius: 8px;
+  font-size: 0.82rem; color: var(--text-muted); white-space: nowrap;
+  cursor: pointer; user-select: none;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+.embed-field-inline-toggle:hover { background: rgba(255, 255, 255, 0.05); color: var(--text); }
 
+.embed-field-inline-toggle input { position: absolute; opacity: 0; width: 0; height: 0; }
+
+.embed-field-inline-box {
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  width: 19px; height: 19px; border-radius: 5px;
+  border: 1.5px solid var(--border); background: var(--bg);
+  transition: background 0.12s ease, border-color 0.12s ease;
+}
+.embed-field-inline-toggle:hover .embed-field-inline-box { border-color: var(--accent); }
+
+.embed-field-inline-toggle input:checked + .embed-field-inline-box {
+  background: var(--accent); border-color: var(--accent);
+}
+
+.embed-field-inline-box svg { opacity: 0; transform: scale(0.5); transition: opacity 0.1s ease, transform 0.1s ease; }
+.embed-field-inline-toggle input:checked + .embed-field-inline-box svg { opacity: 1; transform: scale(1); }
+
+.embed-field-inline-toggle input:focus-visible + .embed-field-inline-box { outline: 2px solid var(--accent); outline-offset: 2px; }
 .reactions-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
 .reaction-chip {
   display: inline-flex; align-items: center; gap: 0.35rem;
@@ -753,10 +785,10 @@ button { font-family: var(--font); }
 .embed-builder-preview-pane { position: sticky; top: 1.5rem; }
 .embed-preview { background: #313338; border-radius: var(--radius); padding: 1.25rem; }
 .embed-preview-message-header { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.5rem; }
-.embed-preview-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--wine-light); flex-shrink: 0; }
 .embed-preview-bot-name { font-weight: 600; margin-right: 0.4rem; }
-.embed-preview-bot-tag { background: var(--accent); color: white; font-size: 0.62rem; font-weight: 700; padding: 0.05rem 0.3rem; border-radius: 4px; vertical-align: middle; }
 .embed-preview-content { font-size: 0.92rem; margin: 0.3rem 0 0.6rem 46px; white-space: pre-wrap; }
+.embed-preview-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--wine-light); flex-shrink: 0; object-fit: cover; }
+.embed-preview-bot-tag { background: #5865f2; color: white; font-size: 0.62rem; font-weight: 700; padding: 0.05rem 0.3rem; border-radius: 4px; vertical-align: middle; }
 
 .embed-preview-card {
   position: relative; margin: 0.4rem 0 0.4rem 46px; padding: 0.8rem 1rem;
@@ -1160,6 +1192,14 @@ button { font-family: var(--font); }
 .ph-card-args { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; font-size: 0.76rem; color: var(--text-muted); margin-bottom: 0.4rem; }
 .ph-card-args code { background: rgba(255, 255, 255, 0.06); padding: 0.05rem 0.4rem; border-radius: 4px; font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; }
 .ph-card .md-codeblock { margin: 0.4rem 0 0; }
+
+.ph-card-title-row { display: flex; align-items: center; gap: 8px; }
+.ph-card-type-icon {
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; width: 16px; height: 16px; border-radius: 5px;
+}
+.ph-card-type-icon-variable { background: #47656b; }
+.ph-card-type-icon-function { background: #6b5f42; }
 
 .ph-codeblock-wrap { margin: 0.75rem 0 1.25rem; }
 .ph-codeblock-label { font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.3rem; }

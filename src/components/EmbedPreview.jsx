@@ -57,10 +57,10 @@ export default function EmbedPreview({ content, embeds }) {
   return (
     <div className="embed-preview">
       <div className="embed-preview-message-header">
-        <div className="embed-preview-avatar" />
+        <img className="embed-preview-avatar" src="/logo-square.png" alt="" />
         <div>
           <span className="embed-preview-bot-name">Commie</span>
-          <span className="embed-preview-bot-tag">BOT</span>
+          <span className="embed-preview-bot-tag">APP</span>
         </div>
       </div>
       {hasContent && <div className="embed-preview-content">{renderDiscordMarkdown(content)}</div>}

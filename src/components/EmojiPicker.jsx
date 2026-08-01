@@ -6,6 +6,13 @@ import { twemojiUrl } from "../utils/twemoji";
 const CUSTOM_EMOJI_PATTERN = /^<:(\w+):(\d+)>$/;
 const SEARCH_DEBOUNCE_MS = 150;
 
+const CATEGORIES = emojiData.map((category, index) => ({
+  index,
+  slug: category.slug,
+  name: category.name,
+  icon: category.emojis[0]?.emoji,
+}));
+
 function useDebouncedValue(value, delayMs) {
   const [debounced, setDebounced] = useState(value);
   useEffect(() => {
