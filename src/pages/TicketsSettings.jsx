@@ -4,6 +4,7 @@ import { api, friendlyErrorMessage } from "../api";
 import { useTranslation } from "../context/LocaleContext";
 import { useToast } from "../context/ToastContext";
 import { useActionCooldown } from "../hooks/useActionCooldown";
+import { useUnsavedChangesGuard } from "../context/UnsavedChangesContext";
 import Toggle from "../components/Toggle";
 import { TICKET_LIMITS } from "../validation";
 
@@ -13,7 +14,9 @@ export default function TicketsSettings() {
   const { showToast } = useToast();
   const saveCooldown = useActionCooldown();
   const panelCooldown = useActionCooldown();
+  const { setGuard } = useUnsavedChangesGuard();
   const [config, setConfig] = useState({ enabled: false, staff_role_id: "", welcome_message: "" });
+  const [savedSnapshot, setSavedSnapshot] = useState(null);
   const [channelId, setChannelId] = useState("");
   const [panelStatus, setPanelStatus] = useState({ channelId: "", messageId: "" });
   const [channels, setChannels] = useState([]);
@@ -23,6 +26,13 @@ export default function TicketsSettings() {
   const [saving, setSaving] = useState(false);
   const [sendingPanel, setSendingPanel] = useState(false);
 
+  const isDirty = savedSnapshot !== null && JSON.stringify(config) !== savedSnapshot;
+
+  useEffect(() => {
+    setGuard(isDirty);
+    return () => setGuard(false);
+  }, [isDirty, setGuard]);
+
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
@@ -30,11 +40,13 @@ export default function TicketsSettings() {
     Promise.all([api.getTicketsConfig(guild.id), api.getTicketChannels(guild.id), api.getGuildRoles(guild.id)])
       .then(([doc, ch, rl]) => {
         if (cancelled) return;
-        setConfig({
-          enabled: Boolean(doc.enabled),
-          staff_role_id: doc.staff_role_id || "",
-          welcome_message: doc.welcome_message || "",
-        });
+        const loaded = {
+           enabled: Boolean(doc.enabled),
+           staff_role_id: doc.staff_role_id || "",
+           welcome_message: doc.welcome_message || "",
+         };
+        setConfig(loaded);
+        setSavedSnapshot(JSON.stringify(loaded));
         setChannelId(doc.panel_channel_id || "");
         setPanelStatus({ channelId: doc.panel_channel_id || "", messageId: doc.panel_message_id || "" });
         setChannels(ch);
@@ -50,11 +62,14 @@ export default function TicketsSettings() {
     saveCooldown.startCooldown();
     setSaving(true);
     try {
-      await api.updateTicketsConfig(guild.id, {
-        enabled: config.enabled,
-        staff_role_id: config.staff_role_id || null,
-        welcome_message: config.welcome_message.slice(0, TICKET_LIMITS.MESSAGE_MAX),
-      });
+      const trimmed = {
+         enabled: config.enabled,
+         staff_role_id: config.staff_role_id,
+         welcome_message: config.welcome_message.slice(0, TICKET_LIMITS.MESSAGE_MAX),
+       };
+       await api.updateTicketsConfig(guild.id, { ...trimmed, staff_role_id: trimmed.staff_role_id || null });
+      setConfig(trimmed);
+      setSavedSnapshot(JSON.stringify(trimmed));
       showToast(t("common.saved"), "success");
     } catch (err) {
       showToast(friendlyErrorMessage(err, t), "error");
@@ -69,7 +84,11 @@ export default function TicketsSettings() {
     try {
       const result = await api.postTicketPanel(guild.id, { channel_id: channelId });
       setPanelStatus({ channelId: result.panel_channel_id, messageId: result.panel_message_id });
-      setConfig((prev) => ({ ...prev, enabled: true }));
+      setConfig((prev) => {
+        const updated = { ...prev, enabled: true };
+        setSavedSnapshot(JSON.stringify(updated)); // panel post already flips `enabled` server-side too
+        return updated;
+      });
       showToast(t("tickets.panelSentSuccess"), "success");
     } catch (err) {
       showToast(friendlyErrorMessage(err, t), "error");

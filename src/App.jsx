@@ -1,5 +1,4 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { UnsavedChangesProvider } from "./context/UnsavedChangesContext";
 import { ToastProvider } from "./context/ToastContext";
 import Landing from "./pages/Landing";
 import AuthCallback from "./pages/AuthCallback";
@@ -21,7 +20,6 @@ import { botInviteUrl, SUPPORT_SERVER_URL } from "./config";
 export default function App() {
   return (
     <ToastProvider>
-      <UnsavedChangesProvider>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Landing />} />
@@ -47,7 +45,6 @@ export default function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </BrowserRouter>
-      </UnsavedChangesProvider>
     </ToastProvider>
   );
 }

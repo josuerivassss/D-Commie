@@ -4,6 +4,7 @@ import { api, friendlyErrorMessage } from "../api";
 import { useTranslation } from "../context/LocaleContext";
 import { useToast } from "../context/ToastContext";
 import { useActionCooldown } from "../hooks/useActionCooldown";
+import { useUnsavedChangesGuard } from "../context/UnsavedChangesContext";
 import Toggle from "../components/Toggle";
 import EmojiPicker from "../components/EmojiPicker";
 import { LIMITS, clamp } from "../validation";
@@ -13,6 +14,7 @@ export default function StarboardSettings() {
   const { t } = useTranslation();
   const { showToast } = useToast();
   const { remaining, startCooldown } = useActionCooldown();
+  const { setGuard } = useUnsavedChangesGuard();
   const [config, setConfig] = useState({
     enabled: false,
     channel_id: "",
@@ -20,10 +22,18 @@ export default function StarboardSettings() {
     threshold: 3,
     count_self_stars: false,
   });
+  const [savedSnapshot, setSavedSnapshot] = useState(null);
   const [channels, setChannels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(null);
   const [saving, setSaving] = useState(false);
+
+  const isDirty = savedSnapshot !== null && JSON.stringify(config) !== savedSnapshot;
+
+  useEffect(() => {
+    setGuard(isDirty);
+    return () => setGuard(false);
+  }, [isDirty, setGuard]);
 
   useEffect(() => {
     let cancelled = false;
@@ -33,13 +43,15 @@ export default function StarboardSettings() {
     Promise.all([api.getStarboard(guild.id), api.getGuildChannels(guild.id)])
       .then(([doc, ch]) => {
         if (cancelled) return;
-        setConfig({
-          enabled: Boolean(doc.enabled),
-          channel_id: doc.channel_id || "",
-          emoji: doc.emoji || "\u2b50",
-          threshold: doc.threshold || 3,
-          count_self_stars: Boolean(doc.count_self_stars),
-        });
+        const loaded = {
+           enabled: Boolean(doc.enabled),
+           channel_id: doc.channel_id || "",
+           emoji: doc.emoji || "\u2b50",
+           threshold: doc.threshold || 3,
+           count_self_stars: Boolean(doc.count_self_stars),
+         };
+        setConfig(loaded);
+        setSavedSnapshot(JSON.stringify(loaded));
         setChannels(ch);
       })
       .catch((err) => {
@@ -60,13 +72,16 @@ export default function StarboardSettings() {
     startCooldown();
     setSaving(true);
     try {
-      await api.updateStarboard(guild.id, {
-        enabled: config.enabled,
-        channel_id: config.channel_id || null,
-        emoji: config.emoji.slice(0, LIMITS.EMOJI_MAX) || "\u2b50",
-        threshold: clamp(config.threshold, LIMITS.THRESHOLD_MIN, LIMITS.THRESHOLD_MAX),
-        count_self_stars: config.count_self_stars,
-      });
+      const trimmed = {
+         enabled: config.enabled,
+         channel_id: config.channel_id,
+         emoji: config.emoji.slice(0, LIMITS.EMOJI_MAX) || "\u2b50",
+         threshold: clamp(config.threshold, LIMITS.THRESHOLD_MIN, LIMITS.THRESHOLD_MAX),
+         count_self_stars: config.count_self_stars,
+      };
+      await api.updateStarboard(guild.id, { ...trimmed, channel_id: trimmed.channel_id || null });
+      setConfig(trimmed);
+      setSavedSnapshot(JSON.stringify(trimmed));
       showToast(t("common.saved"), "success");
     } catch (err) {
       showToast(friendlyErrorMessage(err, t), "error");

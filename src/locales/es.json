@@ -11,7 +11,11 @@
     "messageLabel": "Mensaje",
     "selectChannel": "— Selecciona un canal —",
     "noPermissionsSuffix": " (sin permisos)",
-    "networkError": "No se pudo conectar con el servidor. Si usas Brave, prueba desactivar Shields para este sitio (icono del león en la barra de direcciones) e intenta de nuevo."
+    "networkError": "No se pudo conectar con el servidor. Si usas Brave, prueba desactivar Shields para este sitio (icono del león en la barra de direcciones) e intenta de nuevo.",
+    "unsavedTitle": "Cambios sin guardar",
+    "unsavedMessage": "Tienes cambios sin guardar. ¿Deseas salir sin guardarlos?",
+    "unsavedDiscard": "Salir sin guardar",
+    "unsavedCancel": "Cancelar"
   },
   "sidebar": {
     "general": "General",

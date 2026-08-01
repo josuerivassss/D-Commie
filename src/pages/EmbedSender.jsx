@@ -176,19 +176,9 @@ export default function EmbedSender() {
   }, []);
 
   useEffect(() => {
-    setGuard(isDirty ? "Tienes cambios sin enviar. ¿Deseas salir de todas formas?" : null);
-    return () => setGuard(null);
+    setGuard(isDirty);
+    return () => setGuard(false);
   }, [isDirty, setGuard]);
-
-  useEffect(() => {
-    function handleBeforeUnload(e) {
-      if (!isDirty) return;
-      e.preventDefault();
-      e.returnValue = "";
-    }
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-  }, [isDirty]);
 
   function updateActiveEmbed(patch) {
     setEmbeds((prev) => prev.map((e, i) => (i === activeEmbedIndex ? { ...e, ...patch } : e)));

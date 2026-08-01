@@ -4,6 +4,7 @@ import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import AccessDenied from "../components/AccessDenied";
 import { LocaleProvider } from "../context/LocaleContext";
+import { UnsavedChangesProvider } from "../context/UnsavedChangesContext";
 import { api, ApiError } from "../api";
 import { isLoggedIn } from "../auth";
 
@@ -42,6 +43,7 @@ export default function DashboardLayout() {
 
   return (
     <LocaleProvider language={state.language}>
+      <UnsavedChangesProvider>
       <Header user={state.user} />
       <div className="dash-shell">
         <Sidebar guild={state.guild} />
@@ -49,6 +51,7 @@ export default function DashboardLayout() {
           <Outlet context={{ guild: state.guild }} />
         </div>
       </div>
+      </UnsavedChangesProvider>
     </LocaleProvider>
   );
 }

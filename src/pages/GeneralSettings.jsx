@@ -4,6 +4,7 @@ import { api, friendlyErrorMessage } from "../api";
 import { useTranslation } from "../context/LocaleContext";
 import { useToast } from "../context/ToastContext";
 import { useActionCooldown } from "../hooks/useActionCooldown";
+import { useUnsavedChangesGuard } from "../context/UnsavedChangesContext";
 import { LIMITS } from "../validation";
 import LanguageSelect from "../components/LanguageSelect";
 
@@ -12,10 +13,19 @@ export default function GeneralSettings() {
   const { t } = useTranslation();
   const { showToast } = useToast();
   const { remaining, startCooldown } = useActionCooldown();
+  const { setGuard } = useUnsavedChangesGuard();
   const [config, setConfig] = useState({ prefix: "", language: "en" });
+  const [savedSnapshot, setSavedSnapshot] = useState(null);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(null);
   const [saving, setSaving] = useState(false);
+
+  const isDirty = savedSnapshot !== null && JSON.stringify(config) !== savedSnapshot;
+
+  useEffect(() => {
+    setGuard(isDirty);
+    return () => setGuard(false);
+  }, [isDirty, setGuard]);
 
   useEffect(() => {
     let cancelled = false;
@@ -26,7 +36,9 @@ export default function GeneralSettings() {
       .getGuildConfig(guild.id)
       .then((doc) => {
         if (cancelled) return;
-        setConfig({ prefix: doc.prefix || "", language: doc.language || "en" });
+        const loaded = { prefix: doc.prefix || "", language: doc.language || "en" };
+        setConfig(loaded);
+        setSavedSnapshot(JSON.stringify(loaded));
       })
       .catch((err) => {
         if (cancelled) return;
@@ -46,10 +58,10 @@ export default function GeneralSettings() {
     startCooldown();
     setSaving(true);
     try {
-      await api.updateGuildConfig(guild.id, {
-        language: config.language,
-        prefix: config.prefix.trim().slice(0, LIMITS.PREFIX_MAX),
-      });
+      const trimmed = { prefix: config.prefix.trim().slice(0, LIMITS.PREFIX_MAX), language: config.language };
+      await api.updateGuildConfig(guild.id, trimmed);
+      setConfig(trimmed);
+      setSavedSnapshot(JSON.stringify(trimmed));
       showToast(t("common.saved"), "success");
     } catch (err) {
       showToast(friendlyErrorMessage(err, t), "error");

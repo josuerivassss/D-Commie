@@ -4,6 +4,7 @@ import { api, friendlyErrorMessage } from "../api";
 import { useTranslation } from "../context/LocaleContext";
 import { useToast } from "../context/ToastContext";
 import { useActionCooldown } from "../hooks/useActionCooldown";
+import { useUnsavedChangesGuard } from "../context/UnsavedChangesContext";
 import Toggle from "../components/Toggle";
 import { LIMITS } from "../validation";
 
@@ -12,11 +13,20 @@ export default function LeaveSettings() {
   const { t } = useTranslation();
   const { showToast } = useToast();
   const { remaining, startCooldown } = useActionCooldown();
+  const { setGuard } = useUnsavedChangesGuard();
   const [config, setConfig] = useState({ enabled: false, channel: "", message: "" });
+  const [savedSnapshot, setSavedSnapshot] = useState(null);
   const [channels, setChannels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(null);
   const [saving, setSaving] = useState(false);
+
+  const isDirty = savedSnapshot !== null && JSON.stringify(config) !== savedSnapshot;
+
+  useEffect(() => {
+    setGuard(isDirty);
+    return () => setGuard(false);
+  }, [isDirty, setGuard]);
 
   useEffect(() => {
     let cancelled = false;
@@ -27,11 +37,9 @@ export default function LeaveSettings() {
       .then(([doc, ch]) => {
         if (cancelled) return;
         const leave = doc.leave || {};
-        setConfig({
-          enabled: Boolean(leave.enabled),
-          channel: leave.channel || "",
-          message: leave.message || "",
-        });
+        const loaded = { enabled: Boolean(leave.enabled), channel: leave.channel || "", message: leave.message || "" };
+        setConfig(loaded);
+        setSavedSnapshot(JSON.stringify(loaded));
         setChannels(ch);
       })
       .catch((err) => {
@@ -52,11 +60,15 @@ export default function LeaveSettings() {
     startCooldown();
     setSaving(true);
     try {
+      const trimmedMessage = config.message.slice(0, LIMITS.MESSAGE_MAX);
       await api.updateGuildConfig(guild.id, {
         leave_enabled: config.enabled,
         leave_channel_id: config.channel || null,
-        leave_message: config.message.slice(0, LIMITS.MESSAGE_MAX),
+        leave_message: trimmedMessage,
       });
+      const updated = { ...config, message: trimmedMessage };
+      setConfig(updated);
+      setSavedSnapshot(JSON.stringify(updated));
       showToast(t("common.saved"), "success");
     } catch (err) {
       showToast(friendlyErrorMessage(err, t), "error");

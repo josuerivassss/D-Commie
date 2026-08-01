@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useUnsavedChangesGuard } from "../context/UnsavedChangesContext";
 import { useTranslation } from "../context/LocaleContext";
 
@@ -55,52 +55,46 @@ function IconEmbeds() {
   );
 }
 
-function IconSwitchServer() {
-  return (
-    <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.3" aria-hidden="true">
-      <path d="M4.5 4h8l-2-2M11.5 12h-8l2 2" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
 export default function Sidebar({ guild }) {
   const base = `/dash/${guild.id}`;
-  const { confirmNavigation } = useUnsavedChangesGuard();
+  const { hasUnsaved, confirmNavigation } = useUnsavedChangesGuard();
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
-  function guardedClick(e) {
-    if (!confirmNavigation()) e.preventDefault();
+  async function guardedClick(e, to) {
+    if (!hasUnsaved) return;
+    e.preventDefault();
+    if (await confirmNavigation()) navigate(to);
   }
 
   return (
     <aside className="sidebar">
       <div className="guild-name">{guild.name}</div>
-      <NavLink className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`} to={`${base}/general`} onClick={guardedClick}>
+      <NavLink className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`} to={`${base}/general`} onClick={(e) => guardedClick(e, `${base}/general`)}>
         <IconGeneral />
         {t("sidebar.general")}
       </NavLink>
-      <NavLink className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`} to={`${base}/welcome`} onClick={guardedClick}>
+      <NavLink className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`} to={`${base}/welcome`} onClick={(e) => guardedClick(e, `${base}/welcome`)}>
         <IconWelcome />
         {t("sidebar.welcome")}
       </NavLink>
-      <NavLink className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`} to={`${base}/leave`} onClick={guardedClick}>
+      <NavLink className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`} to={`${base}/leave`} onClick={(e) => guardedClick(e, `${base}/leave`)}>
         <IconLeave />
         {t("sidebar.leave")}
       </NavLink>
-      <NavLink className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`} to={`${base}/starboard`} onClick={guardedClick}>
+      <NavLink className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`} to={`${base}/starboard`} onClick={(e) => guardedClick(e, `${base}/starboard`)}>
         <IconStarboard />
         {t("sidebar.starboard")}
       </NavLink>
-      <NavLink className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`} to={`${base}/tickets`} onClick={guardedClick}>
+      <NavLink className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`} to={`${base}/tickets`} onClick={(e) => guardedClick(e, `${base}/tickets`)}>
         <IconTickets />
         {t("sidebar.tickets")}
       </NavLink>
-      <NavLink className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`} to={`${base}/embeds`} onClick={guardedClick}>
+      <NavLink className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`} to={`${base}/embeds`} onClick={(e) => guardedClick(e, `${base}/embeds`)}>
         <IconEmbeds />
         {t("sidebar.embeds")}
       </NavLink>
-      <NavLink className="nav-item switch-server" to="/dash" onClick={guardedClick}>
-        <IconSwitchServer />
+      <NavLink className="nav-item switch-server" to="/dash" onClick={(e) => guardedClick(e, "/dash")}>
         {t("sidebar.switchServer")}
       </NavLink>
     </aside>

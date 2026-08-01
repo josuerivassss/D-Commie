@@ -3,6 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import { api, friendlyErrorMessage } from "../api";
 import { useTranslation } from "../context/LocaleContext";
 import { useToast } from "../context/ToastContext";
+import { useUnsavedChangesGuard } from "../context/UnsavedChangesContext";
 import { useActionCooldown } from "../hooks/useActionCooldown";
 import Toggle from "../components/Toggle";
 import { LIMITS } from "../validation";
@@ -48,14 +49,25 @@ export default function WelcomeAutorolesSettings() {
   const { showToast } = useToast();
   const welcomeCooldown = useActionCooldown();
   const autorolesCooldown = useActionCooldown();
+  const { setGuard } = useUnsavedChangesGuard();
   const [config, setConfig] = useState({ enabled: false, channel: "", message: "" });
+  const [savedWelcomeSnapshot, setSavedWelcomeSnapshot] = useState(null);
   const [channels, setChannels] = useState([]);
   const [roles, setRoles] = useState([]);
   const [autoroles, setAutoroles] = useState({ humans: [], bots: [] });
+  const [savedAutorolesSnapshot, setSavedAutorolesSnapshot] = useState(null);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(null);
   const [savingWelcome, setSavingWelcome] = useState(false);
   const [savingAutoroles, setSavingAutoroles] = useState(false);
+
+  const welcomeDirty = savedWelcomeSnapshot !== null && JSON.stringify(config) !== savedWelcomeSnapshot;
+  const autorolesDirty = savedAutorolesSnapshot !== null && JSON.stringify(autoroles) !== savedAutorolesSnapshot;
+
+  useEffect(() => {
+    setGuard(welcomeDirty || autorolesDirty);
+    return () => setGuard(false);
+  }, [welcomeDirty, autorolesDirty, setGuard]);
 
   useEffect(() => {
     let cancelled = false;
@@ -71,17 +83,14 @@ export default function WelcomeAutorolesSettings() {
       .then(([doc, ch, gr, ar]) => {
         if (cancelled) return;
         const welcome = doc.welcome || {};
-        setConfig({
-          enabled: Boolean(welcome.enabled),
-          channel: welcome.channel || "",
-          message: welcome.message || "",
-        });
+        const loadedWelcome = { enabled: Boolean(welcome.enabled), channel: welcome.channel || "", message: welcome.message || "" };
+        setConfig(loadedWelcome);
+        setSavedWelcomeSnapshot(JSON.stringify(loadedWelcome));
         setChannels(ch);
         setRoles(gr);
-        setAutoroles({
-          humans: ar.humans || [],
-          bots: ar.bots || [],
-        });
+        const loadedAutoroles = { humans: ar.humans || [], bots: ar.bots || [] };
+        setAutoroles(loadedAutoroles);
+        setSavedAutorolesSnapshot(JSON.stringify(loadedAutoroles));
       })
       .catch((err) => {
         if (cancelled) return;
@@ -101,11 +110,15 @@ export default function WelcomeAutorolesSettings() {
     welcomeCooldown.startCooldown();
     setSavingWelcome(true);
     try {
+      const trimmedMessage = config.message.slice(0, LIMITS.MESSAGE_MAX);
       await api.updateGuildConfig(guild.id, {
         welcome_enabled: config.enabled,
         welcome_channel_id: config.channel || null,
-        welcome_message: config.message.slice(0, LIMITS.MESSAGE_MAX),
+        welcome_message: trimmedMessage,
       });
+      const updated = { ...config, message: trimmedMessage };
+      setConfig(updated);
+      setSavedWelcomeSnapshot(JSON.stringify(updated));
       showToast(t("common.saved"), "success");
     } catch (err) {
       showToast(friendlyErrorMessage(err, t), "error");
@@ -132,6 +145,7 @@ export default function WelcomeAutorolesSettings() {
         humans: autoroles.humans,
         bots: autoroles.bots,
       });
+      setSavedAutorolesSnapshot(JSON.stringify(autoroles));
       showToast(t("common.saved"), "success");
     } catch (err) {
       showToast(friendlyErrorMessage(err, t), "error");
