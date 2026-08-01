@@ -784,32 +784,49 @@ button { font-family: var(--font); }
 
 /* -- embed preview ----------------------------------------------------------- */
 
-.embed-builder-preview-pane { position: sticky; top: 1.5rem; }
-.embed-preview { background: #313338; border-radius: var(--radius); padding: 1.25rem; }
+.embed-builder-preview-pane { position: sticky; top: 1.5rem; min-width: 0; }
+
+/* min-width: 0 lets this flex/grid child shrink below its content's
+   intrinsic width -- without it, a single long unbroken token (a URL, a
+   run of repeated characters, etc.) forces the whole preview pane wider
+   than its grid track and pushes the page into horizontal scroll. */
+.embed-preview { background: #313338; border-radius: var(--radius); padding: 1.25rem; min-width: 0; }
 .embed-preview-message-header { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.5rem; }
 .embed-preview-bot-name { font-weight: 600; margin-right: 0.4rem; }
-.embed-preview-content { font-size: 0.92rem; margin: 0.3rem 0 0.6rem 46px; white-space: pre-wrap; }
+.embed-preview-content {
+  font-size: 0.92rem;
+  margin: 0.3rem 0 0.6rem 46px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
 .embed-preview-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--wine-light); flex-shrink: 0; object-fit: cover; }
 .embed-preview-bot-tag { background: #5865f2; color: white; font-size: 0.62rem; font-weight: 700; padding: 0.05rem 0.3rem; border-radius: 4px; vertical-align: middle; }
 
 .embed-preview-card {
   position: relative; margin: 0.4rem 0 0.4rem 46px; padding: 0.8rem 1rem;
   background: #2b2d31; border-radius: 6px; border-left: 4px solid #2b2d31; max-width: 480px;
+  min-width: 0;
 }
 .embed-preview-thumbnail { position: absolute; top: 0.8rem; right: 1rem; width: 72px; height: 72px; border-radius: 6px; object-fit: cover; }
 .embed-preview-author { display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.4rem; }
 .embed-preview-author-icon { width: 20px; height: 20px; border-radius: 50%; object-fit: cover; }
-.embed-preview-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.3rem; }
+.embed-preview-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.3rem; overflow-wrap: anywhere; }
 .embed-preview-title a { color: #00a8fc; }
-.embed-preview-description { font-size: 0.85rem; line-height: 1.5; white-space: pre-wrap; }
+.embed-preview-description {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
 .embed-preview-fields { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin-top: 0.6rem; }
-.embed-preview-field { grid-column: span 3; }
+.embed-preview-field { grid-column: span 3; min-width: 0; }
 .embed-preview-field.inline { grid-column: span 1; }
-.embed-preview-field-name { font-size: 0.8rem; font-weight: 700; margin-bottom: 0.15rem; }
-.embed-preview-field-value { font-size: 0.82rem; white-space: pre-wrap; }
+.embed-preview-field-name { font-size: 0.8rem; font-weight: 700; margin-bottom: 0.15rem; overflow-wrap: anywhere; }
+.embed-preview-field-value { font-size: 0.82rem; white-space: pre-wrap; overflow-wrap: anywhere; }
 .embed-preview-image { width: 100%; border-radius: 6px; margin-top: 0.6rem; }
-.embed-preview-footer { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.6rem; }
-.embed-preview-footer-icon { width: 18px; height: 18px; border-radius: 50%; object-fit: cover; }
+.embed-preview-footer { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.6rem; min-width: 0; }
+.embed-preview-footer span { overflow-wrap: anywhere; }
+.embed-preview-footer-icon { width: 18px; height: 18px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
 
 .embed-collapsible-body input[type="text"],
 .embed-field-card input[type="text"] {
@@ -832,7 +849,7 @@ button { font-family: var(--font); }
   border-color: var(--danger);
 }
 
-.md-code { background: rgba(0, 0, 0, 0.3); padding: 0.05rem 0.3rem; border-radius: 4px; font-family: monospace; font-size: 0.85em; }
+.md-code { background: rgba(0, 0, 0, 0.3); padding: 0.05rem 0.3rem; border-radius: 4px; font-family: monospace; font-size: 0.85em; overflow-wrap: anywhere; }
 
 .md-codeblock {
   background: rgba(0, 0, 0, 0.35); border-radius: 6px; padding: 0.6rem 0.75rem;
