@@ -14,7 +14,8 @@ export default function GeneralSettings() {
   const { showToast } = useToast();
   const { remaining, startCooldown } = useActionCooldown();
   const { setGuard } = useUnsavedChangesGuard();
-  const [config, setConfig] = useState({ prefix: "", language: "en" });
+  const [config, setConfig] = useState({ prefix: "", language: "en", nickname: "" });
+  const [canChangeNickname, setCanChangeNickname] = useState(true);
   const [savedSnapshot, setSavedSnapshot] = useState(null);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(null);
@@ -32,13 +33,17 @@ export default function GeneralSettings() {
     setLoading(true);
     setLoadError(null);
 
-    api
-      .getGuildConfig(guild.id)
-      .then((doc) => {
+    Promise.all([api.getGuildConfig(guild.id), api.getGuildNickname(guild.id)])
+      .then(([doc, nick]) => {
         if (cancelled) return;
-        const loaded = { prefix: doc.prefix || "", language: doc.language || "en" };
+        const loaded = {
+          prefix: doc.prefix || "",
+          language: doc.language || "en",
+          nickname: nick.nickname || "",
+        };
         setConfig(loaded);
         setSavedSnapshot(JSON.stringify(loaded));
+        setCanChangeNickname(nick.can_change);
       })
       .catch((err) => {
         if (cancelled) return;
@@ -58,8 +63,19 @@ export default function GeneralSettings() {
     startCooldown();
     setSaving(true);
     try {
-      const trimmed = { prefix: config.prefix.trim().slice(0, LIMITS.PREFIX_MAX), language: config.language };
-      await api.updateGuildConfig(guild.id, trimmed);
+      const trimmed = {
+        prefix: config.prefix.trim().slice(0, LIMITS.PREFIX_MAX),
+        language: config.language,
+        nickname: config.nickname.trim().slice(0, LIMITS.NICKNAME_MAX),
+      };
+      await api.updateGuildConfig(guild.id, {
+        prefix: trimmed.prefix,
+        language: trimmed.language,
+        // Only sent if the bot can actually act on it -- avoids tripping
+        // the backend's permission check on every save for servers where
+        // it's disabled and thus never changes.
+        ...(canChangeNickname ? { nickname: trimmed.nickname } : {}),
+      });
       setConfig(trimmed);
       setSavedSnapshot(JSON.stringify(trimmed));
       showToast(t("common.saved"), "success");
@@ -87,6 +103,23 @@ export default function GeneralSettings() {
       <h1>{t("general.title")}</h1>
       <p className="section-sub">{t("general.subtitle")}</p>
       <form className="card" onSubmit={handleSubmit}>
+        <div className="field">
+          <div className="field-label-row">
+            <label>{t("general.nicknameLabel")}</label>
+            <span className={`char-count ${config.nickname.length >= LIMITS.NICKNAME_MAX ? "warn" : ""}`}>
+              {config.nickname.length}/{LIMITS.NICKNAME_MAX}
+            </span>
+          </div>
+          <input
+            type="text"
+            maxLength={LIMITS.NICKNAME_MAX}
+            placeholder="Commie"
+            value={config.nickname}
+            disabled={!canChangeNickname}
+            onChange={(e) => setConfig({ ...config, nickname: e.target.value })}
+          />
+          <div className="hint">{canChangeNickname ? t("general.nicknameHint") : t("general.nicknameDisabledHint")}</div>
+        </div>
         <div className="field">
           <div className="field-label-row">
             <label>{t("general.prefixLabel")}</label>

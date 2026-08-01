@@ -31,7 +31,10 @@
     "subtitle": "Prefijo de comandos e idioma.",
     "prefixLabel": "Prefijo de comandos",
     "prefixHint": "Se usa junto a los slash commands, ej. {prefix}ping. Déjalo vacío para usar el predeterminado.",
-    "languageLabel": "Idioma"
+    "languageLabel": "Idioma",
+    "nicknameLabel": "Apodo del bot",
+    "nicknameHint": "Cómo se muestra el nombre del bot en este servidor. Déjalo vacío para usar su nombre de usuario por defecto.",
+    "nicknameDisabledHint": "El bot necesita el permiso \"Cambiar apodo\" en este servidor para poder configurarlo."
   },
   "leave": {
     "title": "Leave",

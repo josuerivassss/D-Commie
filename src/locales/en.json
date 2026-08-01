@@ -31,7 +31,10 @@
     "subtitle": "Command prefix and language.",
     "prefixLabel": "Command prefix",
     "prefixHint": "Used alongside slash commands, e.g. {prefix}ping. Leave blank to use the default.",
-    "languageLabel": "Language"
+    "languageLabel": "Language",
+    "nicknameLabel": "Bot nickname",
+    "nicknameHint": "How the bot's name appears in this server. Leave blank to use its default username.",
+    "nicknameDisabledHint": "The bot needs the \"Change Nickname\" permission in this server to set this."
   },
   "leave": {
     "title": "Leave",

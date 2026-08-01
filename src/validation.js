@@ -4,6 +4,7 @@ export const LIMITS = {
   EMOJI_MAX: 60,
   THRESHOLD_MIN: 2,
   THRESHOLD_MAX: 250,
+  NICKNAME_MAX: 32,
 };
 
 export function clamp(value, min, max) {

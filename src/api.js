@@ -75,6 +75,7 @@ export const api = {
     request("/json/auth/exchange", { method: "POST", body: { session_code: sessionCode } }),
   me: () => request("/json/auth/me"),
   getGuildConfig: (guildId) => request(`/json/guilds/${guildId}`),
+  getGuildNickname: (guildId) => request(`/json/guilds/${guildId}/nickname`),
   updateGuildConfig: (guildId, body) => request(`/json/guilds/${guildId}`, { method: "PATCH", body }),
   getGuildChannels: (guildId) => request(`/json/guilds/${guildId}/channels`),
   getGuildRoles: (guildId) => request(`/json/guilds/${guildId}/roles`),
