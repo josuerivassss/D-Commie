@@ -1,229 +1,8 @@
 {
-  "generated_at": "2026-07-31T03:03:12.498982+00:00",
+  "generated_at": "2026-08-10T23:00:25.926326+00:00",
   "bot_version": "2.0.0",
-  "command_count": 34,
+  "command_count": 36,
   "commands": [
-    {
-      "name": "reminders",
-      "aliases": [
-        "reminder",
-        "remind"
-      ],
-      "description": "Manage your reminders",
-      "cooldown": null,
-      "guild_only": false,
-      "owner_only": false,
-      "permissions": {
-        "user": [],
-        "bot": []
-      },
-      "usage": {
-        "prefix": "reminders"
-      },
-      "id_slash": "1520279434056306748",
-      "options": [],
-      "supports_placeholders": false,
-      "children": [
-        {
-          "name": "prune",
-          "aliases": [],
-          "description": "Remove all your active reminders",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 10.0,
-            "bucket": "member"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "reminders prune"
-          },
-          "id_slash": "1520279434056306748",
-          "options": [],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "list",
-          "aliases": [],
-          "description": "Show your active reminders",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 2.0,
-            "bucket": "member"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "reminders list [limit]"
-          },
-          "id_slash": "1520279434056306748",
-          "options": [
-            {
-              "name": "limit",
-              "description": "Number to show (1-25)",
-              "type": "integer",
-              "required": false
-            }
-          ],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "edit",
-          "aliases": [],
-          "description": "Edit a reminder",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 2.0,
-            "bucket": "member"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "reminders edit <reminder_id> [time] [message]"
-          },
-          "id_slash": "1520279434056306748",
-          "options": [
-            {
-              "name": "reminder_id",
-              "description": "ID to edit",
-              "type": "integer",
-              "required": true
-            },
-            {
-              "name": "time",
-              "description": "New time (optional)",
-              "type": "string",
-              "required": false
-            },
-            {
-              "name": "message",
-              "description": "New message (optional)",
-              "type": "string",
-              "required": false
-            }
-          ],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "add",
-          "aliases": [],
-          "description": "Add a new reminder",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 45.0,
-            "bucket": "member"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "reminders add <time> <message> [channel]"
-          },
-          "id_slash": "1520279434056306748",
-          "options": [
-            {
-              "name": "time",
-              "description": "Time (e.g: 30m, 2h, 1d, 14:30)",
-              "type": "string",
-              "required": true
-            },
-            {
-              "name": "message",
-              "description": "Reminder message",
-              "type": "string",
-              "required": true
-            },
-            {
-              "name": "channel",
-              "description": "Target channel (optional)",
-              "type": "channel",
-              "required": false
-            }
-          ],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "timezone",
-          "aliases": [],
-          "description": "Set your timezone for reminders",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 2.0,
-            "bucket": "member"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "reminders timezone <timezone>"
-          },
-          "id_slash": "1520279434056306748",
-          "options": [
-            {
-              "name": "timezone",
-              "description": "IANA timezone (e.g: America/Mexico_City)",
-              "type": "string",
-              "required": true
-            }
-          ],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "remove",
-          "aliases": [],
-          "description": "Remove a reminder",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 2.0,
-            "bucket": "member"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "reminders remove <reminder_id>"
-          },
-          "id_slash": "1520279434056306748",
-          "options": [
-            {
-              "name": "reminder_id",
-              "description": "ID of the reminder to remove",
-              "type": "integer",
-              "required": true
-            }
-          ],
-          "supports_placeholders": false,
-          "children": []
-        }
-      ],
-      "category": "Reminders"
-    },
     {
       "name": "user",
       "aliases": [],
@@ -241,37 +20,9 @@
       "id_slash": "1449885147846414436",
       "options": [],
       "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "34",
       "children": [
-        {
-          "name": "avatar",
-          "aliases": [],
-          "description": "Shows the avatar of an user",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 4.0,
-            "bucket": "member"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "user avatar <user>"
-          },
-          "id_slash": "1449885147846414436",
-          "options": [
-            {
-              "name": "user",
-              "description": "The user to show the avatar of",
-              "type": "user",
-              "required": false
-            }
-          ],
-          "supports_placeholders": false,
-          "children": []
-        },
         {
           "name": "info",
           "aliases": [],
@@ -300,10 +51,45 @@
             }
           ],
           "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "34.2",
+          "children": []
+        },
+        {
+          "name": "avatar",
+          "aliases": [],
+          "description": "Shows the avatar of an user",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 4.0,
+            "bucket": "member"
+          },
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "user avatar <user>"
+          },
+          "id_slash": "1449885147846414436",
+          "options": [
+            {
+              "name": "user",
+              "description": "The user to show the avatar of",
+              "type": "user",
+              "required": false
+            }
+          ],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "34.1",
           "children": []
         }
       ],
-      "category": "Utility"
+      "category": "Utility",
+      "category_id": "c10"
     },
     {
       "name": "image",
@@ -335,8 +121,893 @@
         }
       ],
       "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "29",
       "children": [],
-      "category": "Utility"
+      "category": "Utility",
+      "category_id": "c10"
+    },
+    {
+      "name": "enable",
+      "aliases": [],
+      "description": "Re-enables a previously disabled command, subcommand, or cog",
+      "cooldown": null,
+      "guild_only": true,
+      "owner_only": false,
+      "permissions": {
+        "user": [
+          "Manage Server"
+        ],
+        "bot": []
+      },
+      "usage": {
+        "prefix": "enable <target>"
+      },
+      "id_slash": "1536509363517395176",
+      "options": [
+        {
+          "name": "target",
+          "description": "The command, subcommand, or cog to enable",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": null,
+      "children": [],
+      "category": "Configuration",
+      "category_id": "c2"
+    },
+    {
+      "name": "lockdown",
+      "aliases": [
+        "lock"
+      ],
+      "description": "Locks a channel for everyone",
+      "cooldown": {
+        "uses": 1,
+        "per_seconds": 5.0,
+        "bucket": "member"
+      },
+      "guild_only": false,
+      "owner_only": false,
+      "permissions": {
+        "user": [
+          "Manage Channels"
+        ],
+        "bot": [
+          "Manage Channels"
+        ]
+      },
+      "usage": {
+        "prefix": "lockdown [channel]"
+      },
+      "id_slash": "1463286376836632597",
+      "options": [
+        {
+          "name": "channel",
+          "description": "The channel to lockdown",
+          "type": "channel",
+          "required": false
+        }
+      ],
+      "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "13",
+      "children": [],
+      "category": "Moderation",
+      "category_id": "c5"
+    },
+    {
+      "name": "kick",
+      "aliases": [],
+      "description": "Kicks a member from the server",
+      "cooldown": {
+        "uses": 1,
+        "per_seconds": 8.0,
+        "bucket": "member"
+      },
+      "guild_only": false,
+      "owner_only": false,
+      "permissions": {
+        "user": [
+          "Kick Members"
+        ],
+        "bot": [
+          "Kick Members"
+        ]
+      },
+      "usage": {
+        "prefix": "kick <member> [reason]"
+      },
+      "id_slash": "1463286376836632602",
+      "options": [
+        {
+          "name": "member",
+          "description": "The member to kick",
+          "type": "user",
+          "required": true
+        },
+        {
+          "name": "reason",
+          "description": "The reason for the kick",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "12",
+      "children": [],
+      "category": "Moderation",
+      "category_id": "c5"
+    },
+    {
+      "name": "calendar",
+      "aliases": [],
+      "description": "Shows a calendar",
+      "cooldown": {
+        "uses": 1,
+        "per_seconds": 4.0,
+        "bucket": "member"
+      },
+      "guild_only": false,
+      "owner_only": false,
+      "permissions": {
+        "user": [],
+        "bot": []
+      },
+      "usage": {
+        "prefix": "calendar"
+      },
+      "id_slash": "1450715937492828192",
+      "options": [],
+      "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "25",
+      "children": [],
+      "category": "Utility",
+      "category_id": "c10"
+    },
+    {
+      "name": "disable",
+      "aliases": [],
+      "description": "Disables a command, subcommand, or cog for this server",
+      "cooldown": null,
+      "guild_only": true,
+      "owner_only": false,
+      "permissions": {
+        "user": [
+          "Manage Server"
+        ],
+        "bot": []
+      },
+      "usage": {
+        "prefix": "disable <target>"
+      },
+      "id_slash": "1536509363517395178",
+      "options": [
+        {
+          "name": "target",
+          "description": "The command, subcommand, or cog to disable",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": null,
+      "children": [],
+      "category": "Configuration",
+      "category_id": "c2"
+    },
+    {
+      "name": "leave",
+      "aliases": [],
+      "description": "Leave message related commands",
+      "cooldown": null,
+      "guild_only": false,
+      "owner_only": false,
+      "permissions": {
+        "user": [],
+        "bot": []
+      },
+      "usage": {
+        "prefix": "leave"
+      },
+      "id_slash": "1519923376087634093",
+      "options": [],
+      "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "8",
+      "children": [
+        {
+          "name": "preview",
+          "aliases": [],
+          "description": "Previews the leave message with your user as the member who left.",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 15.0,
+            "bucket": "guild"
+          },
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [
+              "Manage Server"
+            ],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "leave preview"
+          },
+          "id_slash": "1519923376087634093",
+          "options": [],
+          "supports_placeholders": true,
+          "protected": false,
+          "toggle_id": "8.5",
+          "children": []
+        },
+        {
+          "name": "disable",
+          "aliases": [
+            "off"
+          ],
+          "description": "Disables leave messages",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 10.0,
+            "bucket": "guild"
+          },
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [
+              "Manage Server"
+            ],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "leave disable"
+          },
+          "id_slash": "1519923376087634093",
+          "options": [],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "8.2",
+          "children": []
+        },
+        {
+          "name": "message",
+          "aliases": [],
+          "description": "Sets the leave message. Use {user} to mention the member who left.",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 30.0,
+            "bucket": "guild"
+          },
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [
+              "Manage Server"
+            ],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "leave message <message>"
+          },
+          "id_slash": "1519923376087634093",
+          "options": [
+            {
+              "name": "message",
+              "description": "The message to send when a member leaves.",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "supports_placeholders": true,
+          "protected": false,
+          "toggle_id": "8.4",
+          "children": []
+        },
+        {
+          "name": "enable",
+          "aliases": [
+            "on"
+          ],
+          "description": "Enables leave messages",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 10.0,
+            "bucket": "guild"
+          },
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [
+              "Manage Server"
+            ],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "leave enable"
+          },
+          "id_slash": "1519923376087634093",
+          "options": [],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "8.3",
+          "children": []
+        },
+        {
+          "name": "channel",
+          "aliases": [],
+          "description": "Sets the leave message channel",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 30.0,
+            "bucket": "guild"
+          },
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [
+              "Manage Server"
+            ],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "leave channel <channel>"
+          },
+          "id_slash": "1519923376087634093",
+          "options": [
+            {
+              "name": "channel",
+              "description": "The channel to send leave messages in",
+              "type": "channel",
+              "required": true
+            }
+          ],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "8.1",
+          "children": []
+        }
+      ],
+      "category": "Greetings",
+      "category_id": "c4"
+    },
+    {
+      "name": "tag",
+      "aliases": [
+        "tags",
+        "t"
+      ],
+      "description": "Fetches and displays a tag by name",
+      "cooldown": null,
+      "guild_only": false,
+      "owner_only": false,
+      "permissions": {
+        "user": [],
+        "bot": []
+      },
+      "usage": {
+        "prefix": "tag <tag_name>"
+      },
+      "id_slash": "1455027444623872226",
+      "options": [],
+      "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "20",
+      "children": [
+        {
+          "name": "delete",
+          "aliases": [
+            "remove"
+          ],
+          "description": "Removes a tag",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 4.0,
+            "bucket": "member"
+          },
+          "guild_only": true,
+          "owner_only": false,
+          "permissions": {
+            "user": [],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "tag delete <tag_name>"
+          },
+          "id_slash": "1455027444623872226",
+          "options": [
+            {
+              "name": "tag_name",
+              "description": "The name of the tag to delete",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "20.2",
+          "children": []
+        },
+        {
+          "name": "view",
+          "aliases": [],
+          "description": "Views a tag",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 2.5,
+            "bucket": "member"
+          },
+          "guild_only": true,
+          "owner_only": false,
+          "permissions": {
+            "user": [],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "tag view <tag_name>"
+          },
+          "id_slash": "1455027444623872226",
+          "options": [
+            {
+              "name": "tag_name",
+              "description": "The name of the tag to view",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "supports_placeholders": true,
+          "protected": false,
+          "toggle_id": "20.6",
+          "children": []
+        },
+        {
+          "name": "list",
+          "aliases": [],
+          "description": "Lists all tags in this guild",
+          "cooldown": null,
+          "guild_only": true,
+          "owner_only": false,
+          "permissions": {
+            "user": [],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "tag list"
+          },
+          "id_slash": "1455027444623872226",
+          "options": [],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "20.3",
+          "children": []
+        },
+        {
+          "name": "update",
+          "aliases": [
+            "edit"
+          ],
+          "description": "Updates a tag content",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 4.0,
+            "bucket": "member"
+          },
+          "guild_only": true,
+          "owner_only": false,
+          "permissions": {
+            "user": [
+              "Manage Server"
+            ],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "tag update <tag_name> <new_content>"
+          },
+          "id_slash": "1455027444623872226",
+          "options": [
+            {
+              "name": "tag_name",
+              "description": "The name of the tag to update",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "new_content",
+              "description": "The new content of the tag",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "20.5",
+          "children": []
+        },
+        {
+          "name": "prune",
+          "aliases": [
+            "clear"
+          ],
+          "description": "Prunes all tags in this server",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 15.0,
+            "bucket": "member"
+          },
+          "guild_only": true,
+          "owner_only": false,
+          "permissions": {
+            "user": [
+              "Administrator"
+            ],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "tag prune"
+          },
+          "id_slash": "1455027444623872226",
+          "options": [],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "20.4",
+          "children": []
+        },
+        {
+          "name": "create",
+          "aliases": [
+            "add"
+          ],
+          "description": "Creates a new tag",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 4.0,
+            "bucket": "member"
+          },
+          "guild_only": true,
+          "owner_only": false,
+          "permissions": {
+            "user": [
+              "Manage Server"
+            ],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "tag create <tag_name> <content>"
+          },
+          "id_slash": "1455027444623872226",
+          "options": [
+            {
+              "name": "tag_name",
+              "description": "The name of the tag to create",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "content",
+              "description": "The content of the tag",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "20.1",
+          "children": []
+        }
+      ],
+      "category": "Tags",
+      "category_id": "c8"
+    },
+    {
+      "name": "color",
+      "aliases": [
+        "hex"
+      ],
+      "description": "Shows information about a color given its hex code",
+      "cooldown": {
+        "uses": 1,
+        "per_seconds": 5.0,
+        "bucket": "user"
+      },
+      "guild_only": false,
+      "owner_only": false,
+      "permissions": {
+        "user": [],
+        "bot": []
+      },
+      "usage": {
+        "prefix": "color <hex_code>"
+      },
+      "id_slash": "1452531054803161090",
+      "options": [
+        {
+          "name": "hex_code",
+          "description": "The hex code of the color to show information about",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "26",
+      "children": [],
+      "category": "Utility",
+      "category_id": "c10"
+    },
+    {
+      "name": "welcome",
+      "aliases": [],
+      "description": "Welcome message related commands",
+      "cooldown": null,
+      "guild_only": false,
+      "owner_only": false,
+      "permissions": {
+        "user": [],
+        "bot": []
+      },
+      "usage": {
+        "prefix": "welcome"
+      },
+      "id_slash": "1519923376087634092",
+      "options": [],
+      "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "9",
+      "children": [
+        {
+          "name": "preview",
+          "aliases": [],
+          "description": "Previews the welcome message with your user as the new member.",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 15.0,
+            "bucket": "guild"
+          },
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [
+              "Manage Server"
+            ],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "welcome preview"
+          },
+          "id_slash": "1519923376087634092",
+          "options": [],
+          "supports_placeholders": true,
+          "protected": false,
+          "toggle_id": "9.5",
+          "children": []
+        },
+        {
+          "name": "disable",
+          "aliases": [
+            "off"
+          ],
+          "description": "Disables welcome messages",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 10.0,
+            "bucket": "guild"
+          },
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [
+              "Manage Server"
+            ],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "welcome disable"
+          },
+          "id_slash": "1519923376087634092",
+          "options": [],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "9.2",
+          "children": []
+        },
+        {
+          "name": "message",
+          "aliases": [],
+          "description": "Sets the welcome message. Use {user} to mention the new member.",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 30.0,
+            "bucket": "guild"
+          },
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [
+              "Manage Server"
+            ],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "welcome message <message>"
+          },
+          "id_slash": "1519923376087634092",
+          "options": [
+            {
+              "name": "message",
+              "description": "…",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "supports_placeholders": true,
+          "protected": false,
+          "toggle_id": "9.4",
+          "children": []
+        },
+        {
+          "name": "enable",
+          "aliases": [
+            "on"
+          ],
+          "description": "Enables welcome messages",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 10.0,
+            "bucket": "guild"
+          },
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [
+              "Manage Server"
+            ],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "welcome enable"
+          },
+          "id_slash": "1519923376087634092",
+          "options": [],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "9.3",
+          "children": []
+        },
+        {
+          "name": "channel",
+          "aliases": [],
+          "description": "Sets the welcome message channel",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 30.0,
+            "bucket": "guild"
+          },
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [
+              "Manage Server"
+            ],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "welcome channel <channel>"
+          },
+          "id_slash": "1519923376087634092",
+          "options": [
+            {
+              "name": "channel",
+              "description": "…",
+              "type": "channel",
+              "required": true
+            }
+          ],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "9.1",
+          "children": []
+        }
+      ],
+      "category": "Greetings",
+      "category_id": "c4"
+    },
+    {
+      "name": "ban",
+      "aliases": [],
+      "description": "Bans a member from the server",
+      "cooldown": {
+        "uses": 1,
+        "per_seconds": 8.0,
+        "bucket": "member"
+      },
+      "guild_only": false,
+      "owner_only": false,
+      "permissions": {
+        "user": [
+          "Ban Members"
+        ],
+        "bot": [
+          "Ban Members"
+        ]
+      },
+      "usage": {
+        "prefix": "ban <member> [reason]"
+      },
+      "id_slash": "1463286376836632603",
+      "options": [
+        {
+          "name": "member",
+          "description": "The member to ban",
+          "type": "user",
+          "required": true
+        },
+        {
+          "name": "reason",
+          "description": "The reason for the ban",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "10",
+      "children": [],
+      "category": "Moderation",
+      "category_id": "c5"
+    },
+    {
+      "name": "rate",
+      "aliases": [],
+      "description": "Converts an amount from a source currency to a target currency",
+      "cooldown": {
+        "uses": 1,
+        "per_seconds": 5.0,
+        "bucket": "user"
+      },
+      "guild_only": false,
+      "owner_only": false,
+      "permissions": {
+        "user": [],
+        "bot": []
+      },
+      "usage": {
+        "prefix": "rate <source_code> <target_code> <amount>"
+      },
+      "id_slash": "1450729886565269525",
+      "options": [
+        {
+          "name": "source_code",
+          "description": "The currency code, ex: USD",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "target_code",
+          "description": "The currency code to convert to, ex: EUR",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "amount",
+          "description": "The amount to convert, ex: 2",
+          "type": "number",
+          "required": true
+        }
+      ],
+      "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "31",
+      "children": [],
+      "category": "Utility",
+      "category_id": "c10"
     },
     {
       "name": "prefix",
@@ -368,8 +1039,877 @@
         }
       ],
       "supports_placeholders": false,
+      "protected": true,
+      "toggle_id": "3",
       "children": [],
-      "category": "Configuration"
+      "category": "Configuration",
+      "category_id": "c2"
+    },
+    {
+      "name": "translate",
+      "aliases": [
+        "translator"
+      ],
+      "description": "Translates a text to a target language using Google Translate",
+      "cooldown": {
+        "uses": 1,
+        "per_seconds": 8.0,
+        "bucket": "user"
+      },
+      "guild_only": false,
+      "owner_only": false,
+      "permissions": {
+        "user": [],
+        "bot": []
+      },
+      "usage": {
+        "prefix": "translate <target> <text>"
+      },
+      "id_slash": "1452541766602592440",
+      "options": [
+        {
+          "name": "target",
+          "description": "The target language code",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "text",
+          "description": "The text to translate",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "33",
+      "children": [],
+      "category": "Utility",
+      "category_id": "c10"
+    },
+    {
+      "name": "starboard",
+      "aliases": [],
+      "description": "Starboard configuration commands",
+      "cooldown": null,
+      "guild_only": false,
+      "owner_only": false,
+      "permissions": {
+        "user": [],
+        "bot": []
+      },
+      "usage": {
+        "prefix": "starboard"
+      },
+      "id_slash": "1528984039262916758",
+      "options": [],
+      "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "19",
+      "children": [
+        {
+          "name": "threshold",
+          "aliases": [],
+          "description": "Sets the star threshold",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 15.0,
+            "bucket": "guild"
+          },
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [
+              "Manage Server"
+            ],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "starboard threshold <amount>"
+          },
+          "id_slash": "1528984039262916758",
+          "options": [
+            {
+              "name": "amount",
+              "description": "Minimum number of stars needed (2-250)",
+              "type": "integer",
+              "required": true
+            }
+          ],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "19.6",
+          "children": []
+        },
+        {
+          "name": "disable",
+          "aliases": [
+            "off"
+          ],
+          "description": "Disables the starboard",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 10.0,
+            "bucket": "guild"
+          },
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [
+              "Manage Server"
+            ],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "starboard disable"
+          },
+          "id_slash": "1528984039262916758",
+          "options": [],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "19.2",
+          "children": []
+        },
+        {
+          "name": "selfstars",
+          "aliases": [],
+          "description": "Toggles whether authors can star their own messages",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 15.0,
+            "bucket": "guild"
+          },
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [
+              "Manage Server"
+            ],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "starboard selfstars <state>"
+          },
+          "id_slash": "1528984039262916758",
+          "options": [
+            {
+              "name": "state",
+              "description": "Whether authors can star their own messages",
+              "type": "boolean",
+              "required": true
+            }
+          ],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "19.5",
+          "children": []
+        },
+        {
+          "name": "emoji",
+          "aliases": [],
+          "description": "Sets the starboard emoji",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 15.0,
+            "bucket": "guild"
+          },
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [
+              "Manage Server"
+            ],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "starboard emoji <emoji>"
+          },
+          "id_slash": "1528984039262916758",
+          "options": [
+            {
+              "name": "emoji",
+              "description": "The emoji messages need to be starred with",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "19.3",
+          "children": []
+        },
+        {
+          "name": "enable",
+          "aliases": [
+            "on"
+          ],
+          "description": "Enables the starboard",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 10.0,
+            "bucket": "guild"
+          },
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [
+              "Manage Server"
+            ],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "starboard enable"
+          },
+          "id_slash": "1528984039262916758",
+          "options": [],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "19.4",
+          "children": []
+        },
+        {
+          "name": "channel",
+          "aliases": [],
+          "description": "Sets the starboard channel",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 30.0,
+            "bucket": "guild"
+          },
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [
+              "Manage Server"
+            ],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "starboard channel <channel>"
+          },
+          "id_slash": "1528984039262916758",
+          "options": [
+            {
+              "name": "channel",
+              "description": "The channel where starred messages will be posted",
+              "type": "channel",
+              "required": true
+            }
+          ],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "19.1",
+          "children": []
+        }
+      ],
+      "category": "Starboard",
+      "category_id": "c7"
+    },
+    {
+      "name": "ship",
+      "aliases": [],
+      "description": "Ships two users together",
+      "cooldown": {
+        "uses": 1,
+        "per_seconds": 7.0,
+        "bucket": "user"
+      },
+      "guild_only": false,
+      "owner_only": false,
+      "permissions": {
+        "user": [],
+        "bot": []
+      },
+      "usage": {
+        "prefix": "ship <user1> [user2]"
+      },
+      "id_slash": "1460347236629217354",
+      "options": [
+        {
+          "name": "user1",
+          "description": "The first user to ship",
+          "type": "user",
+          "required": true
+        },
+        {
+          "name": "user2",
+          "description": "The second user to ship",
+          "type": "user",
+          "required": false
+        }
+      ],
+      "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "7",
+      "children": [],
+      "category": "Fun",
+      "category_id": "c3"
+    },
+    {
+      "name": "unban",
+      "aliases": [],
+      "description": "Unbans a member from the server",
+      "cooldown": {
+        "uses": 1,
+        "per_seconds": 8.0,
+        "bucket": "member"
+      },
+      "guild_only": false,
+      "owner_only": false,
+      "permissions": {
+        "user": [
+          "Ban Members"
+        ],
+        "bot": [
+          "Ban Members"
+        ]
+      },
+      "usage": {
+        "prefix": "unban <user> [reason]"
+      },
+      "id_slash": "1463286376836632604",
+      "options": [
+        {
+          "name": "user",
+          "description": "The user to unban",
+          "type": "user",
+          "required": true
+        },
+        {
+          "name": "reason",
+          "description": "The reason for the unban",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "15",
+      "children": [],
+      "category": "Moderation",
+      "category_id": "c5"
+    },
+    {
+      "name": "avatar",
+      "aliases": [
+        "av"
+      ],
+      "description": "",
+      "cooldown": {
+        "uses": 1,
+        "per_seconds": 4.0,
+        "bucket": "member"
+      },
+      "guild_only": false,
+      "owner_only": false,
+      "permissions": {
+        "user": [],
+        "bot": []
+      },
+      "usage": {
+        "prefix": "avatar <user>"
+      },
+      "id_slash": null,
+      "options": [],
+      "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "24",
+      "children": [],
+      "category": "Utility",
+      "category_id": "c10"
+    },
+    {
+      "name": "language",
+      "aliases": [
+        "locale"
+      ],
+      "description": "Sets a new language for the bot in this server",
+      "cooldown": {
+        "uses": 1,
+        "per_seconds": 120.0,
+        "bucket": "guild"
+      },
+      "guild_only": false,
+      "owner_only": false,
+      "permissions": {
+        "user": [
+          "Manage Server"
+        ],
+        "bot": []
+      },
+      "usage": {
+        "prefix": "language"
+      },
+      "id_slash": "1453248196175462412",
+      "options": [],
+      "supports_placeholders": false,
+      "protected": true,
+      "toggle_id": "2",
+      "children": [],
+      "category": "Configuration",
+      "category_id": "c2"
+    },
+    {
+      "name": "emoji",
+      "aliases": [],
+      "description": "Related emoji commands",
+      "cooldown": null,
+      "guild_only": false,
+      "owner_only": false,
+      "permissions": {
+        "user": [],
+        "bot": []
+      },
+      "usage": {
+        "prefix": "emoji"
+      },
+      "id_slash": "1452501232567717991",
+      "options": [],
+      "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "27",
+      "children": [
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Adds an emoji to the server from a URL, a pasted emoji, or an attached image",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 10.0,
+            "bucket": "guild"
+          },
+          "guild_only": true,
+          "owner_only": false,
+          "permissions": {
+            "user": [
+              "Manage Emojis"
+            ],
+            "bot": [
+              "Manage Emojis"
+            ]
+          },
+          "usage": {
+            "prefix": "emoji add [url] [name]"
+          },
+          "id_slash": "1452501232567717991",
+          "options": [
+            {
+              "name": "url",
+              "description": "The URL (or a pasted emoji) to add",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "name",
+              "description": "The name of the emoji to add",
+              "type": "string",
+              "required": false
+            }
+          ],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "27.1",
+          "children": []
+        },
+        {
+          "name": "image",
+          "aliases": [
+            "url",
+            "jumbo"
+          ],
+          "description": "Shows the image of an emoji",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 5.0,
+            "bucket": "member"
+          },
+          "guild_only": true,
+          "owner_only": false,
+          "permissions": {
+            "user": [],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "emoji image <emoji>"
+          },
+          "id_slash": "1452501232567717991",
+          "options": [
+            {
+              "name": "emoji",
+              "description": "The emoji to show the image of",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "27.2",
+          "children": []
+        },
+        {
+          "name": "remove",
+          "aliases": [],
+          "description": "Removes an emoji from the server",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 10.0,
+            "bucket": "guild"
+          },
+          "guild_only": true,
+          "owner_only": false,
+          "permissions": {
+            "user": [
+              "Manage Emojis"
+            ],
+            "bot": [
+              "Manage Emojis"
+            ]
+          },
+          "usage": {
+            "prefix": "emoji remove <emoji>"
+          },
+          "id_slash": "1452501232567717991",
+          "options": [
+            {
+              "name": "emoji",
+              "description": "The emoji to remove from the server",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "27.4",
+          "children": []
+        },
+        {
+          "name": "info",
+          "aliases": [],
+          "description": "Shows information about an emoji",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 5.0,
+            "bucket": "member"
+          },
+          "guild_only": true,
+          "owner_only": false,
+          "permissions": {
+            "user": [],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "emoji info <emoji>"
+          },
+          "id_slash": "1452501232567717991",
+          "options": [
+            {
+              "name": "emoji",
+              "description": "The emoji to show information about",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "27.3",
+          "children": []
+        }
+      ],
+      "category": "Utility",
+      "category_id": "c10"
+    },
+    {
+      "name": "reverse",
+      "aliases": [],
+      "description": "Reverses a text",
+      "cooldown": null,
+      "guild_only": false,
+      "owner_only": false,
+      "permissions": {
+        "user": [],
+        "bot": []
+      },
+      "usage": {
+        "prefix": "reverse <text>"
+      },
+      "id_slash": "1456428938392895682",
+      "options": [
+        {
+          "name": "text",
+          "description": "The text to reverse",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "6",
+      "children": [],
+      "category": "Fun",
+      "category_id": "c3"
+    },
+    {
+      "name": "unlockdown",
+      "aliases": [
+        "unlock"
+      ],
+      "description": "Unlocks a channel for everyone",
+      "cooldown": {
+        "uses": 1,
+        "per_seconds": 5.0,
+        "bucket": "member"
+      },
+      "guild_only": false,
+      "owner_only": false,
+      "permissions": {
+        "user": [
+          "Manage Channels"
+        ],
+        "bot": [
+          "Manage Channels"
+        ]
+      },
+      "usage": {
+        "prefix": "unlockdown [channel]"
+      },
+      "id_slash": "1463286376836632598",
+      "options": [
+        {
+          "name": "channel",
+          "description": "The channel to unlock",
+          "type": "channel",
+          "required": false
+        }
+      ],
+      "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "16",
+      "children": [],
+      "category": "Moderation",
+      "category_id": "c5"
+    },
+    {
+      "name": "close",
+      "aliases": [],
+      "description": "Closes the current ticket (usable inside a ticket thread)",
+      "cooldown": null,
+      "guild_only": false,
+      "owner_only": false,
+      "permissions": {
+        "user": [],
+        "bot": []
+      },
+      "usage": {
+        "prefix": "close"
+      },
+      "id_slash": "1529925520018378875",
+      "options": [],
+      "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "21",
+      "children": [],
+      "category": "Tickets",
+      "category_id": "c9"
+    },
+    {
+      "name": "httpstatus",
+      "aliases": [
+        "httpcode",
+        "http"
+      ],
+      "description": "Shows information about an HTTP status code",
+      "cooldown": {
+        "uses": 1,
+        "per_seconds": 8.0,
+        "bucket": "user"
+      },
+      "guild_only": false,
+      "owner_only": false,
+      "permissions": {
+        "user": [],
+        "bot": []
+      },
+      "usage": {
+        "prefix": "httpstatus <code>"
+      },
+      "id_slash": "1527538099859750933",
+      "options": [
+        {
+          "name": "code",
+          "description": "The HTTP status code to get information about",
+          "type": "integer",
+          "required": true
+        }
+      ],
+      "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "28",
+      "children": [],
+      "category": "Utility",
+      "category_id": "c10"
+    },
+    {
+      "name": "autoroles",
+      "aliases": [],
+      "description": "Autoroles related commands",
+      "cooldown": null,
+      "guild_only": false,
+      "owner_only": false,
+      "permissions": {
+        "user": [
+          "Manage Roles"
+        ],
+        "bot": [
+          "Manage Roles"
+        ]
+      },
+      "usage": {
+        "prefix": "autoroles"
+      },
+      "id_slash": "1461816679485935911",
+      "options": [],
+      "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "1",
+      "children": [
+        {
+          "name": "add",
+          "aliases": [],
+          "description": "Adds a role to the autoroles",
+          "cooldown": null,
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [
+              "Manage Roles"
+            ],
+            "bot": [
+              "Manage Roles"
+            ]
+          },
+          "usage": {
+            "prefix": "autoroles add <role> [usertype]"
+          },
+          "id_slash": "1461816679485935911",
+          "options": [
+            {
+              "name": "role",
+              "description": "…",
+              "type": "role",
+              "required": true
+            },
+            {
+              "name": "usertype",
+              "description": "The type of user to assign the role to",
+              "type": "string",
+              "required": false
+            }
+          ],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "1.1",
+          "children": []
+        },
+        {
+          "name": "list",
+          "aliases": [
+            "show"
+          ],
+          "description": "Lists the autoroles",
+          "cooldown": null,
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [
+              "Manage Roles"
+            ],
+            "bot": [
+              "Manage Roles"
+            ]
+          },
+          "usage": {
+            "prefix": "autoroles list"
+          },
+          "id_slash": "1461816679485935911",
+          "options": [],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "1.2",
+          "children": []
+        },
+        {
+          "name": "remove",
+          "aliases": [
+            "delete"
+          ],
+          "description": "Removes a role from the autoroles",
+          "cooldown": null,
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [
+              "Manage Roles"
+            ],
+            "bot": [
+              "Manage Roles"
+            ]
+          },
+          "usage": {
+            "prefix": "autoroles remove <role> [usertype]"
+          },
+          "id_slash": "1461816679485935911",
+          "options": [
+            {
+              "name": "role",
+              "description": "…",
+              "type": "role",
+              "required": true
+            },
+            {
+              "name": "usertype",
+              "description": "The type of user to assign the role to",
+              "type": "string",
+              "required": false
+            }
+          ],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "1.3",
+          "children": []
+        }
+      ],
+      "category": "Autoroles",
+      "category_id": "c1"
+    },
+    {
+      "name": "emojify",
+      "aliases": [],
+      "description": "Emojifys a text",
+      "cooldown": null,
+      "guild_only": false,
+      "owner_only": false,
+      "permissions": {
+        "user": [],
+        "bot": []
+      },
+      "usage": {
+        "prefix": "emojify <text>"
+      },
+      "id_slash": "1456428938392895683",
+      "options": [
+        {
+          "name": "text",
+          "description": "The text to emojify",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "5",
+      "children": [],
+      "category": "Fun",
+      "category_id": "c3"
     },
     {
       "name": "timeout",
@@ -417,32 +1957,11 @@
         }
       ],
       "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "14",
       "children": [],
-      "category": "Moderation"
-    },
-    {
-      "name": "calendar",
-      "aliases": [],
-      "description": "Shows a calendar",
-      "cooldown": {
-        "uses": 1,
-        "per_seconds": 4.0,
-        "bucket": "member"
-      },
-      "guild_only": false,
-      "owner_only": false,
-      "permissions": {
-        "user": [],
-        "bot": []
-      },
-      "usage": {
-        "prefix": "calendar"
-      },
-      "id_slash": "1450715937492828192",
-      "options": [],
-      "supports_placeholders": false,
-      "children": [],
-      "category": "Utility"
+      "category": "Moderation",
+      "category_id": "c5"
     },
     {
       "name": "ticket",
@@ -463,7 +1982,39 @@
       "id_slash": "1529925520018378874",
       "options": [],
       "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "22",
       "children": [
+        {
+          "name": "message",
+          "aliases": [],
+          "description": "Sets the welcome message posted inside new tickets",
+          "cooldown": null,
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [
+              "Manage Server"
+            ],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "ticket message <text>"
+          },
+          "id_slash": "1529925520018378874",
+          "options": [
+            {
+              "name": "text",
+              "description": "Message shown when a ticket opens. Supports {user.mention}, {guild.name}, etc.",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "supports_placeholders": true,
+          "protected": false,
+          "toggle_id": "22.4",
+          "children": []
+        },
         {
           "name": "disable",
           "aliases": [
@@ -485,6 +2036,8 @@
           "id_slash": "1529925520018378874",
           "options": [],
           "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "22.2",
           "children": []
         },
         {
@@ -513,6 +2066,8 @@
             }
           ],
           "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "22.5",
           "children": []
         },
         {
@@ -536,6 +2091,8 @@
           "id_slash": "1529925520018378874",
           "options": [],
           "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "22.3",
           "children": []
         },
         {
@@ -564,45 +2121,18 @@
             }
           ],
           "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "message",
-          "aliases": [],
-          "description": "Sets the welcome message posted inside new tickets",
-          "cooldown": null,
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [
-              "Manage Server"
-            ],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "ticket message <text>"
-          },
-          "id_slash": "1529925520018378874",
-          "options": [
-            {
-              "name": "text",
-              "description": "Message shown when a ticket opens. Supports {user.mention}, {guild.name}, etc.",
-              "type": "string",
-              "required": true
-            }
-          ],
-          "supports_placeholders": true,
+          "protected": false,
+          "toggle_id": "22.1",
           "children": []
         }
       ],
-      "category": "Tickets"
+      "category": "Tickets",
+      "category_id": "c9"
     },
     {
-      "name": "color",
-      "aliases": [
-        "hex"
-      ],
-      "description": "Shows information about a color given its hex code",
+      "name": "afk",
+      "aliases": [],
+      "description": "Marks you as AFK; mentioning you will show your reason",
       "cooldown": {
         "uses": 1,
         "per_seconds": 5.0,
@@ -615,452 +2145,264 @@
         "bot": []
       },
       "usage": {
-        "prefix": "color <hex_code>"
+        "prefix": "afk [reason]"
       },
-      "id_slash": "1452531054803161090",
+      "id_slash": "1530431009139589223",
       "options": [
-        {
-          "name": "hex_code",
-          "description": "The hex code of the color to show information about",
-          "type": "string",
-          "required": true
-        }
-      ],
-      "supports_placeholders": false,
-      "children": [],
-      "category": "Utility"
-    },
-    {
-      "name": "language",
-      "aliases": [
-        "locale"
-      ],
-      "description": "Sets a new language for the bot in this server",
-      "cooldown": {
-        "uses": 1,
-        "per_seconds": 120.0,
-        "bucket": "guild"
-      },
-      "guild_only": false,
-      "owner_only": false,
-      "permissions": {
-        "user": [
-          "Manage Server"
-        ],
-        "bot": []
-      },
-      "usage": {
-        "prefix": "language"
-      },
-      "id_slash": "1453248196175462412",
-      "options": [],
-      "supports_placeholders": false,
-      "children": [],
-      "category": "Configuration"
-    },
-    {
-      "name": "unlockdown",
-      "aliases": [
-        "unlock"
-      ],
-      "description": "Unlocks a channel for everyone",
-      "cooldown": {
-        "uses": 1,
-        "per_seconds": 5.0,
-        "bucket": "member"
-      },
-      "guild_only": false,
-      "owner_only": false,
-      "permissions": {
-        "user": [
-          "Manage Channels"
-        ],
-        "bot": [
-          "Manage Channels"
-        ]
-      },
-      "usage": {
-        "prefix": "unlockdown [channel]"
-      },
-      "id_slash": "1463286376836632598",
-      "options": [
-        {
-          "name": "channel",
-          "description": "The channel to unlock",
-          "type": "channel",
-          "required": false
-        }
-      ],
-      "supports_placeholders": false,
-      "children": [],
-      "category": "Moderation"
-    },
-    {
-      "name": "unban",
-      "aliases": [],
-      "description": "Unbans a member from the server",
-      "cooldown": {
-        "uses": 1,
-        "per_seconds": 8.0,
-        "bucket": "member"
-      },
-      "guild_only": false,
-      "owner_only": false,
-      "permissions": {
-        "user": [
-          "Ban Members"
-        ],
-        "bot": [
-          "Ban Members"
-        ]
-      },
-      "usage": {
-        "prefix": "unban <user> [reason]"
-      },
-      "id_slash": "1463286376836632604",
-      "options": [
-        {
-          "name": "user",
-          "description": "The user to unban",
-          "type": "user",
-          "required": true
-        },
         {
           "name": "reason",
-          "description": "The reason for the unban",
+          "description": "Why you're going AFK (optional)",
           "type": "string",
           "required": false
         }
       ],
       "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "23",
       "children": [],
-      "category": "Moderation"
+      "category": "Utility",
+      "category_id": "c10"
     },
     {
-      "name": "rate",
-      "aliases": [],
-      "description": "Converts an amount from a source currency to a target currency",
-      "cooldown": {
-        "uses": 1,
-        "per_seconds": 5.0,
-        "bucket": "user"
-      },
-      "guild_only": false,
-      "owner_only": false,
-      "permissions": {
-        "user": [],
-        "bot": []
-      },
-      "usage": {
-        "prefix": "rate <source_code> <target_code> <amount>"
-      },
-      "id_slash": "1450729886565269525",
-      "options": [
-        {
-          "name": "source_code",
-          "description": "The currency code, ex: USD",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "target_code",
-          "description": "The currency code to convert to, ex: EUR",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "amount",
-          "description": "The amount to convert, ex: 2",
-          "type": "number",
-          "required": true
-        }
+      "name": "reminders",
+      "aliases": [
+        "reminder",
+        "remind"
       ],
-      "supports_placeholders": false,
-      "children": [],
-      "category": "Utility"
-    },
-    {
-      "name": "autoroles",
-      "aliases": [],
-      "description": "Autoroles related commands",
+      "description": "Manage your reminders",
       "cooldown": null,
       "guild_only": false,
       "owner_only": false,
       "permissions": {
-        "user": [
-          "Manage Roles"
-        ],
-        "bot": [
-          "Manage Roles"
-        ]
+        "user": [],
+        "bot": []
       },
       "usage": {
-        "prefix": "autoroles"
+        "prefix": "reminders"
       },
-      "id_slash": "1461816679485935911",
+      "id_slash": "1520279434056306748",
       "options": [],
       "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "18",
       "children": [
         {
           "name": "add",
           "aliases": [],
-          "description": "Adds a role to the autoroles",
-          "cooldown": null,
+          "description": "Add a new reminder",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 45.0,
+            "bucket": "member"
+          },
           "guild_only": false,
           "owner_only": false,
           "permissions": {
-            "user": [
-              "Manage Roles"
-            ],
-            "bot": [
-              "Manage Roles"
-            ]
+            "user": [],
+            "bot": []
           },
           "usage": {
-            "prefix": "autoroles add <role> [usertype]"
+            "prefix": "reminders add <time> <message> [channel]"
           },
-          "id_slash": "1461816679485935911",
+          "id_slash": "1520279434056306748",
           "options": [
             {
-              "name": "role",
-              "description": "…",
-              "type": "role",
+              "name": "time",
+              "description": "Time (e.g: 30m, 2h, 1d, 14:30)",
+              "type": "string",
               "required": true
             },
             {
-              "name": "usertype",
-              "description": "The type of user to assign the role to",
+              "name": "message",
+              "description": "Reminder message",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "channel",
+              "description": "Target channel (optional)",
+              "type": "channel",
+              "required": false
+            }
+          ],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "18.1",
+          "children": []
+        },
+        {
+          "name": "edit",
+          "aliases": [],
+          "description": "Edit a reminder",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 2.0,
+            "bucket": "member"
+          },
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "reminders edit <reminder_id> [time] [message]"
+          },
+          "id_slash": "1520279434056306748",
+          "options": [
+            {
+              "name": "reminder_id",
+              "description": "ID to edit",
+              "type": "integer",
+              "required": true
+            },
+            {
+              "name": "time",
+              "description": "New time (optional)",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "message",
+              "description": "New message (optional)",
               "type": "string",
               "required": false
             }
           ],
           "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "18.2",
           "children": []
         },
         {
           "name": "list",
-          "aliases": [
-            "show"
-          ],
-          "description": "Lists the autoroles",
-          "cooldown": null,
+          "aliases": [],
+          "description": "Show your active reminders",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 2.0,
+            "bucket": "member"
+          },
           "guild_only": false,
           "owner_only": false,
           "permissions": {
-            "user": [
-              "Manage Roles"
-            ],
-            "bot": [
-              "Manage Roles"
-            ]
+            "user": [],
+            "bot": []
           },
           "usage": {
-            "prefix": "autoroles list"
+            "prefix": "reminders list [limit]"
           },
-          "id_slash": "1461816679485935911",
+          "id_slash": "1520279434056306748",
+          "options": [
+            {
+              "name": "limit",
+              "description": "Number to show (1-25)",
+              "type": "integer",
+              "required": false
+            }
+          ],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "18.3",
+          "children": []
+        },
+        {
+          "name": "prune",
+          "aliases": [],
+          "description": "Remove all your active reminders",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 10.0,
+            "bucket": "member"
+          },
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "reminders prune"
+          },
+          "id_slash": "1520279434056306748",
           "options": [],
           "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "18.4",
           "children": []
         },
         {
           "name": "remove",
-          "aliases": [
-            "delete"
-          ],
-          "description": "Removes a role from the autoroles",
-          "cooldown": null,
+          "aliases": [],
+          "description": "Remove a reminder",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 2.0,
+            "bucket": "member"
+          },
           "guild_only": false,
           "owner_only": false,
           "permissions": {
-            "user": [
-              "Manage Roles"
-            ],
-            "bot": [
-              "Manage Roles"
-            ]
+            "user": [],
+            "bot": []
           },
           "usage": {
-            "prefix": "autoroles remove <role> [usertype]"
+            "prefix": "reminders remove <reminder_id>"
           },
-          "id_slash": "1461816679485935911",
+          "id_slash": "1520279434056306748",
           "options": [
             {
-              "name": "role",
-              "description": "…",
-              "type": "role",
+              "name": "reminder_id",
+              "description": "ID of the reminder to remove",
+              "type": "integer",
               "required": true
-            },
-            {
-              "name": "usertype",
-              "description": "The type of user to assign the role to",
-              "type": "string",
-              "required": false
             }
           ],
           "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "18.5",
+          "children": []
+        },
+        {
+          "name": "timezone",
+          "aliases": [],
+          "description": "Set your timezone for reminders",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 2.0,
+            "bucket": "member"
+          },
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "reminders timezone <timezone>"
+          },
+          "id_slash": "1520279434056306748",
+          "options": [
+            {
+              "name": "timezone",
+              "description": "IANA timezone (e.g: America/Mexico_City)",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "18.6",
           "children": []
         }
       ],
-      "category": "Autoroles"
+      "category": "Reminders",
+      "category_id": "c6"
     },
     {
-      "name": "ship",
+      "name": "server",
       "aliases": [],
-      "description": "Ships two users together",
-      "cooldown": {
-        "uses": 1,
-        "per_seconds": 7.0,
-        "bucket": "user"
-      },
-      "guild_only": false,
-      "owner_only": false,
-      "permissions": {
-        "user": [],
-        "bot": []
-      },
-      "usage": {
-        "prefix": "ship <user1> [user2]"
-      },
-      "id_slash": "1460347236629217354",
-      "options": [
-        {
-          "name": "user1",
-          "description": "The first user to ship",
-          "type": "user",
-          "required": true
-        },
-        {
-          "name": "user2",
-          "description": "The second user to ship",
-          "type": "user",
-          "required": false
-        }
-      ],
-      "supports_placeholders": false,
-      "children": [],
-      "category": "Fun"
-    },
-    {
-      "name": "translate",
-      "aliases": [
-        "translator"
-      ],
-      "description": "Translates a text to a target language using Google Translate",
-      "cooldown": {
-        "uses": 1,
-        "per_seconds": 8.0,
-        "bucket": "user"
-      },
-      "guild_only": false,
-      "owner_only": false,
-      "permissions": {
-        "user": [],
-        "bot": []
-      },
-      "usage": {
-        "prefix": "translate <target> <text>"
-      },
-      "id_slash": "1452541766602592440",
-      "options": [
-        {
-          "name": "target",
-          "description": "The target language code",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "text",
-          "description": "The text to translate",
-          "type": "string",
-          "required": true
-        }
-      ],
-      "supports_placeholders": false,
-      "children": [],
-      "category": "Utility"
-    },
-    {
-      "name": "lockdown",
-      "aliases": [
-        "lock"
-      ],
-      "description": "Locks a channel for everyone",
-      "cooldown": {
-        "uses": 1,
-        "per_seconds": 5.0,
-        "bucket": "member"
-      },
-      "guild_only": false,
-      "owner_only": false,
-      "permissions": {
-        "user": [
-          "Manage Channels"
-        ],
-        "bot": [
-          "Manage Channels"
-        ]
-      },
-      "usage": {
-        "prefix": "lockdown [channel]"
-      },
-      "id_slash": "1463286376836632597",
-      "options": [
-        {
-          "name": "channel",
-          "description": "The channel to lockdown",
-          "type": "channel",
-          "required": false
-        }
-      ],
-      "supports_placeholders": false,
-      "children": [],
-      "category": "Moderation"
-    },
-    {
-      "name": "ban",
-      "aliases": [],
-      "description": "Bans a member from the server",
-      "cooldown": {
-        "uses": 1,
-        "per_seconds": 8.0,
-        "bucket": "member"
-      },
-      "guild_only": false,
-      "owner_only": false,
-      "permissions": {
-        "user": [
-          "Ban Members"
-        ],
-        "bot": [
-          "Ban Members"
-        ]
-      },
-      "usage": {
-        "prefix": "ban <member> [reason]"
-      },
-      "id_slash": "1463286376836632603",
-      "options": [
-        {
-          "name": "member",
-          "description": "The member to ban",
-          "type": "user",
-          "required": true
-        },
-        {
-          "name": "reason",
-          "description": "The reason for the ban",
-          "type": "string",
-          "required": false
-        }
-      ],
-      "supports_placeholders": false,
-      "children": [],
-      "category": "Moderation"
-    },
-    {
-      "name": "reverse",
-      "aliases": [],
-      "description": "Reverses a text",
+      "description": "Related server commands",
       "cooldown": null,
       "guild_only": false,
       "owner_only": false,
@@ -1069,86 +2411,153 @@
         "bot": []
       },
       "usage": {
-        "prefix": "reverse <text>"
+        "prefix": "server"
       },
-      "id_slash": "1456428938392895682",
-      "options": [
-        {
-          "name": "text",
-          "description": "The text to reverse",
-          "type": "string",
-          "required": true
-        }
-      ],
-      "supports_placeholders": false,
-      "children": [],
-      "category": "Fun"
-    },
-    {
-      "name": "emoji",
-      "aliases": [],
-      "description": "Related emoji commands",
-      "cooldown": null,
-      "guild_only": false,
-      "owner_only": false,
-      "permissions": {
-        "user": [],
-        "bot": []
-      },
-      "usage": {
-        "prefix": "emoji"
-      },
-      "id_slash": "1452501232567717991",
+      "id_slash": "1450702343464030208",
       "options": [],
       "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "32",
       "children": [
         {
-          "name": "add",
+          "name": "roles",
           "aliases": [],
-          "description": "Adds an emoji to the server from a URL, a pasted emoji, or an attached image",
+          "description": "Shows the server roles",
           "cooldown": {
             "uses": 1,
-            "per_seconds": 10.0,
-            "bucket": "guild"
+            "per_seconds": 4.0,
+            "bucket": "member"
           },
           "guild_only": true,
           "owner_only": false,
           "permissions": {
-            "user": [
-              "Manage Emojis"
-            ],
-            "bot": [
-              "Manage Emojis"
-            ]
+            "user": [],
+            "bot": []
           },
           "usage": {
-            "prefix": "emoji add [url] [name]"
+            "prefix": "server roles"
           },
-          "id_slash": "1452501232567717991",
+          "id_slash": "1450702343464030208",
+          "options": [],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "32.7",
+          "children": []
+        },
+        {
+          "name": "icon",
+          "aliases": [],
+          "description": "Shows the server icon",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 4.0,
+            "bucket": "member"
+          },
+          "guild_only": true,
+          "owner_only": false,
+          "permissions": {
+            "user": [],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "server icon"
+          },
+          "id_slash": "1450702343464030208",
+          "options": [],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "32.3",
+          "children": []
+        },
+        {
+          "name": "role",
+          "aliases": [],
+          "description": "Shows information about a role",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 4.0,
+            "bucket": "member"
+          },
+          "guild_only": true,
+          "owner_only": false,
+          "permissions": {
+            "user": [],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "server role <role>"
+          },
+          "id_slash": "1450702343464030208",
           "options": [
             {
-              "name": "url",
-              "description": "The URL (or a pasted emoji) to add",
-              "type": "string",
-              "required": false
-            },
-            {
-              "name": "name",
-              "description": "The name of the emoji to add",
-              "type": "string",
-              "required": false
+              "name": "role",
+              "description": "The role to show information about",
+              "type": "role",
+              "required": true
             }
           ],
           "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "32.6",
+          "children": []
+        },
+        {
+          "name": "banner",
+          "aliases": [],
+          "description": "Shows the server banner",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 4.0,
+            "bucket": "member"
+          },
+          "guild_only": true,
+          "owner_only": false,
+          "permissions": {
+            "user": [],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "server banner"
+          },
+          "id_slash": "1450702343464030208",
+          "options": [],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "32.1",
+          "children": []
+        },
+        {
+          "name": "members",
+          "aliases": [],
+          "description": "Shows the server member count",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 4.0,
+            "bucket": "member"
+          },
+          "guild_only": true,
+          "owner_only": false,
+          "permissions": {
+            "user": [],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "server members"
+          },
+          "id_slash": "1450702343464030208",
+          "options": [],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "32.5",
           "children": []
         },
         {
           "name": "info",
           "aliases": [],
-          "description": "Shows information about an emoji",
+          "description": "Shows information about the server",
           "cooldown": {
             "uses": 1,
-            "per_seconds": 5.0,
+            "per_seconds": 4.0,
             "bucket": "member"
           },
           "guild_only": true,
@@ -1158,64 +2567,22 @@
             "bot": []
           },
           "usage": {
-            "prefix": "emoji info <emoji>"
+            "prefix": "server info"
           },
-          "id_slash": "1452501232567717991",
-          "options": [
-            {
-              "name": "emoji",
-              "description": "The emoji to show information about",
-              "type": "string",
-              "required": true
-            }
-          ],
+          "id_slash": "1450702343464030208",
+          "options": [],
           "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "32.4",
           "children": []
         },
         {
-          "name": "remove",
+          "name": "channel",
           "aliases": [],
-          "description": "Removes an emoji from the server",
+          "description": "Shows information about a channel",
           "cooldown": {
             "uses": 1,
-            "per_seconds": 10.0,
-            "bucket": "guild"
-          },
-          "guild_only": true,
-          "owner_only": false,
-          "permissions": {
-            "user": [
-              "Manage Emojis"
-            ],
-            "bot": [
-              "Manage Emojis"
-            ]
-          },
-          "usage": {
-            "prefix": "emoji remove <emoji>"
-          },
-          "id_slash": "1452501232567717991",
-          "options": [
-            {
-              "name": "emoji",
-              "description": "The emoji to remove from the server",
-              "type": "string",
-              "required": true
-            }
-          ],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "image",
-          "aliases": [
-            "url",
-            "jumbo"
-          ],
-          "description": "Shows the image of an emoji",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 5.0,
+            "per_seconds": 4.0,
             "bucket": "member"
           },
           "guild_only": true,
@@ -1225,29 +2592,434 @@
             "bot": []
           },
           "usage": {
-            "prefix": "emoji image <emoji>"
+            "prefix": "server channel <channel>"
           },
-          "id_slash": "1452501232567717991",
+          "id_slash": "1450702343464030208",
           "options": [
             {
-              "name": "emoji",
-              "description": "The emoji to show the image of",
-              "type": "string",
-              "required": true
+              "name": "channel",
+              "description": "The channel to show information about",
+              "type": "channel",
+              "required": false
             }
           ],
           "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "32.2",
           "children": []
         }
       ],
-      "category": "Utility"
+      "category": "Utility",
+      "category_id": "c10"
     },
     {
-      "name": "avatar",
-      "aliases": [
-        "av"
+      "name": "edit",
+      "aliases": [],
+      "description": "Image manipulation commands",
+      "cooldown": null,
+      "guild_only": false,
+      "owner_only": false,
+      "permissions": {
+        "user": [],
+        "bot": []
+      },
+      "usage": {
+        "prefix": "edit"
+      },
+      "id_slash": "1456432748959891487",
+      "options": [],
+      "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "4",
+      "children": [
+        {
+          "name": "gray",
+          "aliases": [
+            "bw",
+            "grayscale"
+          ],
+          "description": "Applies a gray-scale filter to the avatar of an user",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 6.0,
+            "bucket": "user"
+          },
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "edit gray <user>"
+          },
+          "id_slash": "1456432748959891487",
+          "options": [
+            {
+              "name": "user",
+              "description": "The user to make a grayscale image of",
+              "type": "user",
+              "required": false
+            }
+          ],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "4.5",
+          "children": []
+        },
+        {
+          "name": "delete",
+          "aliases": [],
+          "description": "Makes a delete image of an user",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 6.0,
+            "bucket": "user"
+          },
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "edit delete <user>"
+          },
+          "id_slash": "1456432748959891487",
+          "options": [
+            {
+              "name": "user",
+              "description": "The user to make a delete image of",
+              "type": "user",
+              "required": false
+            }
+          ],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "4.3",
+          "children": []
+        },
+        {
+          "name": "twoways",
+          "aliases": [
+            "2ways"
+          ],
+          "description": "Make a two ways image",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 7.0,
+            "bucket": "user"
+          },
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "edit twoways <text1> <text2>"
+          },
+          "id_slash": "1456432748959891487",
+          "options": [
+            {
+              "name": "text1",
+              "description": "The text for the left side",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "text2",
+              "description": "The text for the right side",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "4.10",
+          "children": []
+        },
+        {
+          "name": "pixel",
+          "aliases": [],
+          "description": "Pixelates the avatar of an user",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 6.0,
+            "bucket": "user"
+          },
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "edit pixel <user>"
+          },
+          "id_slash": "1456432748959891487",
+          "options": [
+            {
+              "name": "user",
+              "description": "The user to make a pixelated image of",
+              "type": "user",
+              "required": false
+            }
+          ],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "4.7",
+          "children": []
+        },
+        {
+          "name": "deepfry",
+          "aliases": [
+            "contrast"
+          ],
+          "description": "Applies a deepfry filter to the avatar of an user",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 6.0,
+            "bucket": "user"
+          },
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "edit deepfry <user>"
+          },
+          "id_slash": "1456432748959891487",
+          "options": [
+            {
+              "name": "user",
+              "description": "The user to make a deepfry image of",
+              "type": "user",
+              "required": false
+            }
+          ],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "4.2",
+          "children": []
+        },
+        {
+          "name": "simp",
+          "aliases": [],
+          "description": "Makes a simp image of an user",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 6.0,
+            "bucket": "user"
+          },
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "edit simp <user>"
+          },
+          "id_slash": "1456432748959891487",
+          "options": [
+            {
+              "name": "user",
+              "description": "The user to make a simp image of",
+              "type": "user",
+              "required": false
+            }
+          ],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": null,
+          "children": []
+        },
+        {
+          "name": "titan",
+          "aliases": [],
+          "description": "Make a titan attack image",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 7.0,
+            "bucket": "user"
+          },
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "edit titan <text1> <text2>"
+          },
+          "id_slash": "1456432748959891487",
+          "options": [
+            {
+              "name": "text1",
+              "description": "The text for the titan",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "text2",
+              "description": "The text for the person",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "4.9",
+          "children": []
+        },
+        {
+          "name": "mirror",
+          "aliases": [
+            "invert"
+          ],
+          "description": "Applies a gray-scale filter to the avatar of an user",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 6.0,
+            "bucket": "user"
+          },
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "edit mirror <user>"
+          },
+          "id_slash": "1456432748959891487",
+          "options": [
+            {
+              "name": "user",
+              "description": "The user to make a mirror image of",
+              "type": "user",
+              "required": false
+            }
+          ],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "4.6",
+          "children": []
+        },
+        {
+          "name": "communism",
+          "aliases": [
+            "communist"
+          ],
+          "description": "Makes a communist image of an user",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 6.0,
+            "bucket": "user"
+          },
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "edit communism <user>"
+          },
+          "id_slash": "1456432748959891487",
+          "options": [
+            {
+              "name": "user",
+              "description": "The user to make a communist image of",
+              "type": "user",
+              "required": false
+            }
+          ],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "4.1",
+          "children": []
+        },
+        {
+          "name": "sonic",
+          "aliases": [],
+          "description": "Make a sonic says image",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 7.0,
+            "bucket": "user"
+          },
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "edit sonic <text>"
+          },
+          "id_slash": "1456432748959891487",
+          "options": [
+            {
+              "name": "text",
+              "description": "The text to make sonic say",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "4.8",
+          "children": []
+        },
+        {
+          "name": "gay",
+          "aliases": [
+            "pride",
+            "rainbow"
+          ],
+          "description": "Makes a pride-gay image of an user",
+          "cooldown": {
+            "uses": 1,
+            "per_seconds": 6.0,
+            "bucket": "user"
+          },
+          "guild_only": false,
+          "owner_only": false,
+          "permissions": {
+            "user": [],
+            "bot": []
+          },
+          "usage": {
+            "prefix": "edit gay <user>"
+          },
+          "id_slash": "1456432748959891487",
+          "options": [
+            {
+              "name": "user",
+              "description": "The user to make a pride-gay image of",
+              "type": "user",
+              "required": false
+            }
+          ],
+          "supports_placeholders": false,
+          "protected": false,
+          "toggle_id": "4.4",
+          "children": []
+        }
       ],
-      "description": "",
+      "category": "Fun",
+      "category_id": "c3"
+    },
+    {
+      "name": "untimeout",
+      "aliases": [
+        "untimemute"
+      ],
+      "description": "Untimeouts a member",
       "cooldown": {
         "uses": 1,
         "per_seconds": 4.0,
@@ -1256,189 +3028,42 @@
       "guild_only": false,
       "owner_only": false,
       "permissions": {
-        "user": [],
-        "bot": []
+        "user": [
+          "Timeout Members"
+        ],
+        "bot": [
+          "Timeout Members"
+        ]
       },
       "usage": {
-        "prefix": "avatar <user>"
+        "prefix": "untimeout <member> [reason]"
       },
-      "id_slash": null,
-      "options": [],
-      "supports_placeholders": false,
-      "children": [],
-      "category": "Utility"
-    },
-    {
-      "name": "welcome",
-      "aliases": [],
-      "description": "Welcome message related commands",
-      "cooldown": null,
-      "guild_only": false,
-      "owner_only": false,
-      "permissions": {
-        "user": [],
-        "bot": []
-      },
-      "usage": {
-        "prefix": "welcome"
-      },
-      "id_slash": "1519923376087634092",
-      "options": [],
-      "supports_placeholders": false,
-      "children": [
+      "id_slash": "1463286376836632600",
+      "options": [
         {
-          "name": "channel",
-          "aliases": [],
-          "description": "Sets the welcome message channel",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 30.0,
-            "bucket": "guild"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [
-              "Manage Server"
-            ],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "welcome channel <channel>"
-          },
-          "id_slash": "1519923376087634092",
-          "options": [
-            {
-              "name": "channel",
-              "description": "…",
-              "type": "channel",
-              "required": true
-            }
-          ],
-          "supports_placeholders": false,
-          "children": []
+          "name": "member",
+          "description": "The member to untimeout",
+          "type": "user",
+          "required": true
         },
         {
-          "name": "preview",
-          "aliases": [],
-          "description": "Previews the welcome message with your user as the new member.",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 15.0,
-            "bucket": "guild"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [
-              "Manage Server"
-            ],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "welcome preview"
-          },
-          "id_slash": "1519923376087634092",
-          "options": [],
-          "supports_placeholders": true,
-          "children": []
-        },
-        {
-          "name": "disable",
-          "aliases": [
-            "off"
-          ],
-          "description": "Disables welcome messages",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 10.0,
-            "bucket": "guild"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [
-              "Manage Server"
-            ],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "welcome disable"
-          },
-          "id_slash": "1519923376087634092",
-          "options": [],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "message",
-          "aliases": [],
-          "description": "Sets the welcome message. Use {user} to mention the new member.",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 30.0,
-            "bucket": "guild"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [
-              "Manage Server"
-            ],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "welcome message <message>"
-          },
-          "id_slash": "1519923376087634092",
-          "options": [
-            {
-              "name": "message",
-              "description": "…",
-              "type": "string",
-              "required": true
-            }
-          ],
-          "supports_placeholders": true,
-          "children": []
-        },
-        {
-          "name": "enable",
-          "aliases": [
-            "on"
-          ],
-          "description": "Enables welcome messages",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 10.0,
-            "bucket": "guild"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [
-              "Manage Server"
-            ],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "welcome enable"
-          },
-          "id_slash": "1519923376087634092",
-          "options": [],
-          "supports_placeholders": false,
-          "children": []
+          "name": "reason",
+          "description": "…",
+          "type": "string",
+          "required": false
         }
       ],
-      "category": "Greetings"
+      "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "17",
+      "children": [],
+      "category": "Moderation",
+      "category_id": "c5"
     },
     {
-      "name": "httpstatus",
-      "aliases": [
-        "httpcode",
-        "http"
-      ],
-      "description": "Shows information about an HTTP status code",
+      "name": "quote",
+      "aliases": [],
+      "description": "Quotes a message",
       "cooldown": {
         "uses": 1,
         "per_seconds": 8.0,
@@ -1451,300 +3076,23 @@
         "bot": []
       },
       "usage": {
-        "prefix": "httpstatus <code>"
+        "prefix": "quote <message>"
       },
-      "id_slash": "1527538099859750933",
+      "id_slash": "1452509064255766680",
       "options": [
         {
-          "name": "code",
-          "description": "The HTTP status code to get information about",
-          "type": "integer",
-          "required": true
-        }
-      ],
-      "supports_placeholders": false,
-      "children": [],
-      "category": "Utility"
-    },
-    {
-      "name": "kick",
-      "aliases": [],
-      "description": "Kicks a member from the server",
-      "cooldown": {
-        "uses": 1,
-        "per_seconds": 8.0,
-        "bucket": "member"
-      },
-      "guild_only": false,
-      "owner_only": false,
-      "permissions": {
-        "user": [
-          "Kick Members"
-        ],
-        "bot": [
-          "Kick Members"
-        ]
-      },
-      "usage": {
-        "prefix": "kick <member> [reason]"
-      },
-      "id_slash": "1463286376836632602",
-      "options": [
-        {
-          "name": "member",
-          "description": "The member to kick",
-          "type": "user",
-          "required": true
-        },
-        {
-          "name": "reason",
-          "description": "The reason for the kick",
-          "type": "string",
-          "required": false
-        }
-      ],
-      "supports_placeholders": false,
-      "children": [],
-      "category": "Moderation"
-    },
-    {
-      "name": "tag",
-      "aliases": [
-        "tags",
-        "t"
-      ],
-      "description": "Fetches and displays a tag by name",
-      "cooldown": null,
-      "guild_only": false,
-      "owner_only": false,
-      "permissions": {
-        "user": [],
-        "bot": []
-      },
-      "usage": {
-        "prefix": "tag <tag_name>"
-      },
-      "id_slash": "1455027444623872226",
-      "options": [],
-      "supports_placeholders": false,
-      "children": [
-        {
-          "name": "view",
-          "aliases": [],
-          "description": "Views a tag",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 2.5,
-            "bucket": "member"
-          },
-          "guild_only": true,
-          "owner_only": false,
-          "permissions": {
-            "user": [],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "tag view <tag_name>"
-          },
-          "id_slash": "1455027444623872226",
-          "options": [
-            {
-              "name": "tag_name",
-              "description": "The name of the tag to view",
-              "type": "string",
-              "required": true
-            }
-          ],
-          "supports_placeholders": true,
-          "children": []
-        },
-        {
-          "name": "prune",
-          "aliases": [
-            "clear"
-          ],
-          "description": "Prunes all tags in this server",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 15.0,
-            "bucket": "member"
-          },
-          "guild_only": true,
-          "owner_only": false,
-          "permissions": {
-            "user": [
-              "Administrator"
-            ],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "tag prune"
-          },
-          "id_slash": "1455027444623872226",
-          "options": [],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "create",
-          "aliases": [
-            "add"
-          ],
-          "description": "Creates a new tag",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 4.0,
-            "bucket": "member"
-          },
-          "guild_only": true,
-          "owner_only": false,
-          "permissions": {
-            "user": [
-              "Manage Server"
-            ],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "tag create <tag_name> <content>"
-          },
-          "id_slash": "1455027444623872226",
-          "options": [
-            {
-              "name": "tag_name",
-              "description": "The name of the tag to create",
-              "type": "string",
-              "required": true
-            },
-            {
-              "name": "content",
-              "description": "The content of the tag",
-              "type": "string",
-              "required": true
-            }
-          ],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "list",
-          "aliases": [],
-          "description": "Lists all tags in this guild",
-          "cooldown": null,
-          "guild_only": true,
-          "owner_only": false,
-          "permissions": {
-            "user": [],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "tag list"
-          },
-          "id_slash": "1455027444623872226",
-          "options": [],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "delete",
-          "aliases": [
-            "remove"
-          ],
-          "description": "Removes a tag",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 4.0,
-            "bucket": "member"
-          },
-          "guild_only": true,
-          "owner_only": false,
-          "permissions": {
-            "user": [],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "tag delete <tag_name>"
-          },
-          "id_slash": "1455027444623872226",
-          "options": [
-            {
-              "name": "tag_name",
-              "description": "The name of the tag to delete",
-              "type": "string",
-              "required": true
-            }
-          ],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "update",
-          "aliases": [
-            "edit"
-          ],
-          "description": "Updates a tag content",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 4.0,
-            "bucket": "member"
-          },
-          "guild_only": true,
-          "owner_only": false,
-          "permissions": {
-            "user": [
-              "Manage Server"
-            ],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "tag update <tag_name> <new_content>"
-          },
-          "id_slash": "1455027444623872226",
-          "options": [
-            {
-              "name": "tag_name",
-              "description": "The name of the tag to update",
-              "type": "string",
-              "required": true
-            },
-            {
-              "name": "new_content",
-              "description": "The new content of the tag",
-              "type": "string",
-              "required": true
-            }
-          ],
-          "supports_placeholders": false,
-          "children": []
-        }
-      ],
-      "category": "Tags"
-    },
-    {
-      "name": "emojify",
-      "aliases": [],
-      "description": "Emojifys a text",
-      "cooldown": null,
-      "guild_only": false,
-      "owner_only": false,
-      "permissions": {
-        "user": [],
-        "bot": []
-      },
-      "usage": {
-        "prefix": "emojify <text>"
-      },
-      "id_slash": "1456428938392895683",
-      "options": [
-        {
-          "name": "text",
-          "description": "The text to emojify",
+          "name": "message",
+          "description": "The message to quote",
           "type": "string",
           "required": true
         }
       ],
       "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "30",
       "children": [],
-      "category": "Fun"
+      "category": "Utility",
+      "category_id": "c10"
     },
     {
       "name": "clear",
@@ -1787,1073 +3135,11 @@
         }
       ],
       "supports_placeholders": false,
+      "protected": false,
+      "toggle_id": "11",
       "children": [],
-      "category": "Moderation"
-    },
-    {
-      "name": "afk",
-      "aliases": [],
-      "description": "Marks you as AFK; mentioning you will show your reason",
-      "cooldown": {
-        "uses": 1,
-        "per_seconds": 5.0,
-        "bucket": "user"
-      },
-      "guild_only": false,
-      "owner_only": false,
-      "permissions": {
-        "user": [],
-        "bot": []
-      },
-      "usage": {
-        "prefix": "afk [reason]"
-      },
-      "id_slash": "1530431009139589223",
-      "options": [
-        {
-          "name": "reason",
-          "description": "Why you're going AFK (optional)",
-          "type": "string",
-          "required": false
-        }
-      ],
-      "supports_placeholders": false,
-      "children": [],
-      "category": "Utility"
-    },
-    {
-      "name": "close",
-      "aliases": [],
-      "description": "Closes the current ticket (usable inside a ticket thread)",
-      "cooldown": null,
-      "guild_only": false,
-      "owner_only": false,
-      "permissions": {
-        "user": [],
-        "bot": []
-      },
-      "usage": {
-        "prefix": "close"
-      },
-      "id_slash": "1529925520018378875",
-      "options": [],
-      "supports_placeholders": false,
-      "children": [],
-      "category": "Tickets"
-    },
-    {
-      "name": "edit",
-      "aliases": [],
-      "description": "Image manipulation commands",
-      "cooldown": null,
-      "guild_only": false,
-      "owner_only": false,
-      "permissions": {
-        "user": [],
-        "bot": []
-      },
-      "usage": {
-        "prefix": "edit"
-      },
-      "id_slash": "1456432748959891487",
-      "options": [],
-      "supports_placeholders": false,
-      "children": [
-        {
-          "name": "deepfry",
-          "aliases": [
-            "contrast"
-          ],
-          "description": "Applies a deepfry filter to the avatar of an user",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 6.0,
-            "bucket": "user"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "edit deepfry <user>"
-          },
-          "id_slash": "1456432748959891487",
-          "options": [
-            {
-              "name": "user",
-              "description": "The user to make a deepfry image of",
-              "type": "user",
-              "required": false
-            }
-          ],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "simp",
-          "aliases": [],
-          "description": "Makes a simp image of an user",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 6.0,
-            "bucket": "user"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "edit simp <user>"
-          },
-          "id_slash": "1456432748959891487",
-          "options": [
-            {
-              "name": "user",
-              "description": "The user to make a simp image of",
-              "type": "user",
-              "required": false
-            }
-          ],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "titan",
-          "aliases": [],
-          "description": "Make a titan attack image",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 7.0,
-            "bucket": "user"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "edit titan <text1> <text2>"
-          },
-          "id_slash": "1456432748959891487",
-          "options": [
-            {
-              "name": "text1",
-              "description": "The text for the titan",
-              "type": "string",
-              "required": true
-            },
-            {
-              "name": "text2",
-              "description": "The text for the person",
-              "type": "string",
-              "required": true
-            }
-          ],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "mirror",
-          "aliases": [
-            "invert"
-          ],
-          "description": "Applies a gray-scale filter to the avatar of an user",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 6.0,
-            "bucket": "user"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "edit mirror <user>"
-          },
-          "id_slash": "1456432748959891487",
-          "options": [
-            {
-              "name": "user",
-              "description": "The user to make a mirror image of",
-              "type": "user",
-              "required": false
-            }
-          ],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "gay",
-          "aliases": [
-            "pride",
-            "rainbow"
-          ],
-          "description": "Makes a pride-gay image of an user",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 6.0,
-            "bucket": "user"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "edit gay <user>"
-          },
-          "id_slash": "1456432748959891487",
-          "options": [
-            {
-              "name": "user",
-              "description": "The user to make a pride-gay image of",
-              "type": "user",
-              "required": false
-            }
-          ],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "communism",
-          "aliases": [
-            "communist"
-          ],
-          "description": "Makes a communist image of an user",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 6.0,
-            "bucket": "user"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "edit communism <user>"
-          },
-          "id_slash": "1456432748959891487",
-          "options": [
-            {
-              "name": "user",
-              "description": "The user to make a communist image of",
-              "type": "user",
-              "required": false
-            }
-          ],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "sonic",
-          "aliases": [],
-          "description": "Make a sonic says image",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 7.0,
-            "bucket": "user"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "edit sonic <text>"
-          },
-          "id_slash": "1456432748959891487",
-          "options": [
-            {
-              "name": "text",
-              "description": "The text to make sonic say",
-              "type": "string",
-              "required": true
-            }
-          ],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "twoways",
-          "aliases": [
-            "2ways"
-          ],
-          "description": "Make a two ways image",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 7.0,
-            "bucket": "user"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "edit twoways <text1> <text2>"
-          },
-          "id_slash": "1456432748959891487",
-          "options": [
-            {
-              "name": "text1",
-              "description": "The text for the left side",
-              "type": "string",
-              "required": true
-            },
-            {
-              "name": "text2",
-              "description": "The text for the right side",
-              "type": "string",
-              "required": true
-            }
-          ],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "gray",
-          "aliases": [
-            "bw",
-            "grayscale"
-          ],
-          "description": "Applies a gray-scale filter to the avatar of an user",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 6.0,
-            "bucket": "user"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "edit gray <user>"
-          },
-          "id_slash": "1456432748959891487",
-          "options": [
-            {
-              "name": "user",
-              "description": "The user to make a grayscale image of",
-              "type": "user",
-              "required": false
-            }
-          ],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "delete",
-          "aliases": [],
-          "description": "Makes a delete image of an user",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 6.0,
-            "bucket": "user"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "edit delete <user>"
-          },
-          "id_slash": "1456432748959891487",
-          "options": [
-            {
-              "name": "user",
-              "description": "The user to make a delete image of",
-              "type": "user",
-              "required": false
-            }
-          ],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "pixel",
-          "aliases": [],
-          "description": "Pixelates the avatar of an user",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 6.0,
-            "bucket": "user"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "edit pixel <user>"
-          },
-          "id_slash": "1456432748959891487",
-          "options": [
-            {
-              "name": "user",
-              "description": "The user to make a pixelated image of",
-              "type": "user",
-              "required": false
-            }
-          ],
-          "supports_placeholders": false,
-          "children": []
-        }
-      ],
-      "category": "Fun"
-    },
-    {
-      "name": "leave",
-      "aliases": [],
-      "description": "Leave message related commands",
-      "cooldown": null,
-      "guild_only": false,
-      "owner_only": false,
-      "permissions": {
-        "user": [],
-        "bot": []
-      },
-      "usage": {
-        "prefix": "leave"
-      },
-      "id_slash": "1519923376087634093",
-      "options": [],
-      "supports_placeholders": false,
-      "children": [
-        {
-          "name": "channel",
-          "aliases": [],
-          "description": "Sets the leave message channel",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 30.0,
-            "bucket": "guild"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [
-              "Manage Server"
-            ],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "leave channel <channel>"
-          },
-          "id_slash": "1519923376087634093",
-          "options": [
-            {
-              "name": "channel",
-              "description": "The channel to send leave messages in",
-              "type": "channel",
-              "required": true
-            }
-          ],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "preview",
-          "aliases": [],
-          "description": "Previews the leave message with your user as the member who left.",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 15.0,
-            "bucket": "guild"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [
-              "Manage Server"
-            ],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "leave preview"
-          },
-          "id_slash": "1519923376087634093",
-          "options": [],
-          "supports_placeholders": true,
-          "children": []
-        },
-        {
-          "name": "disable",
-          "aliases": [
-            "off"
-          ],
-          "description": "Disables leave messages",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 10.0,
-            "bucket": "guild"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [
-              "Manage Server"
-            ],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "leave disable"
-          },
-          "id_slash": "1519923376087634093",
-          "options": [],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "message",
-          "aliases": [],
-          "description": "Sets the leave message. Use {user} to mention the member who left.",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 30.0,
-            "bucket": "guild"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [
-              "Manage Server"
-            ],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "leave message <message>"
-          },
-          "id_slash": "1519923376087634093",
-          "options": [
-            {
-              "name": "message",
-              "description": "The message to send when a member leaves.",
-              "type": "string",
-              "required": true
-            }
-          ],
-          "supports_placeholders": true,
-          "children": []
-        },
-        {
-          "name": "enable",
-          "aliases": [
-            "on"
-          ],
-          "description": "Enables leave messages",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 10.0,
-            "bucket": "guild"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [
-              "Manage Server"
-            ],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "leave enable"
-          },
-          "id_slash": "1519923376087634093",
-          "options": [],
-          "supports_placeholders": false,
-          "children": []
-        }
-      ],
-      "category": "Greetings"
-    },
-    {
-      "name": "starboard",
-      "aliases": [],
-      "description": "Starboard configuration commands",
-      "cooldown": null,
-      "guild_only": false,
-      "owner_only": false,
-      "permissions": {
-        "user": [],
-        "bot": []
-      },
-      "usage": {
-        "prefix": "starboard"
-      },
-      "id_slash": "1528984039262916758",
-      "options": [],
-      "supports_placeholders": false,
-      "children": [
-        {
-          "name": "selfstars",
-          "aliases": [],
-          "description": "Toggles whether authors can star their own messages",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 15.0,
-            "bucket": "guild"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [
-              "Manage Server"
-            ],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "starboard selfstars <state>"
-          },
-          "id_slash": "1528984039262916758",
-          "options": [
-            {
-              "name": "state",
-              "description": "Whether authors can star their own messages",
-              "type": "boolean",
-              "required": true
-            }
-          ],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "emoji",
-          "aliases": [],
-          "description": "Sets the starboard emoji",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 15.0,
-            "bucket": "guild"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [
-              "Manage Server"
-            ],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "starboard emoji <emoji>"
-          },
-          "id_slash": "1528984039262916758",
-          "options": [
-            {
-              "name": "emoji",
-              "description": "The emoji messages need to be starred with",
-              "type": "string",
-              "required": true
-            }
-          ],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "enable",
-          "aliases": [
-            "on"
-          ],
-          "description": "Enables the starboard",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 10.0,
-            "bucket": "guild"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [
-              "Manage Server"
-            ],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "starboard enable"
-          },
-          "id_slash": "1528984039262916758",
-          "options": [],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "channel",
-          "aliases": [],
-          "description": "Sets the starboard channel",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 30.0,
-            "bucket": "guild"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [
-              "Manage Server"
-            ],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "starboard channel <channel>"
-          },
-          "id_slash": "1528984039262916758",
-          "options": [
-            {
-              "name": "channel",
-              "description": "The channel where starred messages will be posted",
-              "type": "channel",
-              "required": true
-            }
-          ],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "threshold",
-          "aliases": [],
-          "description": "Sets the star threshold",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 15.0,
-            "bucket": "guild"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [
-              "Manage Server"
-            ],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "starboard threshold <amount>"
-          },
-          "id_slash": "1528984039262916758",
-          "options": [
-            {
-              "name": "amount",
-              "description": "Minimum number of stars needed (1-500)",
-              "type": "integer",
-              "required": true
-            }
-          ],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "disable",
-          "aliases": [
-            "off"
-          ],
-          "description": "Disables the starboard",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 10.0,
-            "bucket": "guild"
-          },
-          "guild_only": false,
-          "owner_only": false,
-          "permissions": {
-            "user": [
-              "Manage Server"
-            ],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "starboard disable"
-          },
-          "id_slash": "1528984039262916758",
-          "options": [],
-          "supports_placeholders": false,
-          "children": []
-        }
-      ],
-      "category": "Starboard"
-    },
-    {
-      "name": "server",
-      "aliases": [],
-      "description": "Related server commands",
-      "cooldown": null,
-      "guild_only": false,
-      "owner_only": false,
-      "permissions": {
-        "user": [],
-        "bot": []
-      },
-      "usage": {
-        "prefix": "server"
-      },
-      "id_slash": "1450702343464030208",
-      "options": [],
-      "supports_placeholders": false,
-      "children": [
-        {
-          "name": "channel",
-          "aliases": [],
-          "description": "Shows information about a channel",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 4.0,
-            "bucket": "member"
-          },
-          "guild_only": true,
-          "owner_only": false,
-          "permissions": {
-            "user": [],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "server channel <channel>"
-          },
-          "id_slash": "1450702343464030208",
-          "options": [
-            {
-              "name": "channel",
-              "description": "The channel to show information about",
-              "type": "channel",
-              "required": false
-            }
-          ],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "roles",
-          "aliases": [],
-          "description": "Shows the server roles",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 4.0,
-            "bucket": "member"
-          },
-          "guild_only": true,
-          "owner_only": false,
-          "permissions": {
-            "user": [],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "server roles"
-          },
-          "id_slash": "1450702343464030208",
-          "options": [],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "icon",
-          "aliases": [],
-          "description": "Shows the server icon",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 4.0,
-            "bucket": "member"
-          },
-          "guild_only": true,
-          "owner_only": false,
-          "permissions": {
-            "user": [],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "server icon"
-          },
-          "id_slash": "1450702343464030208",
-          "options": [],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "role",
-          "aliases": [],
-          "description": "Shows information about a role",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 4.0,
-            "bucket": "member"
-          },
-          "guild_only": true,
-          "owner_only": false,
-          "permissions": {
-            "user": [],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "server role <role>"
-          },
-          "id_slash": "1450702343464030208",
-          "options": [
-            {
-              "name": "role",
-              "description": "The role to show information about",
-              "type": "role",
-              "required": true
-            }
-          ],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "banner",
-          "aliases": [],
-          "description": "Shows the server banner",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 4.0,
-            "bucket": "member"
-          },
-          "guild_only": true,
-          "owner_only": false,
-          "permissions": {
-            "user": [],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "server banner"
-          },
-          "id_slash": "1450702343464030208",
-          "options": [],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "members",
-          "aliases": [],
-          "description": "Shows the server member count",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 4.0,
-            "bucket": "member"
-          },
-          "guild_only": true,
-          "owner_only": false,
-          "permissions": {
-            "user": [],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "server members"
-          },
-          "id_slash": "1450702343464030208",
-          "options": [],
-          "supports_placeholders": false,
-          "children": []
-        },
-        {
-          "name": "info",
-          "aliases": [],
-          "description": "Shows information about the server",
-          "cooldown": {
-            "uses": 1,
-            "per_seconds": 4.0,
-            "bucket": "member"
-          },
-          "guild_only": true,
-          "owner_only": false,
-          "permissions": {
-            "user": [],
-            "bot": []
-          },
-          "usage": {
-            "prefix": "server info"
-          },
-          "id_slash": "1450702343464030208",
-          "options": [],
-          "supports_placeholders": false,
-          "children": []
-        }
-      ],
-      "category": "Utility"
-    },
-    {
-      "name": "quote",
-      "aliases": [],
-      "description": "Quotes a message",
-      "cooldown": {
-        "uses": 1,
-        "per_seconds": 8.0,
-        "bucket": "user"
-      },
-      "guild_only": false,
-      "owner_only": false,
-      "permissions": {
-        "user": [],
-        "bot": []
-      },
-      "usage": {
-        "prefix": "quote <message>"
-      },
-      "id_slash": "1452509064255766680",
-      "options": [
-        {
-          "name": "message",
-          "description": "The message to quote",
-          "type": "string",
-          "required": true
-        }
-      ],
-      "supports_placeholders": false,
-      "children": [],
-      "category": "Utility"
-    },
-    {
-      "name": "untimeout",
-      "aliases": [
-        "untimemute"
-      ],
-      "description": "Untimeouts a member",
-      "cooldown": {
-        "uses": 1,
-        "per_seconds": 4.0,
-        "bucket": "member"
-      },
-      "guild_only": false,
-      "owner_only": false,
-      "permissions": {
-        "user": [
-          "Timeout Members"
-        ],
-        "bot": [
-          "Timeout Members"
-        ]
-      },
-      "usage": {
-        "prefix": "untimeout <member> [reason]"
-      },
-      "id_slash": "1463286376836632600",
-      "options": [
-        {
-          "name": "member",
-          "description": "The member to untimeout",
-          "type": "user",
-          "required": true
-        },
-        {
-          "name": "reason",
-          "description": "…",
-          "type": "string",
-          "required": false
-        }
-      ],
-      "supports_placeholders": false,
-      "children": [],
-      "category": "Moderation"
+      "category": "Moderation",
+      "category_id": "c5"
     }
   ]
 }
