@@ -2,6 +2,7 @@
 // to display color/description. Not derivable from the JSON itself since
 // it's presentation-only metadata, not something discord.py exposes.
 export const CATEGORY_META = {
+  CommandToggle: { color: "#949ba4", description: "Enable or disable commands and cogs for this server." },
   Moderation: { color: "#da373c", description: "Locks, timeouts, kicks, bans, and message purges." },
   Fun: { color: "#f1574b", description: "Avatar edits, ships, and text toys." },
   Tags: { color: "#5865f2", description: "Reusable text snippets your server can recall on demand." },

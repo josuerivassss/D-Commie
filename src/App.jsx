@@ -15,6 +15,7 @@ import ExternalRedirect from "./pages/ExternalRedirect";
 import Changelog from "./pages/Changelog";
 import CommandsPage from "./pages/CommandsPage";
 import PlaceholdersPage from "./pages/PlaceholdersPage";
+import CommandsSettings from "./pages/CommandsSettings";
 import { botInviteUrl, SUPPORT_SERVER_URL } from "./config";
 
 export default function App() {
@@ -35,6 +36,7 @@ export default function App() {
             <Route path="/dash/:guildId" element={<DashboardLayout />}>
               <Route index element={<Navigate to="general" replace />} />
               <Route path="general" element={<GeneralSettings />} />
+              <Route path="commands" element={<CommandsSettings />} />
               <Route path="welcome" element={<WelcomeAutorolesSettings />} />
               <Route path="leave" element={<LeaveSettings />} />
               <Route path="starboard" element={<StarboardSettings />} />

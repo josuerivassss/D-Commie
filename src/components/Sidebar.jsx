@@ -55,6 +55,15 @@ function IconEmbeds() {
   );
 }
 
+function IconCommands() {
+  return (
+    <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.3" aria-hidden="true">
+      <rect x="2" y="4.5" width="12" height="7" rx="1.5" />
+      <path d="M4.5 7.2 6 8.5 4.5 9.8M8 9.8h3" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 export default function Sidebar({ guild }) {
   const base = `/dash/${guild.id}`;
   const { hasUnsaved, confirmNavigation } = useUnsavedChangesGuard();
@@ -73,6 +82,10 @@ export default function Sidebar({ guild }) {
       <NavLink className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`} to={`${base}/general`} onClick={(e) => guardedClick(e, `${base}/general`)}>
         <IconGeneral />
         {t("sidebar.general")}
+      </NavLink>
+      <NavLink className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`} to={`${base}/commands`} onClick={(e) => guardedClick(e, `${base}/commands`)}>
+        <IconCommands />
+        {t("sidebar.commands")}
       </NavLink>
       <NavLink className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`} to={`${base}/welcome`} onClick={(e) => guardedClick(e, `${base}/welcome`)}>
         <IconWelcome />

@@ -91,5 +91,7 @@ export const api = {
   updateTicketsConfig: (guildId, body) => request(`/json/guilds/${guildId}/tickets`, { method: "PATCH", body }),
   getTicketChannels: (guildId) => request(`/json/guilds/${guildId}/tickets/channels`),
   postTicketPanel: (guildId, body) => request(`/json/guilds/${guildId}/tickets/panel`, { method: "POST", body }),
+  getGuildDisabledCommands: (guildId) => request(`/json/guilds/${guildId}/commands`),
+  toggleGuildCommand: (guildId, body) => request(`/json/guilds/${guildId}/commands/toggle`, { method: "PATCH", body }),
   logout: () => request("/json/auth/logout", { method: "POST" }).catch(() => null),
 };
