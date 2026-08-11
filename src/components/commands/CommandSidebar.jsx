@@ -1,4 +1,4 @@
-function CommandIcon() {
+export function CommandIcon() {
   return (
     <span className="cmd-tree-icon cmd-tree-icon-command" aria-hidden="true">
       <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#eef1f6" strokeWidth="4" strokeLinecap="round">
@@ -8,7 +8,7 @@ function CommandIcon() {
   );
 }
 
-function SubcommandIcon() {
+export function SubcommandIcon() {
   return (
     <span className="cmd-tree-icon cmd-tree-icon-sub" aria-hidden="true">
       <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#efeef7" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">

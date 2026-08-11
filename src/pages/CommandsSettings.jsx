@@ -3,9 +3,12 @@ import { useOutletContext, Link } from "react-router-dom";
 import { api, friendlyErrorMessage } from "../api";
 import { useTranslation } from "../context/LocaleContext";
 import { useToast } from "../context/ToastContext";
+import { useKeyedCooldown } from "../hooks/useKeyedCooldown";
+import { CommandIcon, SubcommandIcon } from "../components/commands/CommandSidebar";
 import Toggle from "../components/Toggle";
 
 const DATA_URL = "/commands-data.json";
+const ALL_CATEGORY = "__all__";
 
 function rootIdOf(id) {
   return id.split(".", 1)[0];
@@ -17,11 +20,11 @@ function flattenToggleable(commands) {
   for (const command of commands) {
     if (command.category_id) categoryIds[command.category] = command.category_id;
     if (!command.protected && command.toggle_id) {
-      rows.push({ id: command.toggle_id, rootId: command.toggle_id, name: command.name, category: command.category, description: command.description });
+      rows.push({ id: command.toggle_id, rootId: command.toggle_id, name: command.name, category: command.category, description: command.description, isSub: false });
     }
     for (const child of command.children || []) {
       if (!child.protected && child.toggle_id) {
-        rows.push({ id: child.toggle_id, rootId: rootIdOf(child.toggle_id), name: `${command.name} ${child.name}`, category: command.category, description: child.description, parent: command.name });
+        rows.push({ id: child.toggle_id, rootId: rootIdOf(child.toggle_id), name: `${command.name} ${child.name}`, category: command.category, description: child.description, parent: command.name, isSub: true });
       }
     }
   }
@@ -50,10 +53,12 @@ export default function CommandsSettings() {
   const { guild } = useOutletContext();
   const { t } = useTranslation();
   const { showToast } = useToast();
+  const cooldown = useKeyedCooldown(10);
   const [rows, setRows] = useState([]);
   const [categoryIds, setCategoryIds] = useState({});
   const [disabled, setDisabled] = useState(new Set());
   const [query, setQuery] = useState("");
+  const [activeCategory, setActiveCategory] = useState(ALL_CATEGORY);
   const [activeRow, setActiveRow] = useState(null);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(null);
@@ -76,11 +81,16 @@ export default function CommandsSettings() {
     return () => { cancelled = true; };
   }, [guild.id]);
 
+  const categories = useMemo(() => Array.from(new Set(rows.map((r) => r.category))).sort(), [rows]);
+
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
-    if (!needle) return rows;
-    return rows.filter((r) => r.name.toLowerCase().includes(needle) || r.category.toLowerCase().includes(needle));
-  }, [rows, query]);
+    return rows.filter((r) => {
+      if (activeCategory !== ALL_CATEGORY && r.category !== activeCategory) return false;
+      if (!needle) return true;
+      return r.name.toLowerCase().includes(needle) || r.category.toLowerCase().includes(needle);
+    });
+  }, [rows, query, activeCategory]);
 
   const grouped = useMemo(() => {
     const map = new Map();
@@ -90,8 +100,6 @@ export default function CommandsSettings() {
     }
     return Array.from(map.entries()).sort((a, b) => a[0].localeCompare(b[0]));
   }, [filtered]);
-
-  const categories = useMemo(() => Array.from(new Set(rows.map((r) => r.category))).sort(), [rows]);
 
   function isRowEffectivelyDisabled(row, categoryId) {
     return disabled.has(row.id) || disabled.has(row.rootId) || (categoryId && disabled.has(categoryId));
@@ -106,6 +114,8 @@ export default function CommandsSettings() {
         enabled ? next.delete(id) : next.add(id);
         return next;
       });
+      cooldown.start(id);
+      showToast(t("common.saved"), "success");
     } catch (err) {
       showToast(friendlyErrorMessage(err, t), "error");
     } finally {
@@ -151,25 +161,43 @@ export default function CommandsSettings() {
       </div>
 
       <div className="cmd-overview-link-row" style={{ padding: 0, border: "none", display: "flex", flexWrap: "wrap", gap: "0.5rem", marginBottom: "1.5rem" }}>
+        <button
+          type="button"
+          className={`legal-tab ${activeCategory === ALL_CATEGORY ? "active" : ""}`}
+          onClick={() => setActiveCategory(ALL_CATEGORY)}
+        >
+          {t("commandsToggle.allCategories")}
+        </button>
         {categories.map((cat) => (
-          <a key={cat} href={`#toggle-cat-${cat}`} className="legal-tab">{cat}</a>
+          <button
+            key={cat}
+            type="button"
+            className={`legal-tab ${activeCategory === cat ? "active" : ""}`}
+            onClick={() => setActiveCategory(cat)}
+          >
+            {cat}
+          </button>
         ))}
       </div>
 
       {grouped.map(([category, items]) => {
         const categoryId = categoryIds[category];
         const categoryDisabled = categoryId ? disabled.has(categoryId) : false;
+        const categoryCooling = categoryId ? cooldown.isActive(categoryId) : false;
         return (
-          <div className="card" key={category} id={`toggle-cat-${category}`}>
+          <div className="card" key={category}>
             <div className="embed-section-title" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <span>{category}</span>
               {categoryId && (
                 <span style={{ display: "flex", alignItems: "center", gap: "0.5rem", textTransform: "none", letterSpacing: "normal", fontWeight: 500 }}>
-                  {t("commandsToggle.categoryToggleLabel")}
+                  {categoryCooling
+                    ? t("commandsToggle.cooldownLabel", { seconds: cooldown.remaining(categoryId) })
+                    : t("commandsToggle.categoryToggleLabel")}
                   <Toggle
                     checked={!categoryDisabled}
                     onChange={(checked) => handleCategoryToggle(category, checked)}
                     label={t("commandsToggle.categoryToggleLabel")}
+                    disabled={pendingId === categoryId || categoryCooling}
                   />
                 </span>
               )}
@@ -178,18 +206,28 @@ export default function CommandsSettings() {
             {items.map((row) => {
               const effectiveDisabled = isRowEffectivelyDisabled(row, categoryId);
               const ownDisabled = disabled.has(row.id);
+              const rowCooling = cooldown.isActive(row.id);
               return (
                 <div className="field toggle-row" key={row.id}>
-                  <button type="button" className="cmd-subcommand-name" style={{ background: "none", border: "none", cursor: "pointer", padding: 0, textAlign: "left" }} onClick={() => setActiveRow(row)}>
+                  <button
+                    type="button"
+                    className="cmd-subcommand-name"
+                    style={{ background: "none", border: "none", cursor: "pointer", padding: 0, display: "flex", alignItems: "center", gap: "0.5rem", textAlign: "left" }}
+                    onClick={() => setActiveRow(row)}
+                  >
+                    {row.isSub ? <SubcommandIcon /> : <CommandIcon />}
                     {row.name}
                   </button>
-                  <Toggle
-                    checked={!effectiveDisabled}
-                    onChange={(checked) => handleRowToggle(row, checked)}
-                    label={row.name}
-                    disabled={categoryDisabled || pendingId === row.id}
-                  />
-                  {categoryDisabled && !ownDisabled && <span className="hint" style={{ marginLeft: "0.5rem" }}>{t("commandsToggle.inheritedHint")}</span>}
+                  <span style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+                    {rowCooling && <span className="hint">{t("commandsToggle.cooldownLabel", { seconds: cooldown.remaining(row.id) })}</span>}
+                    {categoryDisabled && !ownDisabled && !rowCooling && <span className="hint">{t("commandsToggle.inheritedHint")}</span>}
+                    <Toggle
+                      checked={!effectiveDisabled}
+                      onChange={(checked) => handleRowToggle(row, checked)}
+                      label={row.name}
+                      disabled={categoryDisabled || pendingId === row.id || rowCooling}
+                    />
+                  </span>
                 </div>
               );
             })}

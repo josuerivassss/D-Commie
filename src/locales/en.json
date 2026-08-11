@@ -290,6 +290,8 @@
     "viewFullHelp": "View full help \u2192",
     "categoryToggleLabel": "Enable category",
     "categoryDisabledHint": "This entire category is disabled -- individual toggles below have no effect until it's re-enabled.",
-    "inheritedHint": "(disabled by category)"
+    "inheritedHint": "(disabled by category)",
+    "allCategories": "All",
+    "cooldownLabel": "Wait {seconds}s"
   }
 }

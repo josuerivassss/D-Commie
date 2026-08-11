@@ -290,6 +290,8 @@
     "viewFullHelp": "Ver ayuda completa \u2192",
     "categoryToggleLabel": "Habilitar categoría",
     "categoryDisabledHint": "Esta categoría entera está deshabilitada -- los toggles individuales de abajo no tienen efecto hasta que se reactive.",
-    "inheritedHint": "(deshabilitado por categoría)"
+    "inheritedHint": "(deshabilitado por categoría)",
+    "allCategories": "Todos",
+    "cooldownLabel": "Espera {seconds}s"
   }
 }
