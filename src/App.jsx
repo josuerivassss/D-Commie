@@ -16,6 +16,7 @@ import Changelog from "./pages/Changelog";
 import CommandsPage from "./pages/CommandsPage";
 import PlaceholdersPage from "./pages/PlaceholdersPage";
 import CommandsSettings from "./pages/CommandsSettings";
+import NotFound from "./pages/NotFound";
 import { botInviteUrl, SUPPORT_SERVER_URL } from "./config";
 
 export default function App() {
@@ -32,6 +33,7 @@ export default function App() {
             <Route path="/changelog" element={<Changelog />} />
             <Route path="/commands" element={<CommandsPage />} />
             <Route path="/placeholders" element={<PlaceholdersPage />} />
+            <Route path="*" element={<NotFound />} />
 
             <Route path="/dash/:guildId" element={<DashboardLayout />}>
               <Route index element={<Navigate to="general" replace />} />
