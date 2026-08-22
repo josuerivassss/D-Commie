@@ -105,16 +105,21 @@ export default function CommandsSettings() {
     return disabled.has(row.id) || disabled.has(row.rootId) || (categoryId && disabled.has(categoryId));
   }
 
-  async function applyToggle(id, enabled) {
-    setPendingId(id);
+    async function applyToggle(ids, enabled) {
+    const primaryId = ids[0];
+    setPendingId(primaryId);
     try {
-      await api.toggleGuildCommand(guild.id, { id, enabled });
+      if (ids.length > 1) {
+        await api.toggleManyGuildCommands(guild.id, { ids, enabled });
+      } else {
+        await api.toggleGuildCommand(guild.id, { id: primaryId, enabled });
+      }
       setDisabled((prev) => {
         const next = new Set(prev);
-        enabled ? next.delete(id) : next.add(id);
+        for (const id of ids) enabled ? next.delete(id) : next.add(id);
         return next;
       });
-      cooldown.start(id);
+      cooldown.start(primaryId);
       showToast(t("common.saved"), "success");
     } catch (err) {
       showToast(friendlyErrorMessage(err, t), "error");
@@ -124,13 +129,19 @@ export default function CommandsSettings() {
   }
 
   async function handleRowToggle(row, nextEnabled) {
-    await applyToggle(row.id, nextEnabled);
+    const ids = nextEnabled && !row.isSub
+      ? [row.id, ...rows.filter((r) => r.rootId === row.id && r.id !== row.id && disabled.has(r.id)).map((r) => r.id)]
+      : [row.id];
+    await applyToggle(ids, nextEnabled);
   }
 
   async function handleCategoryToggle(category, nextEnabled) {
     const categoryId = categoryIds[category];
     if (!categoryId) return;
-    await applyToggle(categoryId, nextEnabled);
+    const ids = nextEnabled
+      ? [categoryId, ...rows.filter((r) => r.category === category && disabled.has(r.id)).map((r) => r.id)]
+      : [categoryId];
+    await applyToggle(ids, nextEnabled);
   }
 
   if (loading) return <p className="section-sub">{t("common.loading")}</p>;
